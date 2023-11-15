@@ -1,21 +1,21 @@
 <script setup>
-//npm install jwt-decode
 import { onMounted, reactive } from "vue";
 import { userStore } from "@/stores/userStore";
 import { useRouter } from "vue-router";
-import { toast } from "vue3-toastify";
-import "vue3-toastify/dist/index.css";
+// import { toast } from "vue3-toastify";
+// import "vue3-toastify/dist/index.css";
 const router = useRouter();
 const ustore = userStore();
-//npm i vue3-toastify
 
 const click = reactive({
   rememeberId: false,
 });
+
 const user = reactive({
-  id: "",
-  password: "",
+  userId: "",
+  userPassword: "",
 });
+
 const error = reactive({
   message: "",
 });
@@ -34,21 +34,21 @@ async function getIDByCookie() {
     const key = cookie[0];
     const value = cookie[1];
 
-    if (key === "id") {
-      user.id = value;
+    if (key === "userId") {
+      user.userId = value;
     }
   }
 }
 
 //아이디를 쿠키에 저장하는 함수
-async function storeIDByCookie(id) {
+async function storeIDByCookie(userId) {
   const cookies = document.cookie;
   const cookieArray = cookies.split("; ");
-  document.cookie = `id=${id}`;
+  document.cookie = `userId=${userId}`;
 }
 
 async function signIn() {
-  console.log(user);
+  console.log("로그인 정보: " + user.userPassword);
   await ustore.userConfirm(user);
   let token = sessionStorage.getItem("access-token");
   console.log("1. confirm() token >> " + token);
@@ -58,12 +58,12 @@ async function signIn() {
     // await this.getUserInfo(token);
     console.log("4. confirm() userInfo :: ", ustore.userInfo);
     if (ustore.userInfo.isAdmin) {
-      toast.success(ustore.userInfo.id + "관리자 님 환영합니다!", {
+      toast.success(ustore.userInfo.userId + "관리자 님 환영합니다!", {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 1000,
       });
     } else {
-      toast.success(ustore.userInfo.id + "님 환영합니다!", {
+      toast.success(ustore.userInfo.userId + "님 환영합니다!", {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 1000,
       });
@@ -71,7 +71,7 @@ async function signIn() {
     }
     if (click.rememeberId) {
       // 아이디 저장 필요함
-      await storeIDByCookie(user.id);
+      await storeIDByCookie(user.userId);
       await getIDByCookie();
     }
     router.push({ name: "about" }); // 메인 페이지로 이동
@@ -148,7 +148,7 @@ async function signIn() {
         class="form-control"
         id="floatingInput"
         placeholder="Id"
-        v-model="user.id"
+        v-model="user.userId"
       />
       <label for="floatingInput">아이디</label>
     </div>
@@ -158,7 +158,7 @@ async function signIn() {
         class="form-control"
         id="floatingPassword"
         placeholder="Password"
-        v-model="user.password"
+        v-model="user.userPassword"
       />
       <label for="floatingPassword">비밀번호</label>
     </div>
@@ -173,7 +173,7 @@ async function signIn() {
       />
       <label class="form-check-label" for="flexCheckDefault"> 아이디 저장 </label>
     </div>
-    <button class="btn btn-primary w-100 py-2" type="submit" :click="signIn()">Sign in</button>
+    <button class="btn btn-primary w-100 py-2" type="submit" @click="signIn()">로그인</button>
   </form>
 </template>
 

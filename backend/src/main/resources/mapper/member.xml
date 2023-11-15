@@ -29,9 +29,9 @@
 	</insert>
 
 	<select id="loginMember" parameterType="map" resultMap="member">
-		select user_name, user_name
+		select user_name
 		from members
-		where user_name = #{userId} and user_password = #{userPassword}
+		where user_id = #{userId} and user_password = #{userPassword}
 	</select>
 	
 	<!-- ADMIN -->

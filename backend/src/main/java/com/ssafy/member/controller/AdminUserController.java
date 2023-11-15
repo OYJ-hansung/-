@@ -97,11 +97,11 @@ public class AdminUserController {
 		try {
 			MemberDto info = memberService.loginMember(memberDto);
 			if(info != null)
-				return new ResponseEntity<ResultDto>(new ResultDto("success", "로그인 성공"), HttpStatus.OK);
+				return new ResponseEntity<ResultDto>(new ResultDto("로그인 성공", "success"), HttpStatus.OK);
 			else
-				return new ResponseEntity<ResultDto>(new ResultDto("fail", "로그인 실패"), HttpStatus.OK);
+				return new ResponseEntity<ResultDto>(new ResultDto("로그인 실패", "fail"), HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<ResultDto>(new ResultDto("fail", "로그인 실패"), HttpStatus.OK);
+			return new ResponseEntity<ResultDto>(new ResultDto("로그인 실패 system", "fail critical"), HttpStatus.OK);
 		}
 	}
 

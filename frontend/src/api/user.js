@@ -3,9 +3,10 @@ import http from "./http.js";
 const api = http;
 
 async function login(user, success, fail) {
-  await api.post(`/user/login`, JSON.stringify(user)).then(success).catch(fail);
+  await api.post(`/members/login`, JSON.stringify(user)).then(success).catch(fail);
 }
 
+// 아래 아직 구현 안됨
 async function findById(userid, success, fail) {
   api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
   await api.get(`/user/${userid}`).then(success).catch(fail);

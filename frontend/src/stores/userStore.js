@@ -30,10 +30,11 @@ export const userStore = defineStore("userPiniaStore", {
       await login(
         user,
         ({ data }) => {
+          console.log("데이터: " + data.message);
           if (data.message === "success") {
             let accessToken = data["access-token"];
             let refreshToken = data["refresh-token"];
-            // console.log("login success token created!!!! >> ", accessToken, refreshToken);
+            console.log("로그인 성공했고 토큰이 생성되었습니다!!! >> ", accessToken, refreshToken);
             this.isLogin = true;
             this.isLoginError = false;
             this.isValidToken = true;
