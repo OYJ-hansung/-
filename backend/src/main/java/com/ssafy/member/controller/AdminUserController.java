@@ -92,7 +92,7 @@ public class AdminUserController {
 	}
 
 	@ApiOperation(value = "로그인", notes = "입력된 정보로 로그인을 시도합니다.") //조건문 추가하기 (빈칸, 중복 등)
-	@GetMapping(value = "/login")
+	@PostMapping(value = "/login")
 	public ResponseEntity<?> userIogin(@RequestBody MemberDto memberDto) {
 		try {
 			MemberDto info = memberService.loginMember(memberDto);
