@@ -1,6 +1,7 @@
 package com.ssafy.member.model.service;
 
 import java.lang.reflect.Member;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -65,5 +66,22 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public String findPassword(String userId) throws Exception{
 		return memberMapper.findPassword(userId);
+	}
+	
+	@Override
+	public void deleRefreshToken(String userid) throws Exception {
+		// TODO Auto-generated method stub
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", userid);
+		memberMapper.deleteRefreshToken(map);
+	}
+	
+	@Override
+	public void saveRefreshToken(String userid, String refreshToken) throws Exception {
+		// TODO Auto-generated method stub
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", userid);
+		map.put("token", refreshToken);
+		memberMapper.saveRefreshToken(map);
 	}
 }

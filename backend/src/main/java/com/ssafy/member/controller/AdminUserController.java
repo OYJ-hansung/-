@@ -1,6 +1,9 @@
 package com.ssafy.member.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import com.ssafy.util.ResultDto;
 import org.slf4j.Logger;
@@ -21,16 +24,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.jwt.model.service.JwtServiceImpl;
 import com.ssafy.member.model.MemberDto;
 import com.ssafy.member.model.service.MemberService;
+//import com.ssafy.user.model.service.IUserService;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
+
 
 @RestController
 //@Controller
@@ -43,12 +47,15 @@ public class AdminUserController {
 //	private static final Logger log = LoggerFactory.getLogger(AdminUserController.class);
 
 	private MemberService memberService;
+	private JwtServiceImpl jwtService;
 
 	@Autowired
-	public AdminUserController(MemberService memberService) {
+	public AdminUserController(MemberService memberService,JwtServiceImpl jwtService) {
 		this.memberService = memberService;
+		this.jwtService = jwtService;
 	}
 
+	
 	@ApiOperation(value = "회원목록", notes = "회원의 <big>전체 목록</big>을 반환해 줍니다.")
 	@ApiResponses({ @ApiResponse(code = 200, message = "회원목록 OK!!"), @ApiResponse(code = 404, message = "페이지없어!!"),
 			@ApiResponse(code = 500, message = "서버에러!!") })
@@ -91,19 +98,67 @@ public class AdminUserController {
 		}
 	}
 
+	
+	
+	
 	@ApiOperation(value = "로그인", notes = "입력된 정보로 로그인을 시도합니다.") //조건문 추가하기 (빈칸, 중복 등)
 	@PostMapping(value = "/login")
 	public ResponseEntity<?> userIogin(@RequestBody MemberDto memberDto) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
 		try {
-			MemberDto info = memberService.loginMember(memberDto);
-			if(info != null)
-				return new ResponseEntity<ResultDto>(new ResultDto("로그인 성공", "success"), HttpStatus.OK);
-			else
-				return new ResponseEntity<ResultDto>(new ResultDto("로그인 실패", "fail"), HttpStatus.OK);
+			MemberDto loginMember = memberService.loginMember(memberDto);
+			System.out.println("로그인 정보: "+loginMember.getUserId());
+			if (loginMember != null) {
+				System.out.println("들어왔다");
+				String accessToken = jwtService.createAccessToken("userId", loginMember.getUserId());// key, data
+				System.out.println("accessToken: "+accessToken);
+				String refreshToken = jwtService.createRefreshToken("userId", loginMember.getUserId());// key, data
+				System.out.println("refreshToken: "+refreshToken);
+				memberService.deleRefreshToken(memberDto.getUserId()); // 토큰이 중복되지 않도록 삭제 후 삽입
+				memberService.saveRefreshToken(memberDto.getUserId(), refreshToken);
+				
+				
+//				logger.debug("로그인 accessToken 정보 : {}", accessToken);
+//				logger.debug("로그인 refreshToken 정보 : {}", refreshToken);
+				resultMap.put("access-token", accessToken);
+				resultMap.put("refresh-token", refreshToken);
+				resultMap.put("message", "success");
+				status = HttpStatus.ACCEPTED;
+			} else {
+				resultMap.put("message", "fail");
+				status = HttpStatus.ACCEPTED;
+			}
 		} catch (Exception e) {
-			return new ResponseEntity<ResultDto>(new ResultDto("로그인 실패 system", "fail critical"), HttpStatus.OK);
+//			logger.error("로그인 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		
+		// logger.info("Welcome login!  {}.", userDto);
+		// UserDto loginUser = uservice.loginUser(userDto);
+		// if(loginUser != null) {
+		// 	session.setAttribute("loginUser", loginUser);
+		// 	return new ResponseEntity<UserDto>(uservice.getUserInfo(userDto.getId()), HttpStatus.OK);
+		// }
+		// return new ResponseEntity<UserDto>(uservice.getUserInfo(userDto.getId()), HttpStatus.BAD_REQUEST);
 	}
+	
+	
+//	@ApiOperation(value = "로그인", notes = "입력된 정보로 로그인을 시도합니다.") //조건문 추가하기 (빈칸, 중복 등)
+//	@PostMapping(value = "/login")
+//	public ResponseEntity<?> userIogin(@RequestBody MemberDto memberDto) {
+//		try {
+//			MemberDto info = memberService.loginMember(memberDto);
+//			if(info != null)
+//				return new ResponseEntity<ResultDto>(new ResultDto("로그인 성공", "success"), HttpStatus.OK);
+//			else
+//				return new ResponseEntity<ResultDto>(new ResultDto("로그인 실패", "fail"), HttpStatus.OK);
+//		} catch (Exception e) {
+//			return new ResponseEntity<ResultDto>(new ResultDto("로그인 실패 system", "fail critical"), HttpStatus.OK);
+//		}
+//	}
 
 	@ApiOperation(value = "비밀번호 찾기", notes = "회원의 비밀번호를 찾습니다.") //조건문 추가하기 (빈칸, 중복 등)
 	@GetMapping(value = "/login/{userId}")

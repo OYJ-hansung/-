@@ -18,4 +18,6 @@ public interface MemberService {
 	void deleteMember(String userid) throws Exception;
 
 	String findPassword(String userId) throws Exception;
+	void saveRefreshToken(String userid, String refreshToken) throws Exception; // 리프레시 토큰 저장
+	void deleRefreshToken(String userid) throws Exception;
 }
