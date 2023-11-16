@@ -2,7 +2,6 @@
 import { RouterLink, RouterView } from "vue-router";
 import HeaderNav from "./components/common/HeaderNav.vue";
 import FooterNav from "./components/common/FooterNav.vue";
-import MainNav from "./components/MainNav.vue";
 </script>
 
 <template>
@@ -11,7 +10,6 @@ import MainNav from "./components/MainNav.vue";
   </header>
 
   <main class="container">
-    <!-- <main-nav></main-nav> -->
     <router-view></router-view>
   </main>
   <footer class="blog-footer">

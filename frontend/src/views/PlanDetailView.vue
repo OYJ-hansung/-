@@ -4,12 +4,15 @@ import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import api from "axios";
 import PlanTimeLine from "../components/board/PlanTimeLine.vue";
+import VKakaoMap from "@/components/common/VKakaoMap.vue";
+import TestView from "./TestView.vue";
 
 const router = useRouter();
 const route = useRoute();
 
 const planId = ref(route.params.id);
 const plan = ref({});
+const attractions = ref([]);
 const planNameEdit = ref("");
 const planDetailEdit = ref(""); // 변경된 데이터
 const startDateEdit = ref(""); // 변경된 데이터
@@ -18,13 +21,15 @@ const endDateEdit = ref(""); // 변경된 데이터
 // 수정
 const isEdit = ref(false);
 const editPlan = () => {
-  if (!isEdit.value) { // 수정
+  if (!isEdit.value) {
+    // 수정
     isEdit.value = true;
     planNameEdit.value = plan.value.planName;
     planDetailEdit.value = plan.value.planDetail;
     startDateEdit.value = plan.value.startDate;
     endDateEdit.value = plan.value.endDate;
-  } else { // 완료
+  } else {
+    // 완료
     isEdit.value = false;
     editDetail();
   }
@@ -37,7 +42,7 @@ const editDetail = async () => {
       planName: planNameEdit.value,
       startDate: startDateEdit.value,
       endDate: endDateEdit.value,
-      planDetail: planDetailEdit.value
+      planDetail: planDetailEdit.value,
     })
     .then(() => {
       getDetail();
@@ -51,8 +56,10 @@ const getDetail = async () => {
   await api
     .get(`http://localhost:8090/trip/plan/${planId.value}`)
     .then(({ data }) => {
-      console.log("detail data : " + data);
       plan.value = data;
+      console.log("넘어올때");
+      attractions.value = plan.value.attrInfoList;
+      console.log(attractions.value);
     })
     .catch((e) => {
       console.log(e);
@@ -70,12 +77,11 @@ const deletePlan = async () => {
     });
 };
 
-onMounted(() => {
-  getDetail();
-});
-
+// onMounted(async () => {
+//   getDetail();
+// });
+getDetail();
 </script>
-
 <template>
   <div class="row g-5">
     <div class="col-md-12">
@@ -86,92 +92,177 @@ onMounted(() => {
             <div class="card-body">
               <div class="row g-5">
                 <div class="col-md-4">
-                  <img :src="plan.img" class="mt-3 img-fluid mx-auto d-block" alt="Responsive image" />
+                  <img
+                    :src="plan.img"
+                    class="mt-3 img-fluid mx-auto d-block"
+                    alt="Responsive image"
+                  />
                 </div>
                 <div class="col-md-8">
-                  <h2 v-if="!isEdit" class="card-title mx-auto d-block mt-1 mb-2">{{ plan.planName }}</h2>
-                  <input v-if="isEdit" type="text" class="form-control" id="planName" :placeholder="planNameEdit"
-                      v-model="planNameEdit">
+                  <h2 v-if="!isEdit" class="card-title mx-auto d-block mt-1 mb-2">
+                    {{ plan.planName }}
+                  </h2>
+                  <input
+                    v-if="isEdit"
+                    type="text"
+                    class="form-control"
+                    id="planName"
+                    :placeholder="planNameEdit"
+                    v-model="planNameEdit"
+                  />
 
                   <h6 class="card-subtitle mx-auto d-block mb-3">[{{ plan.userId }}]님</h6>
                   <figcaption v-if="!isEdit" class="blockquote-footer mt-3">
                     시작일: {{ plan.startDate }}
                   </figcaption>
                   <div>
-                    <input v-if="isEdit" type="text" class="form-control" id="startDate" :placeholder="startDateEdit"
-                      v-model="startDateEdit">
+                    <input
+                      v-if="isEdit"
+                      type="text"
+                      class="form-control"
+                      id="startDate"
+                      :placeholder="startDateEdit"
+                      v-model="startDateEdit"
+                    />
                   </div>
                   <figcaption v-if="!isEdit" class="blockquote-footer">
                     마지막일: {{ plan.endDate }}
                   </figcaption>
-                  <input v-else type="text" class="form-control" id="endDate" :placeholder="endDateEdit"
-                    v-model="endDateEdit">
+                  <input
+                    v-else
+                    type="text"
+                    class="form-control"
+                    id="endDate"
+                    :placeholder="endDateEdit"
+                    v-model="endDateEdit"
+                  />
                   <h4 class="box-title mt-5">[ 세부 내용 ]</h4>
                   <p v-if="!isEdit" class="card-text mb-5">
                     {{ plan.planDetail }}
                   </p>
-                  <textarea v-else class="form-control mb-5" id="planDetail" rows="3" v-model="planDetailEdit">
+                  <textarea
+                    v-else
+                    class="form-control mb-5"
+                    id="planDetail"
+                    rows="3"
+                    v-model="planDetailEdit"
+                  >
                                       {{ plan.planDetail }}
-                                    </textarea>
+                                    </textarea
+                  >
                 </div>
               </div>
 
               <div class="timeline">
-
-
-
-                <div class="timeline-row" v-for="(attrInfo, index) in plan.attrInfoList" :key="index">
+                <div
+                  class="timeline-row"
+                  v-for="(attrInfo, index) in plan.attrInfoList"
+                  :key="index"
+                >
                   <plan-time-line :attrInfo="attrInfo" />
                 </div>
-
-
-
               </div>
-              <div class="m-2 p-1 row justify-content-end">
-                <button v-if="!isEdit" @click="editPlan()" type="button"
-                  class="btn btn-primary float-right m-2 col-1">수정</button>
-                <button v-else type="button" class="btn btn-primary float-right m-2 col-1" data-bs-toggle="modal"
-                  data-bs-target="#editModal">완료</button>
 
-                <button type="button" class="btn btn-danger float-right m-2 col-1" data-bs-toggle="modal"
-                  data-bs-target="#deleteModal">삭제</button>
+              <VKakaoMap :attractions="attractions" />
+
+              <div class="m-2 p-1 row justify-content-end">
+                <button
+                  v-if="!isEdit"
+                  @click="editPlan()"
+                  type="button"
+                  class="btn btn-primary float-right m-2 col-1"
+                >
+                  수정
+                </button>
+                <button
+                  v-else
+                  type="button"
+                  class="btn btn-primary float-right m-2 col-1"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editModal"
+                >
+                  완료
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-danger float-right m-2 col-1"
+                  data-bs-toggle="modal"
+                  data-bs-target="#deleteModal"
+                >
+                  삭제
+                </button>
               </div>
 
               <!-- Edit Modal -->
-              <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div
+                class="modal fade"
+                id="editModal"
+                tabindex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h1 class="modal-title fs-5" id="exampleModalLabel">수정하기</h1>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
                     </div>
-                    <div class="modal-body">
-                      정말 수정하시겠습니까?
-                    </div>
+                    <div class="modal-body">정말 수정하시겠습니까?</div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니요</button>
-                      <button type="button" class="btn btn-primary" @click="editPlan()" data-bs-dismiss="modal">네</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        아니요
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        @click="editPlan()"
+                        data-bs-dismiss="modal"
+                      >
+                        네
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
 
               <!-- Delete Modal -->
-              <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
+              <div
+                class="modal fade"
+                id="deleteModal"
+                tabindex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h1 class="modal-title fs-5" id="exampleModalLabel">삭제하기</h1>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
                     </div>
-                    <div class="modal-body">
-                      정말 삭제하시겠습니까?
-                    </div>
+                    <div class="modal-body">정말 삭제하시겠습니까?</div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니요</button>
-                      <button type="button" class="btn btn-primary" @click="deletePlan()"
-                        data-bs-dismiss="modal">네</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        아니요
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        @click="deletePlan()"
+                        data-bs-dismiss="modal"
+                      >
+                        네
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -188,7 +279,7 @@ onMounted(() => {
 body {
   margin-top: 20px;
   color: #bcd0f7;
-  background: #1A233A;
+  background: #1a233a;
 }
 
 .timeline {
