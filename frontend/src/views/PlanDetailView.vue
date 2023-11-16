@@ -5,7 +5,6 @@ import { useRouter } from "vue-router";
 import api from "axios";
 import PlanTimeLine from "../components/board/PlanTimeLine.vue";
 import VKakaoMap from "@/components/common/VKakaoMap.vue";
-import TestView from "./TestView.vue";
 
 const router = useRouter();
 const route = useRoute();

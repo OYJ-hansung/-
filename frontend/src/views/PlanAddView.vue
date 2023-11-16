@@ -8,6 +8,17 @@ const router = useRouter();
 const route = useRoute();
 const searchWord = ref("");
 const searchResult = ref([]);
+const tagList = ref([]);
+
+// watch(
+//   () => tagList.value,
+//   () => {
+
+//   },
+//   { deep: true }
+// );
+
+const tagContent = ref("");
 const plan = ref({
   userId: "JohnOh",
   planName: "",
@@ -15,13 +26,12 @@ const plan = ref({
   endDate: "",
   planDetail: "",
   attrInfo: [],
+  tagList: [],
   img: "https://img.freepik.com/free-photo/airplane_74190-464.jpg?w=1380&t=st=1699807779~exp=1699808379~hmac=aa5cc0c5c8e05a2a1437b84eec67fc7e174e450c93e37d6996ca134b2a9a4184",
 });
 
 const addPlace = (place) => {
   plan.value.attrInfo.push(place);
-  searchResult.value = [];
-  console.log(plan.value.attrInfo);
 };
 
 const hasAttr = computed(() => {
@@ -31,6 +41,12 @@ const hasAttr = computed(() => {
 const hasSearchResult = computed(() => {
   return searchResult.value.length > 0 ? true : false;
 });
+
+const addTag = () => {
+  plan.value.tagList.push(tagContent.value);
+  tagContent.value = "";
+  // console.log("plan.tagList: " + JSON.stringify(plan.value.tagList));
+};
 
 const addPlan = async () => {
   await api
@@ -86,7 +102,7 @@ const searchAttraction = async () => {
                   />
                 </div>
                 <div class="col-md-8">
-                  <h4 class="box-title">[ 제목 ]</h4>
+                  <h5 class="box-title">[ 제목 ]</h5>
                   <input
                     type="text"
                     class="form-control mb-5 input-lg"
@@ -109,17 +125,49 @@ const searchAttraction = async () => {
                     class="form-control"
                     id="endDate"
                     placeholder="마지막날짜를 입력하세요."
-                    v-model="plan.endDate"
+                    v-model="plan.endDDate"
                   />
 
-                  <h4 class="box-title mt-5">[ 세부 내용 ]</h4>
+                  <h5 class="box-title mt-5">[ 세부 내용 ]</h5>
                   <textarea
-                    class="form-control mb-5"
+                    class="form-control"
                     id="planDetail"
                     rows="3"
-                    v-model="plan.planDetail"
+                    v-model="plan.planetail"
                     placeholder="세부 내용을 입력하세요."
                   ></textarea>
+                  <h5 class="box-title mt-3">[ 태그 ]</h5>
+                  <div class="input-group justify-content-center mb-3">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="태그를 검색하세요."
+                      aria-label="태그를 검색하세요."
+                      aria-describedby="button-addon2"
+                      v-model="tagContent"
+                    />
+                    <button
+                      class="btn btn-outline-secondary"
+                      type="button"
+                      id="addTag"
+                      @click="addTag()"
+                    >
+                      추가
+                    </button>
+                  </div>
+
+                  <div
+                    class="mb-4 row"
+                    style="float: left; justify-content: space-between; display: flex"
+                    v-for="(tag, index) in plan.tagList"
+                    :key="index"
+                  >
+                    <div class="col-md-12">
+                      <button type="button" class="btn btn-primary rounded-pill m-1">
+                        {{ tag }} <span class="badge">X</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
 
