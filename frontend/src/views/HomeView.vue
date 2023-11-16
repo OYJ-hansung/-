@@ -5,6 +5,23 @@ import HotPlaceZone from "@/components/HotPlaceZone.vue";
 </script>
 
 <template>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+    rel="stylesheet"
+  />
+  <div class="search-mode">
+    <input type="text" class="form-control" placeholder="검색어를 입력하세요." />
+    <i class="bi bi-search"></i>
+
+    <div class="icon">
+      <div class="search"><span class="material-symbols-outlined">search</span></div>
+      <div class="plus-option">
+        <i class="fas fa-keyboard"></i>
+        <i class="fas fa-microphone"></i>
+      </div>
+    </div>
+  </div>
+
   <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
     <ads-body></ads-body>
   </div>
@@ -376,3 +393,47 @@ import HotPlaceZone from "@/components/HotPlaceZone.vue";
     </div>
   </div>
 </template>
+<style scoped>
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.search-mode {
+  position: relative;
+  width: 800px;
+  height: 50px;
+  margin: 10px auto;
+}
+
+input {
+  /* border: 1px solid #f1f1f1; */
+  border-radius: 50px;
+  width: 100%;
+  height: 100%;
+  border: 2px solid;
+  font-size: 25px;
+  padding-left: 9%;
+}
+
+.icon {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  top: 14px;
+  right: 10px;
+  left: 20px;
+}
+
+.search {
+  color: #808080;
+}
+
+.plus-option i {
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.plus-option i:nth-child(2) {
+  color: #4f86ec;
+}
+</style>
