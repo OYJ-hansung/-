@@ -35,10 +35,22 @@ console.log("ustore userInfo - 네비게이션바: " + ustore.isLogin);
           <li v-show="ustore.userInfo === null" class="nav-item">
             <a href="/login" class="nav-link active" aria-current="page">로그인/회원가입</a>
           </li>
-          <li v-show="ustore.userInfo !== null" class="nav-item">
-            <a href="/login" class="nav-link active" aria-current="page">
-              <b>{{ ustore.userInfo.userId }} 님 환영합니다.</b></a
-            >
+          <li v-if="ustore.userInfo !== null" class="nav-item">
+            <div class="dropdown">
+              <a
+                href="#"
+                class="nav-link active dropdown-toggle"
+                aria-current="page"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <b>{{ ustore.userInfo.userId }} 님 환영합니다.</b></a
+              >
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/myplan">나의여행계획</a></li>
+                <li><a class="dropdown-item" href="/userInfo">회원정보</a></li>
+              </ul>
+            </div>
           </li>
         </ul>
       </div>
