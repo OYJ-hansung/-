@@ -8,12 +8,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.ssafy.util.ResultDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.jwt.model.service.JwtServiceImpl;
@@ -87,22 +83,7 @@ public class AdminUserController {
 		}
 		
 	}
-
-//	@ApiOperation(value = "회원조회", notes = "회원의 정보를 받아 처리.") //조건문 추가하기 (빈칸, 중복 등)
-//	@GetMapping(value = "/{userId}")
-//	public ResponseEntity<?> userInfo(@PathVariable String userId) {
-//		try {
-//			MemberDto memberDto = memberService.getMember(userId);
-//			return new ResponseEntity<MemberDto>(memberDto, HttpStatus.OK);
-//		} catch (Exception e) {
-//			return new ResponseEntity<ResultDto>(new ResultDto("fail", "회원조회 실패"), HttpStatus.OK);
-//		}
-//	}
-//	
 	
-	
-	
-	//비밀번호는 어떻게 해야 할까
 	@ApiOperation(value = "회원조회", notes = "회원의 정보를 받아 처리.") //조건문 추가하기 (빈칸, 중복 등)
 	@GetMapping(value = "/{userId}")
 		public ResponseEntity<?> userInfo(@PathVariable("userId") String userId, HttpServletRequest request) throws Exception {

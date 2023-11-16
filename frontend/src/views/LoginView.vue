@@ -3,7 +3,7 @@ import { onMounted, reactive } from "vue";
 import { userStore } from "@/stores/userStore";
 import { useRouter } from "vue-router";
 import { toast } from "vue3-toastify";
-// import "vue3-toastify/dist/index.css";
+import "vue3-toastify/dist/index.css";
 const router = useRouter();
 const ustore = userStore();
 
@@ -53,9 +53,7 @@ async function signIn() {
   let token = sessionStorage.getItem("access-token");
   console.log("1. confirm() token >> " + token);
   if (ustore.isLogin) {
-    // 여기는 state commit 변경 사항이 잘 적용되는데..
     await ustore.getUserInfo(token);
-    // await this.getUserInfo(token);
     console.log("4. confirm() userInfo :: ", ustore.userInfo);
     if (ustore.userInfo.isAdmin) {
       toast.success(ustore.userInfo.userId + "관리자 님 환영합니다!", {
@@ -67,14 +65,14 @@ async function signIn() {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 1000,
       });
-      // alert(store.state.userStore.userInfo.id + "님 환영합니다!");
     }
     if (click.rememeberId) {
       // 아이디 저장 필요함
       await storeIDByCookie(user.userId);
       await getIDByCookie();
     }
-    router.push({ name: "home" }); // 메인 페이지로 이동
+    console.log("ustore userInfo: " + ustore.isLogin);
+    // router.push({ name: "home" }); // 메인 페이지로 이동
   } else {
     error.message = "아이디 또는 비밀번호가 잘못되었습니다.";
   }
@@ -82,17 +80,6 @@ async function signIn() {
 </script>
 <template>
   <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
-    <!--
-      <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
-              id="bd-theme"
-              type="button"
-              aria-expanded="false"
-              data-bs-toggle="dropdown"
-              aria-label="Toggle theme (auto)">
-        <svg class="bi my-1 theme-icon-active" width="1em" height="1em"><use href="#circle-half"></use></svg>
-        <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
-      </button>
-      -->
     <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
       <li>
         <button
