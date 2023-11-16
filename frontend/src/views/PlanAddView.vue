@@ -8,16 +8,6 @@ const router = useRouter();
 const route = useRoute();
 const searchWord = ref("");
 const searchResult = ref([]);
-const tagList = ref([]);
-
-// watch(
-//   () => tagList.value,
-//   () => {
-
-//   },
-//   { deep: true }
-// );
-
 const tagContent = ref("");
 const plan = ref({
   userId: "JohnOh",
@@ -29,6 +19,12 @@ const plan = ref({
   tagList: [],
   img: "https://img.freepik.com/free-photo/airplane_74190-464.jpg?w=1380&t=st=1699807779~exp=1699808379~hmac=aa5cc0c5c8e05a2a1437b84eec67fc7e174e450c93e37d6996ca134b2a9a4184",
 });
+
+const deleteTag = (tag) => {
+  console.log("삭제중");
+  console.log(tag);
+  plan.value.tagList.filter((t) => t != tag);
+};
 
 const addPlace = (place) => {
   plan.value.attrInfo.push(place);
@@ -163,7 +159,11 @@ const searchAttraction = async () => {
                     :key="index"
                   >
                     <div class="col-md-12">
-                      <button type="button" class="btn btn-primary rounded-pill m-1">
+                      <button
+                        type="button"
+                        class="btn btn-primary rounded-pill m-1"
+                        @click="deleteTag(tag)"
+                      >
                         {{ tag }} <span class="badge">X</span>
                       </button>
                     </div>
