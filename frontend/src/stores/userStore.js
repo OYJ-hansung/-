@@ -55,7 +55,8 @@ export const userStore = defineStore("userPiniaStore", {
       let decodeToken = jwtDecode(token);
       console.log("2. getUserInfo() decodeToken :: ", decodeToken);
       await findById(
-        decodeToken.userid,
+        //  << 현재 오류
+        decodeToken.userId,
         ({ data }) => {
           if (data.message === "success") {
             this.userInfo = data.userInfo;
@@ -92,7 +93,7 @@ export const userStore = defineStore("userPiniaStore", {
             console.log("갱신 실패");
             // 다시 로그인 전 DB에 저장된 RefreshToken 제거.
             await logout(
-              this.userInfo.userid,
+              this.userInfo.userId,
               ({ data }) => {
                 if (data.message === "success") {
                   console.log("리프레시 토큰 제거 성공");

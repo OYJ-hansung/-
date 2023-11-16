@@ -9,7 +9,7 @@ async function login(user, success, fail) {
 // 아래 아직 구현 안됨
 async function findById(userid, success, fail) {
   api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
-  await api.get(`/user/${userid}`).then(success).catch(fail);
+  await api.get(`/members/${userid}`).then(success).catch(fail);
 }
 
 async function tokenRegeneration(user, success, fail) {

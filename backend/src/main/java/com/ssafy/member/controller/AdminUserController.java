@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.ssafy.util.ResultDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +30,6 @@ import com.ssafy.jwt.model.service.JwtServiceImpl;
 import com.ssafy.member.model.MemberDto;
 import com.ssafy.member.model.service.MemberService;
 //import com.ssafy.user.model.service.IUserService;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -87,16 +88,52 @@ public class AdminUserController {
 		
 	}
 
+//	@ApiOperation(value = "회원조회", notes = "회원의 정보를 받아 처리.") //조건문 추가하기 (빈칸, 중복 등)
+//	@GetMapping(value = "/{userId}")
+//	public ResponseEntity<?> userInfo(@PathVariable String userId) {
+//		try {
+//			MemberDto memberDto = memberService.getMember(userId);
+//			return new ResponseEntity<MemberDto>(memberDto, HttpStatus.OK);
+//		} catch (Exception e) {
+//			return new ResponseEntity<ResultDto>(new ResultDto("fail", "회원조회 실패"), HttpStatus.OK);
+//		}
+//	}
+//	
+	
+	
+	
+	//비밀번호는 어떻게 해야 할까
 	@ApiOperation(value = "회원조회", notes = "회원의 정보를 받아 처리.") //조건문 추가하기 (빈칸, 중복 등)
 	@GetMapping(value = "/{userId}")
-	public ResponseEntity<?> userInfo(@PathVariable String userId) {
-		try {
-			MemberDto memberDto = memberService.getMember(userId);
-			return new ResponseEntity<MemberDto>(memberDto, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<ResultDto>(new ResultDto("fail", "회원조회 실패"), HttpStatus.OK);
+		public ResponseEntity<?> userInfo(@PathVariable("userId") String userId, HttpServletRequest request) throws Exception {
+		
+			System.out.println("UserId: "+userId);
+			Map<String, Object> resultMap = new HashMap<>();
+			HttpStatus status = HttpStatus.ACCEPTED;
+			if (jwtService.checkToken(request.getHeader("access-token"))) {
+				// 사용가능한 토큰이라면
+			try {
+				MemberDto memberDto = memberService.getMember(userId);
+				resultMap.put("message", "success");
+				resultMap.put("userInfo", memberDto);
+				status = HttpStatus.ACCEPTED;
+			} catch (Exception e) {
+				resultMap.put("message", e.getMessage());
+				status = HttpStatus.INTERNAL_SERVER_ERROR;
+			}
+		}else {
+			// 사용 불가능한 토큰!
+			resultMap.put("message", "fail");
+			status = HttpStatus.UNAUTHORIZED;
 		}
-	}
+		
+			return new ResponseEntity<Map<String, Object>>(resultMap, status);
+			// return new ResponseEntity<UserDto>(uservice.getUserInfo(userId), HttpStatus.OK);
+		}
+	
+	
+	
+	
 
 	
 	
