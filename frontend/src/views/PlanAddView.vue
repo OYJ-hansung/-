@@ -21,9 +21,9 @@ const plan = ref({
 });
 
 const deleteTag = (tag) => {
-  console.log("삭제중");
-  console.log(tag);
-  plan.value.tagList.filter((t) => t != tag);
+  var planFilter = [];
+  planFilter = plan.value.tagList.filter((t) => t != tag);
+  plan.value.tagList = planFilter;
 };
 
 const addPlace = (place) => {
