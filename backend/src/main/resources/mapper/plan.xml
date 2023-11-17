@@ -23,6 +23,8 @@
 	<resultMap type="planDto" id="viewPlans" extends="plan">
 		<collection property="attrInfoList" column="plan_id"
 			javaType="list" ofType="attractionInfoDto" select="getAttrInfoList" />
+		<collection property="tagList" column="plan_id"
+			javaType="list" ofType="tagDto" select="getTagList" />
 	</resultMap>
 
  	<resultMap type="attractionInfoDto" id="attr">
@@ -78,6 +80,16 @@
 				select pta.content_id 
 				from plan_to_attr pta 
 				where pta.plan_id= #{planId} 
+				)
+	</select>
+	
+	<select id="getTagList" resultMap="tag">
+		select tag_id,tag_name
+		from tag
+		where tag_id in (
+				select ttp.tag_id
+				from tag_to_plan ttp 
+				where ttp.plan_id= #{planId} 
 				)
 	</select>
 

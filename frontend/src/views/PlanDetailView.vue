@@ -74,9 +74,6 @@ const deletePlan = async () => {
     });
 };
 
-// onMounted(async () => {
-//   getDetail();
-// });
 getDetail();
 </script>
 <template>
@@ -138,6 +135,7 @@ getDetail();
                     {{ plan.planDetail }}
                   </p>
 
+                  <h4>[ 태그 ]</h4>
                   <div
                     class="mb-4 row"
                     style="float: left; justify-content: space-between; display: flex"
@@ -146,7 +144,7 @@ getDetail();
                   >
                     <div class="col-md-12">
                       <button type="button" class="btn btn-primary rounded-pill m-1">
-                        {{ tag }} <span class="badge">X</span>
+                        # {{ tag.tagName }}
                       </button>
                     </div>
                   </div>
