@@ -1,25 +1,35 @@
 <script setup>
 import BoardTable from "@/components/BoardTable.vue";
 import HotPlaceZone from "@/components/HotPlaceZone.vue";
-import { ref } from "vue";
-const plan = ref({
-  tagList: [
-    {
-      tagName: "태그ONE",
-    },
-    {
-      tagName: "태그TWO",
-    },
-    {
-      tagName: "태그THREE",
-    },
-    {
-      tagName: "태그FOUR",
-    },
-    {
-      tagName: "태그FIVE",
-    },
-  ],
+import { ref, onMounted } from "vue";
+import api from "axios";
+import { useRouter } from "vue-router";
+import { searchStore } from "@/stores/planListStore";
+const sstore = searchStore();
+
+const router = useRouter();
+const hotTags = ref({});
+const keyWord = ref("");
+const search = () => {
+  sstore.keyWord = keyWord;
+  sstore.isSearch = true;
+  router.push({ name: "planlist" });
+};
+
+const getHotTags = async () => {
+  await api
+    .get(`http://localhost:8090/trip/plan/hottag`)
+    .then(({ data }) => {
+      hotTags.value = data;
+      console.log("hotTags: " + hotTags);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+
+onMounted(() => {
+  getHotTags();
 });
 </script>
 
@@ -29,7 +39,13 @@ const plan = ref({
     rel="stylesheet"
   />
   <div class="search-mode mb-2">
-    <input type="text" class="form-control" placeholder="검색어를 입력하세요." />
+    <input
+      type="text"
+      class="form-control"
+      placeholder="검색어를 입력하세요."
+      @keyup.enter="search(keyWord)"
+      v-model="keyWord"
+    />
     <i class="bi bi-search"></i>
 
     <div class="icon">
@@ -42,8 +58,13 @@ const plan = ref({
   </div>
 
   <div class="hot-tag mb-4 row" style="display: flex">
-    <div class="col-md-2">인기 태그:</div>
-    <div class="col-md-2" style="float: left" v-for="(tag, index) in plan.tagList" :key="index">
+    <div class="col-md-2" style="float: left; font-size: 18px"><b>인기 태그 :</b></div>
+    <div
+      class="col-md-2"
+      style="float: left; font-size: 18px; color: #0000cd"
+      v-for="(tag, index) in hotTags"
+      :key="index"
+    >
       # {{ tag.tagName }}
     </div>
   </div>
@@ -504,7 +525,7 @@ const plan = ref({
 
 .search-mode {
   position: relative;
-  width: 800px;
+  width: 750px;
   height: 50px;
   margin: 20px auto;
 }
@@ -513,8 +534,8 @@ const plan = ref({
   width: 770px;
   margin: 5px auto;
   justify-content: flex-start;
-  padding-right: 30px;
-  padding-left: 30px;
+  padding-right: 40px;
+  padding-left: 40px;
 }
 
 input {

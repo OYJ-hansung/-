@@ -2,11 +2,8 @@
 import { ref, onMounted, defineProps } from "vue";
 import BoardCard from "./BoardCard.vue";
 import api from "axios";
-import { userStore } from "@/stores/userStore";
-
-const ustore = userStore();
-const my = defineProps("my");
-console.log("my: " + my.value);
+import { searchStore } from "@/stores/planListStore";
+const sstore = searchStore();
 
 const planList = ref([]);
 const boardlist = async () => {
@@ -16,12 +13,11 @@ const boardlist = async () => {
       word: "",
     })
     .then(({ data }) => {
-      if (my.value === true) {
-        // 내 정보라면
-        planList.value = data.filter((plan) => plan.userId === ustore.userInfo.userId);
-      } else {
-        planList.value = data;
+      console.log("검색한거니?", sstore.isSearch);
+      if (sstore.isSearch) {
+        
       }
+      planList.value = data;
     })
     .catch((e) => {
       console.log(e);

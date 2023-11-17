@@ -22,7 +22,8 @@ const addPlan = () => {
           <b>여행계획추가</b>
         </button>
       </div>
-      <board-card-list :my="true"></board-card-list>
+      <!-- <board-card-list :props="props"></board-card-list> -->
+      <board-card-list></board-card-list>
     </div>
   </div>
 </template>

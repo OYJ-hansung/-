@@ -3,14 +3,6 @@ import BoardCardList from "../components/board/BoardCardList.vue";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
-
-const router = useRouter();
-const route = useRoute(); // 경로 매칭
-const planId = ref(route.params.planId);
-
-const addPlan = () => {
-  router.push({ path: "/addplan" });
-};
 </script>
 
 <template>
