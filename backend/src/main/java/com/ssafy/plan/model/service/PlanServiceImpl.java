@@ -46,7 +46,7 @@ public class PlanServiceImpl implements PlanService {
 	}
 
 	@Override
-//	@Transactional
+	@Transactional
 	public void writePlan(PlanDto planDto) throws Exception {
 		System.out.println("서비스impl로 들어왔다");
 		List<String> tagList = planDto.getTagList();
@@ -56,17 +56,12 @@ public class PlanServiceImpl implements PlanService {
 		for(String tagName: tagList){
 			TagDto tagDto = new TagDto();
 			tagDto.setTagName(tagName);
-			
-			System.out.println("태그를 추가합니다.");
 			planMapper.addTag(tagDto);
-			System.out.println("이번에 생성된 태그는 다음과 같습니다:"+tagDto);
 			TagToPlanDto tagToPlanDto = new TagToPlanDto();
 			tagToPlanDto.setTagId(tagDto.getTagId());
 			tagToPlanDto.setPlanId(planDto.getPlanId());
-			System.out.println("태그매퍼를 추가합니다.");
 			planMapper.addTagToPlan(tagToPlanDto);
 		}
-
 	}
 
 	@Override
