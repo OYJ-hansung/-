@@ -117,12 +117,12 @@
 		values (#{planId},${tagId})
 	</insert>
 
-	<select id="getTag" parameterType="String" resultType="tagDto">
+<!-- TagDto getTag(String tagName) throws SQLException; -->
+	<select id="getTag" parameterType="String" resultMap="tag">
 		select tag_id, tag_name
 		from tag
 		where tag_name = #{tagName}
 	</select>
-	
 	
  	<update id="raiseTagCount" parameterType="int">
 		update tag

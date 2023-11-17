@@ -46,19 +46,39 @@ public class PlanServiceImpl implements PlanService {
 	}
 
 	@Override
-	@Transactional
 	public void writePlan(PlanDto planDto) throws Exception {
-		System.out.println("서비스impl로 들어왔다");
 		List<TagDto> tagList = planDto.getTagList();
-		System.out.println("tagList: "+tagList);
-		
+		System.out.println("태그리스트 :"+tagList);
 		planMapper.writePlan(planDto);
+		System.out.println("태그리스트 :"+tagList);
+		
 		for(TagDto tagDto: tagList){
-			planMapper.addTag(tagDto);
-			TagToPlanDto tagToPlanDto = new TagToPlanDto();
-			tagToPlanDto.setTagId(tagDto.getTagId());
-			tagToPlanDto.setPlanId(planDto.getPlanId());
-			planMapper.addTagToPlan(tagToPlanDto);
+			TagDto tag = planMapper.getTag(tagDto.getTagName());
+			System.out.println("태그를 찾았습니까? :");
+			
+			
+			if(tag==null) { // 태그가 기존에 없다면 새로운 태그를 추가
+				System.out.println("하이");
+				System.out.println("기존에 없는 태그입니다");
+				planMapper.addTag(tagDto);
+				TagToPlanDto tagToPlanDto = new TagToPlanDto();
+				tagToPlanDto.setTagId(tagDto.getTagId());
+				tagToPlanDto.setPlanId(planDto.getPlanId());
+				planMapper.addTagToPlan(tagToPlanDto);
+			} else { // 태그가 기존에 있다면 카운트를 하나 증가
+				System.out.println("하이2");
+				System.out.println("기존에 있는 태그입니다: ");
+				planMapper.raiseTagCount(tag.getTagId());
+				
+				TagToPlanDto tagToPlanDto = new TagToPlanDto();
+				tagToPlanDto.setTagId(tag.getTagId());
+				tagToPlanDto.setPlanId(planDto.getPlanId());
+				planMapper.addTagToPlan(tagToPlanDto);
+			}
+			
+			
+			
+			
 		}
 	}
 
