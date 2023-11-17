@@ -1,7 +1,26 @@
 <script setup>
 import BoardTable from "@/components/BoardTable.vue";
-import AdsBody from "@/components/AdsBody.vue";
 import HotPlaceZone from "@/components/HotPlaceZone.vue";
+import { ref } from "vue";
+const plan = ref({
+  tagList: [
+    {
+      tagName: "태그ONE",
+    },
+    {
+      tagName: "태그TWO",
+    },
+    {
+      tagName: "태그THREE",
+    },
+    {
+      tagName: "태그FOUR",
+    },
+    {
+      tagName: "태그FIVE",
+    },
+  ],
+});
 </script>
 
 <template>
@@ -9,7 +28,7 @@ import HotPlaceZone from "@/components/HotPlaceZone.vue";
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
     rel="stylesheet"
   />
-  <div class="search-mode">
+  <div class="search-mode mb-2">
     <input type="text" class="form-control" placeholder="검색어를 입력하세요." />
     <i class="bi bi-search"></i>
 
@@ -22,8 +41,15 @@ import HotPlaceZone from "@/components/HotPlaceZone.vue";
     </div>
   </div>
 
+  <div class="hot-tag mb-4 row" style="display: flex">
+    <div class="col-md-2">인기 태그:</div>
+    <div class="col-md-2" style="float: left" v-for="(tag, index) in plan.tagList" :key="index">
+      # {{ tag.tagName }}
+    </div>
+  </div>
+
+  <!-- 케러셀 -->
   <div class="mb-4 text-white rounded bg-dark pics">
-    <!-- <ads-body></ads-body> -->
     <div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-bs-ride="carousel">
       <div class="carousel-indicators">
         <button
@@ -481,6 +507,14 @@ import HotPlaceZone from "@/components/HotPlaceZone.vue";
   width: 800px;
   height: 50px;
   margin: 20px auto;
+}
+.hot-tag {
+  position: relative;
+  width: 770px;
+  margin: 5px auto;
+  justify-content: flex-start;
+  padding-right: 30px;
+  padding-left: 30px;
 }
 
 input {
