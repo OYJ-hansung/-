@@ -3,7 +3,10 @@ import { useRoute } from "vue-router";
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import api from "axios";
+import VKakaoMapAdd from "@/components/common/VKakaoMapAdd.vue";
 
+const markPlace = ref({});
+const selectedPlaces = ref([]);
 const router = useRouter();
 const route = useRoute();
 const searchWord = ref("");
@@ -28,6 +31,17 @@ const deleteTag = (tag) => {
 
 const addPlace = (place) => {
   plan.value.attrInfo.push(place);
+<<<<<<< 30a34dc2682c09255caf3587fb6bcfdc9c69d2ba
+  searchResult.value = [];
+  console.log(plan.value.attrInfo);
+
+  selectedPlaces.push(place);
+};
+
+const markPlaceOnMap = (place) => {
+  markPlace.value = place;
+=======
+>>>>>>> 710b2b359d1738f755d2994f2ae71f90e0703b13
 };
 
 const hasAttr = computed(() => {
@@ -86,19 +100,163 @@ const searchAttraction = async () => {
   <div class="row g-5">
     <div class="col-md-12">
       <h3 class="pb-4 mb-4 fst-italic border-bottom">내 마음대로 여행코스!!!</h3>
-      <div class="row g-5">
-        <div class="col-md-12">
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <button
+            class="nav-link active"
+            id="nav-home-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#nav-home"
+            type="button"
+            role="tab"
+            aria-controls="nav-home"
+            aria-selected="true"
+          >
+            여행 계획 설명
+          </button>
+          <button
+            class="nav-link"
+            id="nav-profile-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#nav-profile"
+            type="button"
+            role="tab"
+            aria-controls="nav-profile"
+            aria-selected="false"
+          >
+            여행 계획 추가
+          </button>
+          <button
+            class="nav-link"
+            id="nav-contact-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#nav-contact"
+            type="button"
+            role="tab"
+            aria-controls="nav-contact"
+            aria-selected="false"
+          >
+            쩝쩝쩝
+          </button>
+        </div>
+      </nav>
+
+      <div class="tab-content" id="nav-tabContent">
+        <div
+          class="tab-pane fade show active"
+          id="nav-home"
+          role="tabpanel"
+          aria-labelledby="nav-home-tab"
+        >
+          <h4 class="box-title">[ 제목 ]</h4>
+          <input
+            type="text"
+            class="form-control mb-5 input-lg"
+            id="planName"
+            placeholder="제목을 입력하세요."
+            v-model="plan.planName"
+          />
+
+          <h6 class="card-subtitle mx-auto d-block mb-3">[{{ plan.userId }}]님</h6>
+
+          <input
+            type="text"
+            class="form-control mb-3"
+            id="startDate"
+            placeholder="시작날짜를 입력하세요."
+            v-model="plan.startDate"
+          />
+          <input
+            type="text"
+            class="form-control"
+            id="endDate"
+            placeholder="마지막날짜를 입력하세요."
+            v-model="plan.endDate"
+          />
+
+          <h4 class="box-title mt-5">[ 세부 내용 ]</h4>
+          <textarea
+            class="form-control mb-5"
+            id="planDetail"
+            rows="3"
+            v-model="plan.planDetail"
+            placeholder="세부 내용을 입력하세요."
+          ></textarea>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="nav-profile"
+          role="tabpanel"
+          aria-labelledby="nav-profile-tab"
+        >
           <div class="card shadow-sm">
             <div class="card-body">
+              <VKakaoMapAdd :markPlace="markPlace" :selectedPlaces="selectedPlaces" />
               <div class="row g-5">
-                <div class="col-md-4">
-                  <img
-                    :src="plan.img"
-                    class="mt-3 img-fluid mx-auto d-block"
-                    alt="Responsive image"
-                  />
-                </div>
                 <div class="col-md-8">
+<<<<<<< 30a34dc2682c09255caf3587fb6bcfdc9c69d2ba
+                  <!--  여행지 검색 -->
+                  <div class="m-2 mb-3 row justify-content-center">
+                    <div class="input-group justify-content-center mb-1">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="장소를 검색하세요."
+                        aria-label="장소를 검색하세요."
+                        aria-describedby="button-addon2"
+                        v-model="searchWord"
+                      />
+                      <button
+                        class="btn btn-outline-secondary"
+                        type="button"
+                        id="button-addon2"
+                        @click="searchAttraction()"
+                      >
+                        검색
+                      </button>
+                    </div>
+
+                    <div class="justify-content-center container-fluid">
+                      <div
+                        v-show="hasSearchResult"
+                        class="overflow-y-scroll h-100 bg-body-tertiary p-3 rounded-2"
+                      >
+                        <div
+                          data-bs-spy="scroll"
+                          data-bs-target="#navbar-example2"
+                          data-bs-root-margin="0px 0px -40%"
+                          data-bs-smooth-scroll="true"
+                          class="bg-body-tertiary rounded-2"
+                          tabindex="0"
+                        >
+                          <ul
+                            class="list-group"
+                            v-for="(place, index) in searchResult"
+                            :key="index"
+                          >
+                            <a
+                              @click="markPlaceOnMap(place)"
+                              class="list-group-item list-group-item-action"
+                              aria-current="true"
+                            >
+                              <div class="row g-5">
+                                <div class="col-md-8">
+                                  <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">{{ place.title }}</h5>
+                                  </div>
+                                  <p class="mb-1">{{ place.addr1 }}</p>
+                                </div>
+                                <div class="col-md-4 align-items-center">
+                                  <a href="#" @click="addPlace(place)" aria-current="true">
+                                    <h5 class="align-middle">여행계획추가</h5>
+                                  </a>
+                                </div>
+                              </div>
+                            </a>
+                          </ul>
+                        </div>
+                      </div>
+=======
                   <h5 class="box-title">[ 제목 ]</h5>
                   <input
                     type="text"
@@ -189,111 +347,87 @@ const searchAttraction = async () => {
                     </p>
                     <div class="thumbs">
                       <img class="img-fluid rounded" :src="attr.firstImage" alt="Maxwell Admin" />
+>>>>>>> 710b2b359d1738f755d2994f2ae71f90e0703b13
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <div class="m-2 mb-3 row justify-content-center">
-                <div class="input-group justify-content-center mb-1">
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="장소를 검색하세요."
-                    aria-label="장소를 검색하세요."
-                    aria-describedby="button-addon2"
-                    v-model="searchWord"
-                  />
-                  <button
-                    class="btn btn-outline-secondary"
-                    type="button"
-                    id="button-addon2"
-                    @click="searchAttraction()"
-                  >
-                    검색
-                  </button>
+                <div class="col-md-4">
+                  <!-- 날짜 보여주기 -->
+                  암;ㅣ아ㅓㄹㄴ
                 </div>
 
-                <div class="justify-content-center container-fluid">
-                  <!-- 검색결과리스트 -->
+                <div class="col-md-12">
+                  <!-- <div class="card shadow-sm">
+                <div class="card-body"> -->
+                  <!-- 타임라인 -->
+                  <div v-show="hasAttr" class="timeline">
+                    <div class="timeline-row" v-for="(attr, index) in plan.attrInfo" :key="index">
+                      <div class="timeline-time">7:45PM<small>Dec 21</small></div>
+                      <div class="timeline-content">
+                        <i class="icon-attachment"></i>
+                        <h4>{{ attr.title }}</h4>
+                        <p>
+                          여기서는 무엇을 할것입니다. 첫번째 여행지의 세부내용입니다.여기서는 무엇을
+                          할것입니다. 첫번째 여행지의 세부내용입니다.여기서는 무엇을 할것입니다.
+                          첫번째 여행지의 세부내용입니다.여기서는 무엇을 할것입니다. 첫번째 여행지의
+                          세부내용입니다.여기서는 무엇을 할것입니다. 첫번째 여행지의
+                          세부내용입니다.여기서는 무엇을 할것입니다. 첫번째 여행지의 세부내용입니다.
+                        </p>
+                        <div class="thumbs">
+                          <img
+                            class="img-fluid rounded"
+                            :src="attr.firstImage"
+                            alt="Maxwell Admin"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="m-2 p-1 row justify-content-end">
+                    <button
+                      type="button"
+                      class="btn btn-primary float-right m-2 col-1"
+                      data-bs-toggle="modal"
+                      data-bs-target="#addModal"
+                    >
+                      완료
+                    </button>
+                  </div>
 
                   <div
-                    v-show="hasSearchResult"
-                    class="overflow-y-scroll h-100 bg-body-tertiary p-3 rounded-2"
+                    class="modal fade"
+                    id="addModal"
+                    tabindex="-1"
+                    aria-labelledby="exampleModalLabel"
+                    aria-hidden="true"
                   >
-                    <div
-                      data-bs-spy="scroll"
-                      data-bs-target="#navbar-example2"
-                      data-bs-root-margin="0px 0px -40%"
-                      data-bs-smooth-scroll="true"
-                      class="bg-body-tertiary rounded-2"
-                      tabindex="0"
-                    >
-                      <ul class="list-group" v-for="(place, index) in searchResult" :key="index">
-                        <a class="list-group-item list-group-item-action" aria-current="true">
-                          <div class="row g-5">
-                            <div class="col-md-8">
-                              <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">{{ place.title }}</h5>
-                              </div>
-                              <p class="mb-1">{{ place.addr1 }}</p>
-                            </div>
-                            <div class="col-md-4 align-items-center">
-                              <a href="#" @click="addPlace(place)" aria-current="true">
-                                <h5 class="align-middle">여행계획추가</h5>
-                              </a>
-                            </div>
-                          </div>
-                        </a>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="m-2 p-1 row justify-content-end">
-                <button
-                  type="button"
-                  class="btn btn-primary float-right m-2 col-1"
-                  data-bs-toggle="modal"
-                  data-bs-target="#addModal"
-                >
-                  완료
-                </button>
-              </div>
-
-              <!-- Add Modal -->
-              <div
-                class="modal fade"
-                id="addModal"
-                tabindex="-1"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">추가하기</h1>
-                      <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    <div class="modal-body">정말 추가하시겠습니까?</div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        아니요
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-primary"
-                        @click="addPlan()"
-                        data-bs-dismiss="modal"
-                      >
-                        네
-                      </button>
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="exampleModalLabel">추가하기</h1>
+                          <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          ></button>
+                        </div>
+                        <div class="modal-body">정말 추가하시겠습니까?</div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            아니요
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-primary"
+                            @click="addPlan()"
+                            data-bs-dismiss="modal"
+                          >
+                            네
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -301,7 +435,16 @@ const searchAttraction = async () => {
             </div>
           </div>
         </div>
+        <div
+          class="tab-pane fade"
+          id="nav-contact"
+          role="tabpanel"
+          aria-labelledby="nav-contact-tab"
+        >
+          ...
+        </div>
       </div>
+      <!-- 여기까지가 추가된 거 -->
     </div>
   </div>
 </template>
