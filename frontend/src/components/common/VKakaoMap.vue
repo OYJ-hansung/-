@@ -46,8 +46,12 @@ const initMap = () => {
   positions.value = [];
   props.attractions.forEach((attraction) => {
     let obj = {};
-    obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
+    obj.latlng = new kakao.maps.LatLng(
+      attraction.latitude,
+      attraction.longitude
+    );
     obj.title = attraction.title;
+    obj.firstImage = attraction.firstImage;
     positions.value.push(obj);
   });
   if (positions.value.length !== 0) {
@@ -64,8 +68,12 @@ watch(
       positions.value = [];
       props.attractions.forEach((attraction) => {
         let obj = {};
-        obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
+        obj.latlng = new kakao.maps.LatLng(
+          attraction.latitude,
+          attraction.longitude
+        );
         obj.title = attraction.title;
+        obj.firstImage = attraction.firstImage;
         positions.value.push(obj);
       });
       loadMarkers();
@@ -73,6 +81,19 @@ watch(
   },
   { deep: true }
 );
+
+const makeHtmlElement = function (tagName, ...attr) {
+  const element = document.createElement(tagName);
+  for (let prop of attr) {
+    const [key, value] = Object.entries(prop)[0];
+    if (key == "textContent" || key == "innerText") {
+      element.textContent = value;
+    } else {
+      element.setAttribute(key, value);
+    }
+  }
+  return element;
+};
 
 const loadMarkers = () => {
   // 현재 표시되어있는 marker들이 있다면 map에 등록된 marker를 제거한다.
@@ -90,29 +111,78 @@ const loadMarkers = () => {
     const marker = new kakao.maps.Marker({
       map: map, // 마커를 표시할 지도
       position: position.latlng, // 마커를 표시할 위치
-      title: position.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됨.
+      title: position.title, // 마커의 타이틀
       clickable: true, // // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
       // image: markerImage, // 마커의 이미지
     });
-    //var iwContent = `<div class="customoverlay">${position.title}<br><a href="https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=${position.title}" style="color:blue" target="_blank">블로그 보기</a></div>`; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-    var iwContent =
-      `<div class="customoverlay">` +
-      `  <a href="https://map.kakao.com/link/map/11394059" target="_blank">` +
-      `    <span class="title">${position.title}</span>` +
-      `  </a>` +
-      `</div>`;
-    var iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
-    // 마커에 표시할 인포윈도우를 생성합니다
-    var infowindow = new kakao.maps.InfoWindow({
-      content: iwContent,
-      removable: iwRemoveable,
+    // content HTMLElement 생성
+    var content = document.createElement("div");
+
+    const vwrap = makeHtmlElement("div", { class: "wrap" });
+    const vinfo = makeHtmlElement("div", { class: "info" });
+    const vtitle = makeHtmlElement(
+      "div",
+      { class: "title" },
+      { textContent: position.title }
+    );
+
+    const vname = makeHtmlElement(
+      "div",
+      { class: "name" },
+      { textContent: position.title }
+    );
+    const vclose = makeHtmlElement("div", { class: "close" });
+
+    const vbody = makeHtmlElement("div", { class: "body" });
+    const vimg = makeHtmlElement("div", { class: "img" });
+    const iimg = makeHtmlElement(
+      "img",
+      { src: position.firstImage },
+      { width: "73" },
+      { height: "70" }
+    );
+
+    const vdesc = makeHtmlElement("div", { class: "desc" });
+    const vdiv = makeHtmlElement("div");
+    const va = makeHtmlElement(
+      "a",
+      { href: "https://search.naver.com/search.naver?query=" + position.title },
+      { target: "_blank" },
+      { class: "link" },
+      { innerText: "네이버 검색" }
+    );
+    // vtitle.append(vclose);
+
+    vimg.append(iimg);
+    vdiv.append(va);
+    vdesc.append(vname);
+    vdesc.append(vdiv);
+
+    vbody.append(vimg, vclose, vdesc);
+
+    vinfo.append(vbody);
+
+    vwrap.append(vinfo);
+
+    // 닫기 이벤트 추가
+    vclose.onclick = function () {
+      overlay.setMap(null);
+    };
+
+    content.appendChild(vwrap);
+
+    // customoverlay 생성, 이때 map을 선언하지 않으면 지도위에 올라가지 않습니다.
+    var overlay = new daum.maps.CustomOverlay({
+      position: position.latlng,
+      content: content,
     });
 
-    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
-    // 이벤트 리스너로는 클로저를 만들어 등록합니다
-    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-    kakao.maps.event.addListener(marker, "click", clickListener(map, marker, infowindow, position));
+    // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+    kakao.maps.event.addListener(marker, "click", function () {
+      overlay.setMap(map);
+      map.panTo(position.latlng);
+    });
     markers.value.push(marker);
   });
 
@@ -125,13 +195,6 @@ const loadMarkers = () => {
 
   map.setBounds(bounds);
 
-  // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
-  function clickListener(map, marker, infowindow, position) {
-    return function () {
-      infowindow.open(map, marker);
-      map.panTo(position.latlng);
-    };
-  }
   // 인포윈도우를 닫는 클로저를 만드는 함수입니다
   function makeOutListener(infowindow) {
     return function () {
@@ -158,55 +221,103 @@ const deleteMarkers = () => {
   height: 700px;
 }
 
-.infowindow {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border: 1px solid red;
+.wrap {
+  position: absolute;
+  left: 0;
+  bottom: 40px;
+  height: 112px;
+  transform: translateX(-50%);
+  text-align: left;
+  overflow: hidden;
+  font-size: 12px;
+  font-family: "Malgun Gothic", dotum, "돋움", sans-serif;
+  line-height: 1.5;
 }
-
-.customoverlay {
-  position: relative;
-  bottom: 85px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  border-bottom: 2px solid #ddd;
-  float: left;
+.wrap * {
+  padding: 0;
+  margin: 0;
 }
-.customoverlay:nth-of-type(n) {
+.wrap .info {
+  width: fit-content;
+  height: 100px;
+  border-radius: 5px;
+  border-bottom: 2px solid #ccc;
+  border-right: 1px solid #ccc;
+  overflow: hidden;
+  background: #fff;
+}
+.wrap .info:nth-child(1) {
   border: 0;
   box-shadow: 0px 1px 2px #888;
 }
-.customoverlay a {
-  display: block;
-  text-decoration: none;
-  color: #000;
-  text-align: center;
-  border-radius: 6px;
-  font-size: 14px;
+.info .title {
+  padding: 5px 0 0 10px;
+  height: 30px;
+  background: #eee;
+  border-bottom: 1px solid #ddd;
+  font-size: 15px;
   font-weight: bold;
+}
+.info .name {
+  /* padding: 14px 10px 0 0; */
+  font-size: 15px;
+  font-weight: bold;
+}
+.info .close {
+  position: absolute;
+  top: 10px;
+  right: 11px;
+  color: #888;
+  width: 10px;
+  height: 10px;
+  background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png");
+  background-size: contain;
+}
+.info .close:hover {
+  cursor: pointer;
+}
+.info .body {
+  height: 100%;
+  position: relative;
   overflow: hidden;
-  background: #d95050;
-  background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
-    no-repeat right 14px center;
 }
-.customoverlay .title {
-  display: block;
-  text-align: center;
-  background: #fff;
-  margin-right: 35px;
-  padding: 10px 15px;
-  font-size: 14px;
-  font-weight: bold;
+.info .desc {
+  padding: 14px 14px 0 0;
+  position: relative;
+  margin: 13px 0 0 90px;
+  height: 75px;
 }
-.customoverlay:after {
+.desc .ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.desc .jibun {
+  font-size: 11px;
+  color: #888;
+  margin-top: -2px;
+}
+.info .img {
+  position: absolute;
+  top: 14%;
+  left: 10px;
+  width: 73px;
+  height: 71px;
+  border: 1px solid #ddd;
+  color: #888;
+  overflow: hidden;
+}
+.info:after {
   content: "";
   position: absolute;
   margin-left: -12px;
   left: 50%;
-  bottom: -12px;
+  bottom: 0;
   width: 22px;
   height: 12px;
   background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png");
+}
+.info .link {
+  color: #5085bb;
 }
 </style>
