@@ -34,14 +34,11 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @RestController
-//@Controller
 @RequestMapping("/members")
 @CrossOrigin("*")
 @Api(tags = {"어드민 User 컨트롤러  API V1"})
 @Slf4j
 public class AdminUserController {
-
-//	private static final Logger log = LoggerFactory.getLogger(AdminUserController.class);
 
 	private MemberService memberService;
 	private JwtServiceImpl jwtService;
@@ -109,15 +106,7 @@ public class AdminUserController {
 		}
 		
 			return new ResponseEntity<Map<String, Object>>(resultMap, status);
-			// return new ResponseEntity<UserDto>(uservice.getUserInfo(userId), HttpStatus.OK);
 		}
-	
-	
-	
-	
-
-	
-	
 	
 	@ApiOperation(value = "로그인", notes = "입력된 정보로 로그인을 시도합니다.") //조건문 추가하기 (빈칸, 중복 등)
 	@PostMapping(value = "/login")
@@ -136,9 +125,6 @@ public class AdminUserController {
 				memberService.deleRefreshToken(memberDto.getUserId()); // 토큰이 중복되지 않도록 삭제 후 삽입
 				memberService.saveRefreshToken(memberDto.getUserId(), refreshToken);
 				
-				
-//				logger.debug("로그인 accessToken 정보 : {}", accessToken);
-//				logger.debug("로그인 refreshToken 정보 : {}", refreshToken);
 				resultMap.put("access-token", accessToken);
 				resultMap.put("refresh-token", refreshToken);
 				resultMap.put("message", "success");
@@ -148,35 +134,11 @@ public class AdminUserController {
 				status = HttpStatus.ACCEPTED;
 			}
 		} catch (Exception e) {
-//			logger.error("로그인 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-		
-		// logger.info("Welcome login!  {}.", userDto);
-		// UserDto loginUser = uservice.loginUser(userDto);
-		// if(loginUser != null) {
-		// 	session.setAttribute("loginUser", loginUser);
-		// 	return new ResponseEntity<UserDto>(uservice.getUserInfo(userDto.getId()), HttpStatus.OK);
-		// }
-		// return new ResponseEntity<UserDto>(uservice.getUserInfo(userDto.getId()), HttpStatus.BAD_REQUEST);
 	}
-	
-	
-//	@ApiOperation(value = "로그인", notes = "입력된 정보로 로그인을 시도합니다.") //조건문 추가하기 (빈칸, 중복 등)
-//	@PostMapping(value = "/login")
-//	public ResponseEntity<?> userIogin(@RequestBody MemberDto memberDto) {
-//		try {
-//			MemberDto info = memberService.loginMember(memberDto);
-//			if(info != null)
-//				return new ResponseEntity<ResultDto>(new ResultDto("로그인 성공", "success"), HttpStatus.OK);
-//			else
-//				return new ResponseEntity<ResultDto>(new ResultDto("로그인 실패", "fail"), HttpStatus.OK);
-//		} catch (Exception e) {
-//			return new ResponseEntity<ResultDto>(new ResultDto("로그인 실패 system", "fail critical"), HttpStatus.OK);
-//		}
-//	}
 
 	@ApiOperation(value = "비밀번호 찾기", notes = "회원의 비밀번호를 찾습니다.") //조건문 추가하기 (빈칸, 중복 등)
 	@GetMapping(value = "/login/{userId}")

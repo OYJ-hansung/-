@@ -25,4 +25,5 @@ public interface PlanMapper {
 	void addTag(TagDto tagDto) throws SQLException;
 	void addTagToPlan(TagToPlanDto tagToPlanDto) throws SQLException;
 	void raiseTagCount(int tagId) throws SQLException;
+	List<TagDto> hotTagList() throws SQLException;
 }

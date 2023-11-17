@@ -93,4 +93,9 @@ public class PlanServiceImpl implements PlanService {
 		planMapper.deletePlan(planId);		
 	}
 
+	@Override
+	public List<TagDto> hotTagList() throws Exception {
+		return planMapper.hotTagList();
+	}
+
 }

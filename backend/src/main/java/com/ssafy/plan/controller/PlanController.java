@@ -27,6 +27,7 @@ import com.ssafy.member.model.MemberDto;
 import com.ssafy.member.model.service.MemberService;
 import com.ssafy.plan.model.PlanDto;
 import com.ssafy.plan.model.PlanParamDto;
+import com.ssafy.plan.model.TagDto;
 import com.ssafy.plan.model.service.PlanService;
 import com.ssafy.util.PageNavigation;
 import com.ssafy.util.ResultDto;
@@ -70,6 +71,20 @@ public class PlanController {
 			return new ResponseEntity<ResultDto>(new ResultDto("fail", "NO LIST"), HttpStatus.OK);
 		}
 	}
+	
+	@ApiOperation(value = "인기 태그", notes = "<big>인기 태그 5개</big>를 반환해 줍니다.")
+	@ApiResponses({ @ApiResponse(code = 200, message = "인기 태그 목록 OK!!"), @ApiResponse(code = 404, message = "페이지없어!!"),
+			@ApiResponse(code = 500, message = "서버에러!!") })
+	@GetMapping(value="/hottag")
+	public ResponseEntity<?> hotTagList() {
+		logger.debug("hotTagList call");
+		try {
+			List<TagDto> hotTagList = planService.hotTagList();
+			return new ResponseEntity<List<TagDto>>(hotTagList, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<ResultDto>(new ResultDto("fail", "NO LIST"), HttpStatus.OK);
+		}
+	}
 
 	@ApiOperation(value = "여행계획 상세", notes = "여행계획 하나에 대한 정보.")
 	@ApiImplicitParams({
@@ -87,6 +102,7 @@ public class PlanController {
 			return new ResponseEntity<ResultDto>(new ResultDto("fail", "NO ARTICLE"), HttpStatus.OK);
 		}
 	}
+	
 
 	@ApiOperation(value = "여행계획 추가", notes = "여행계획을 추가합니다.")
 	@ApiResponses({ @ApiResponse(code = 200, message = "여행계획 추가 OK!!"), @ApiResponse(code = 404, message = "페이지없어!!"),

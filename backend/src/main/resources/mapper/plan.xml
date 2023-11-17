@@ -94,6 +94,13 @@
 				where ttp.plan_id= #{planId} 
 				)
 	</select>
+	
+	<select id="hotTagList" resultMap="tag">
+		select tag_id,tag_name
+		from tag
+		order by tag_cnt desc
+		limit 5
+	</select>
 
 
 	<insert id="writePlan" parameterType="planDto">
@@ -117,7 +124,7 @@
 		values (#{planId},${tagId})
 	</insert>
 
-<!-- TagDto getTag(String tagName) throws SQLException; -->
+
 	<select id="getTag" parameterType="String" resultMap="tag">
 		select tag_id, tag_name
 		from tag

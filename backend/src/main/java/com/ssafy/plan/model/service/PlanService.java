@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.ssafy.plan.model.PlanDto;
 import com.ssafy.plan.model.PlanParamDto;
+import com.ssafy.plan.model.TagDto;
 import com.ssafy.util.PageNavigation;
 
 public interface PlanService {
@@ -18,6 +19,7 @@ public interface PlanService {
 	void writePlan(PlanDto planDto) throws Exception;
 	void modifyPlan(PlanDto planDto) throws Exception;
 	void deletePlan(int planId) throws Exception;
+	List<TagDto> hotTagList() throws Exception;
 	
 	
 }
