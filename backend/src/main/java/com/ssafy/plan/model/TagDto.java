@@ -7,7 +7,12 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "PlanDto : 여행계획 정보", description = "여행계획 정보를 나타낸다.")
 public class TagDto {
 
-    @ApiModelProperty(value = "태그 아이디")
+    @Override
+	public String toString() {
+		return "TagDto [tagId=" + tagId + ", tagName=" + tagName + "]";
+	}
+
+	@ApiModelProperty(value = "태그 아이디")
     private int tagId;
     @ApiModelProperty(value = "태그 이름")
     private String tagName;

@@ -52,6 +52,7 @@ const addPlan = async () => {
       startDate: plan.value.startDate,
       endDate: plan.value.endDate,
       planDetail: plan.value.planDetail,
+      tagList: plan.value.tagList,
       img: "https://img.freepik.com/free-photo/airplane_74190-464.jpg?w=1380&t=st=1699807779~exp=1699808379~hmac=aa5cc0c5c8e05a2a1437b84eec67fc7e174e450c93e37d6996ca134b2a9a4184",
     })
     .then(() => {

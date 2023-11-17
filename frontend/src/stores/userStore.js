@@ -3,7 +3,7 @@ import jwtDecode from "jwt-decode";
 import router from "@/router";
 
 import { login, findById, tokenRegeneration, logout, modify, deleteUser } from "@/api/user";
-//npm i pinia-plugin-persistedstate --force
+//npm i pinia-plugin-persistedstate --force
 export const userStore = defineStore("userPiniaStore", {
   persist: {
     storage: sessionStorage, //쓰고싶은 스토리지(세션 또는 로컬)

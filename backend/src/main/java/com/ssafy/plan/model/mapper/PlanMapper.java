@@ -21,7 +21,7 @@ public interface PlanMapper {
 	void modifyPlan(PlanDto planDto) throws SQLException;
 	void deletePlan(int planId) throws SQLException;
 
-	TagDto getTag(String tag) throws SQLException;
-	void addTag(String tag) throws SQLException;
+	TagDto getTag(String tagName) throws SQLException;
+	void addTag(TagDto tagDto) throws SQLException;
 	void addTagToPlan(TagToPlanDto tagToPlanDto) throws SQLException;
 }

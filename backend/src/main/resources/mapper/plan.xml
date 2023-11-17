@@ -91,14 +91,22 @@
 	</insert>
 
 	<insert id="addTag" parameterType="tagDto">
-		insert into Tag (tag_name)
+		insert into tag (tag_name)
 		values (#{tagName})
+		<selectKey resultType="int" keyProperty="tagId" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="addTagToPlan" parameterType="tagToPlanDto">
+		insert into tag_to_plan (plan_id, tag_id)
+		values (#{planId},${tagId})
 	</insert>
 
-	<select id="getTag" parameterType="int" resultMap="viewPlans">
-		select plan_id, user_id, plan_name, start_date, end_date, reg_date, plan_detail, img
-		from plan
-		where plan_id = #{planId}
+	<select id="getTag" parameterType="String" resultType="tagDto">
+		select tag_id, tag_name
+		from tag
+		where tag_name = #{tagName}
 	</select>
 
 	
