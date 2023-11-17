@@ -56,9 +56,7 @@ const getDetail = async () => {
     .get(`http://localhost:8090/trip/plan/${planId.value}`)
     .then(({ data }) => {
       plan.value = data;
-      console.log("넘어올때");
       attractions.value = plan.value.attrInfoList;
-      console.log(attractions.value);
     })
     .catch((e) => {
       console.log(e);
@@ -139,16 +137,19 @@ getDetail();
                   <p v-if="!isEdit" class="card-text mb-5">
                     {{ plan.planDetail }}
                   </p>
-                  <textarea
-                    v-else
-                    class="form-control mb-5"
-                    id="planDetail"
-                    rows="3"
-                    v-model="planDetailEdit"
+
+                  <div
+                    class="mb-4 row"
+                    style="float: left; justify-content: space-between; display: flex"
+                    v-for="(tag, index) in plan.tagList"
+                    :key="index"
                   >
-                                      {{ plan.planDetail }}
-                                    </textarea
-                  >
+                    <div class="col-md-12">
+                      <button type="button" class="btn btn-primary rounded-pill m-1">
+                        {{ tag }} <span class="badge">X</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
 

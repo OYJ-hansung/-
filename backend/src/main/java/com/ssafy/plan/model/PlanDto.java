@@ -29,13 +29,13 @@ public class PlanDto {
 	@ApiModelProperty(value = "여행명소 리스트")
 	private List<AttractionInfoDto> attrInfoList;
 	@ApiModelProperty(value = "여행명소 리스트")
-	private List<String> tagList;
+	private List<TagDto> tagList;
 
-	public void setTagList(List<String> tagList) {
+	public void setTagList(List<TagDto> tagList) {
 		this.tagList = tagList;
 	}
 
-	public List<String> getTagList() {
+	public List<TagDto> getTagList() {
 		return tagList;
 	}
 
@@ -44,7 +44,7 @@ public class PlanDto {
 	}
 
 	public PlanDto(int planId, String userId, String planName, String startDate, String endDate, String regDate,
-			String planDetail, String img, List<AttractionInfoDto> attrInfoList,List<String> tagList) {
+			String planDetail, String img, List<AttractionInfoDto> attrInfoList,List<TagDto> tagList) {
 		super();
 		this.planId = planId;
 		this.userId = userId;

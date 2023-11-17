@@ -39,7 +39,7 @@ const hasSearchResult = computed(() => {
 });
 
 const addTag = () => {
-  plan.value.tagList.push(tagContent.value);
+  plan.value.tagList.push({ tagName: tagContent.value });
   tagContent.value = "";
   // console.log("plan.tagList: " + JSON.stringify(plan.value.tagList));
 };
@@ -165,7 +165,7 @@ const searchAttraction = async () => {
                         class="btn btn-primary rounded-pill m-1"
                         @click="deleteTag(tag)"
                       >
-                        {{ tag }} <span class="badge">X</span>
+                        {{ tag.tagName }} <span class="badge">X</span>
                       </button>
                     </div>
                   </div>

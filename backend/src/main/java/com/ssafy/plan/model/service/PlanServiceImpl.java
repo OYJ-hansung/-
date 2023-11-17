@@ -49,13 +49,11 @@ public class PlanServiceImpl implements PlanService {
 	@Transactional
 	public void writePlan(PlanDto planDto) throws Exception {
 		System.out.println("서비스impl로 들어왔다");
-		List<String> tagList = planDto.getTagList();
+		List<TagDto> tagList = planDto.getTagList();
 		System.out.println("tagList: "+tagList);
 		
 		planMapper.writePlan(planDto);
-		for(String tagName: tagList){
-			TagDto tagDto = new TagDto();
-			tagDto.setTagName(tagName);
+		for(TagDto tagDto: tagList){
 			planMapper.addTag(tagDto);
 			TagToPlanDto tagToPlanDto = new TagToPlanDto();
 			tagToPlanDto.setTagId(tagDto.getTagId());
