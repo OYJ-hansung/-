@@ -98,4 +98,9 @@ public class PlanServiceImpl implements PlanService {
 		return planMapper.hotTagList();
 	}
 
+	@Override
+	public List<TagDto> searchTag(String tagName) throws Exception {
+		return planMapper.searchTag(tagName);
+	}
+
 }

@@ -71,7 +71,26 @@ public class PlanController {
 			return new ResponseEntity<ResultDto>(new ResultDto("fail", "NO LIST"), HttpStatus.OK);
 		}
 	}
-	
+
+
+	@ApiOperation(value = "태그 검색", notes = "<big> 태그검색결과</big>을 반환해 줍니다.")
+	@ApiResponses({ @ApiResponse(code = 200, message = "태그검색결과 OK!!"), @ApiResponse(code = 404, message = "페이지없어!!"),
+			@ApiResponse(code = 500, message = "서버에러!!") })
+	@GetMapping(value = "/tag/{tagName}")
+	public ResponseEntity<?> searchTag(@PathVariable("tagName") String tagName) {
+		logger.debug("searchTag call");
+		try {
+			List<TagDto> tagList = planService.searchTag(tagName);
+			if (tagList != null && !tagList.isEmpty()) {
+				return new ResponseEntity<List<TagDto>>(tagList, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<ResultDto>(new ResultDto("fail", "NO LIST"), HttpStatus.OK);
+		}
+	}
+
 	@ApiOperation(value = "인기 태그", notes = "<big>인기 태그 5개</big>를 반환해 줍니다.")
 	@ApiResponses({ @ApiResponse(code = 200, message = "인기 태그 목록 OK!!"), @ApiResponse(code = 404, message = "페이지없어!!"),
 			@ApiResponse(code = 500, message = "서버에러!!") })

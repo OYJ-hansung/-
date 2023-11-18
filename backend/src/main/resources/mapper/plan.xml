@@ -64,15 +64,12 @@
 		<include refid="search"></include>
 		<!-- limit #{start}, #{listsize} -->
 	</select>
-	
+
  	<select id="planDetail" parameterType="int" resultMap="viewPlans">
 		select plan_id, user_id, plan_name, start_date, end_date, reg_date, plan_detail, img
 		from plan
 		where plan_id = #{planId}
 	</select>
-	
-
-	
 
   	<select id="getAttrInfoList" resultMap="attr">
 		select addr1, addr2, content_id, content_type_id, first_image, first_image2, gugun_code,
@@ -102,7 +99,6 @@
 		limit 5
 	</select>
 
-
 	<insert id="writePlan" parameterType="planDto">
 		insert into plan (user_id, plan_name, start_date, end_date, reg_date, plan_detail,img)
 		values (#{userId}, #{planName}, #{startDate}, #{endDate}, curdate(),#{planDetail},#{img})
@@ -130,7 +126,14 @@
 		from tag
 		where tag_name = #{tagName}
 	</select>
-	
+
+	<select id="searchTag" parameterType="String" resultMap="tag">
+		select tag_id, tag_name
+		from tag
+		where tag_name like concat('%', #{tagName}, '%')
+	</select>
+
+
  	<update id="raiseTagCount" parameterType="int">
 		update tag
 		set tag_cnt = tag_cnt+1

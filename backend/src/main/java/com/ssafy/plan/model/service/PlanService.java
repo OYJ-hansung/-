@@ -20,6 +20,7 @@ public interface PlanService {
 	void modifyPlan(PlanDto planDto) throws Exception;
 	void deletePlan(int planId) throws Exception;
 	List<TagDto> hotTagList() throws Exception;
-	
-	
+
+
+	List<TagDto> searchTag(String tagName) throws Exception;
 }
