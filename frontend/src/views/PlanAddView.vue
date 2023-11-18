@@ -6,7 +6,7 @@ import api from "axios";
 import VKakaoMapAdd from "@/components/common/VKakaoMapAdd.vue";
 
 const markPlace = ref({});
-const selectedPlaces = ref([]);
+const addedPlaces = ref([]);
 const router = useRouter();
 const route = useRoute();
 const searchWord = ref("");
@@ -34,7 +34,8 @@ const addPlace = (place) => {
   searchResult.value = [];
   console.log(plan.value.attrInfo);
 
-  selectedPlaces.push(place);
+  //지도에 전달할 배열에 장소 추가
+  addedPlaces.push(place);
 };
 
 const markPlaceOnMap = (place) => {
@@ -224,10 +225,7 @@ const searchAttraction = async () => {
           <br />
           <div class="card shadow-sm">
             <div class="card-body">
-              <VKakaoMapAdd
-                :markPlace="markPlace"
-                :selectedPlaces="selectedPlaces"
-              />
+              <VKakaoMapAdd :markPlace="markPlace" :addedPlaces="addedPlaces" />
               <div class="row g-5">
                 <div class="col-md-7">
                   <!--  여행지 검색 -->

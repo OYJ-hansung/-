@@ -1,12 +1,14 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 var map;
-const positions = ref([]);
-const markers = ref([]);
-const props = defineProps({ selectedPlaces: Array, markPlace: Object });
+const props = defineProps({ addedPlaces: Array, markPlace: Object });
+//여행지 단순 조회시 사용하는 변수
 const mmarkPlace = ref({});
 const mmarker = ref([]);
 const ooverlay = ref([]);
+//여행계획에 여행지 추가시 사용하는 변수
+const positions = ref([]);
+const markers = ref([]);
 
 onMounted(() => {
   if (window.kakao && window.kakao.maps) {
@@ -32,6 +34,64 @@ const initMap = () => {
   console.log("아악", props.markPlace);
 };
 
+//여행계획에 여행지 추가시 작동하는 watch
+watch(
+  () => props.addedPlaces.value,
+  () => {
+    positions.value = [];
+    props.addedPlaces.forEach((place) => {
+      let obj = {};
+      obj.latlng = new kakao.maps.LatLng(place.latitude, place.latitude);
+      obj.title = place.title;
+
+      positions.value.push(obj);
+    });
+    loadMarkers();
+  },
+  { deep: true }
+);
+
+const loadMarkers = () => {
+  // 현재 표시되어있는 marker들이 있다면 map에 등록된 marker를 제거한다.
+  //deleteMarkers();
+
+  // 마커 이미지를 생성합니다
+  //   const imgSrc = require("@/assets/map/markerStar.png");
+  // 마커 이미지의 이미지 크기 입니다
+  //   const imgSize = new kakao.maps.Size(24, 35);
+  //   const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
+
+  // 마커를 생성합니다
+  markers.value = [];
+  positions.value.forEach((position) => {
+    const marker = new kakao.maps.Marker({
+      map: map, // 마커를 표시할 지도
+      position: position.latlng, // 마커를 표시할 위치
+      title: position.title, // 마커의 타이틀
+      clickable: true, // // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
+      // image: markerImage, // 마커의 이미지
+    });
+
+    markers.value.push(marker);
+  });
+
+  // 4. 지도를 이동시켜주기
+  // 배열.reduce( (누적값, 현재값, 인덱스, 요소)=>{ return 결과값}, 초기값);
+  const bounds = positions.value.reduce(
+    (bounds, position) => bounds.extend(position.latlng),
+    new kakao.maps.LatLngBounds()
+  );
+
+  map.setBounds(bounds);
+};
+
+const deleteMarkers = () => {
+  if (markers.value.length > 0) {
+    markers.value.forEach((marker) => marker.setMap(null));
+  }
+};
+
+//여행지 단순 조회시 작동하는 watch
 watch(
   () => props.markPlace.value,
   () => {
@@ -58,7 +118,11 @@ watch(
       const vwrap = makeHtmlElement("div", { class: "wrap" });
       const vinfo = makeHtmlElement("div", { class: "info" });
 
-      const vname = makeHtmlElement("div", { class: "name" }, { textContent: mmarkPlace.title });
+      const vname = makeHtmlElement(
+        "div",
+        { class: "name" },
+        { textContent: mmarkPlace.title }
+      );
       const vclose = makeHtmlElement("div", { class: "close" });
 
       const vbody = makeHtmlElement("div", { class: "body" });
@@ -74,7 +138,10 @@ watch(
       const vdiv = makeHtmlElement("div");
       const va = makeHtmlElement(
         "a",
-        { href: "https://search.naver.com/search.naver?query=" + mmarkPlace.title },
+        {
+          href:
+            "https://search.naver.com/search.naver?query=" + mmarkPlace.title,
+        },
         { target: "_blank" },
         { class: "link" },
         { innerText: "네이버 검색" }
