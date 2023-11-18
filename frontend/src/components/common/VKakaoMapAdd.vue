@@ -36,8 +36,9 @@ const initMap = () => {
 
 //여행계획에 여행지 추가시 작동하는 watch
 watch(
-  () => props.addedPlaces.value,
+  () => props.addedPlaces,
   () => {
+    console.log("2마커 어디감");
     positions.value = [];
     props.addedPlaces.forEach((place) => {
       let obj = {};
@@ -71,7 +72,7 @@ const loadMarkers = () => {
       clickable: true, // // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
       // image: markerImage, // 마커의 이미지
     });
-
+    console.log("1마커 어디감");
     markers.value.push(marker);
   });
 
@@ -83,141 +84,150 @@ const loadMarkers = () => {
   );
 
   map.setBounds(bounds);
+  showMarkers(markers);
 };
 
+const showMarkers = () => {
+  if (markers.value.length > 0) {
+    markers.value.forEach((marker) => {
+      marker.setMap(map);
+      console.log("ddd", marker.title);
+    });
+  }
+};
 const deleteMarkers = () => {
   if (markers.value.length > 0) {
     markers.value.forEach((marker) => marker.setMap(null));
   }
 };
 
-//여행지 단순 조회시 작동하는 watch
-watch(
-  () => props.markPlace.value,
-  () => {
-    console.log("변경감지");
-    if (window.kakao && window.kakao.maps) {
-      mmarkPlace.value = {};
-      mmarkPlace.latlng = new kakao.maps.LatLng(
-        props.markPlace.latitude,
-        props.markPlace.longitude
-      );
-      (mmarkPlace.title = props.markPlace.title),
-        (mmarkPlace.firstImage = props.markPlace.firstImage);
+// //여행지 단순 조회시 작동하는 watch
+// watch(
+//   () => props.markPlace.value,
+//   () => {
+//     console.log("변경감지");
+//     if (window.kakao && window.kakao.maps) {
+//       mmarkPlace.value = {};
+//       mmarkPlace.latlng = new kakao.maps.LatLng(
+//         props.markPlace.latitude,
+//         props.markPlace.longitude
+//       );
+//       (mmarkPlace.title = props.markPlace.title),
+//         (mmarkPlace.firstImage = props.markPlace.firstImage);
 
-      const tmpMarker = new kakao.maps.Marker({
-        map: map, // 마커를 표시할 지도
-        position: mmarkPlace.latlng, // 마커를 표시할 위치
-        clickable: true, // // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
-        // image: markerImage, // 마커의 이미지
-      });
+//       const tmpMarker = new kakao.maps.Marker({
+//         map: map, // 마커를 표시할 지도
+//         position: mmarkPlace.latlng, // 마커를 표시할 위치
+//         clickable: true, // // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
+//         // image: markerImage, // 마커의 이미지
+//       });
 
-      // content HTMLElement 생성
-      var content = document.createElement("div");
+//       // content HTMLElement 생성
+//       var content = document.createElement("div");
 
-      const vwrap = makeHtmlElement("div", { class: "wrap" });
-      const vinfo = makeHtmlElement("div", { class: "info" });
+//       const vwrap = makeHtmlElement("div", { class: "wrap" });
+//       const vinfo = makeHtmlElement("div", { class: "info" });
 
-      const vname = makeHtmlElement(
-        "div",
-        { class: "name" },
-        { textContent: mmarkPlace.title }
-      );
-      const vclose = makeHtmlElement("div", { class: "close" });
+//       const vname = makeHtmlElement(
+//         "div",
+//         { class: "name" },
+//         { textContent: mmarkPlace.title }
+//       );
+//       const vclose = makeHtmlElement("div", { class: "close" });
 
-      const vbody = makeHtmlElement("div", { class: "body" });
-      const vimg = makeHtmlElement("div", { class: "img" });
-      const iimg = makeHtmlElement(
-        "img",
-        { src: mmarkPlace.firstImage },
-        { width: "73" },
-        { height: "70" }
-      );
+//       const vbody = makeHtmlElement("div", { class: "body" });
+//       const vimg = makeHtmlElement("div", { class: "img" });
+//       const iimg = makeHtmlElement(
+//         "img",
+//         { src: mmarkPlace.firstImage },
+//         { width: "73" },
+//         { height: "70" }
+//       );
 
-      const vdesc = makeHtmlElement("div", { class: "desc" });
-      const vdiv = makeHtmlElement("div");
-      const va = makeHtmlElement(
-        "a",
-        {
-          href:
-            "https://search.naver.com/search.naver?query=" + mmarkPlace.title,
-        },
-        { target: "_blank" },
-        { class: "link" },
-        { innerText: "네이버 검색" }
-      );
-      // vtitle.append(vclose);
+//       const vdesc = makeHtmlElement("div", { class: "desc" });
+//       const vdiv = makeHtmlElement("div");
+//       const va = makeHtmlElement(
+//         "a",
+//         {
+//           href:
+//             "https://search.naver.com/search.naver?query=" + mmarkPlace.title,
+//         },
+//         { target: "_blank" },
+//         { class: "link" },
+//         { innerText: "네이버 검색" }
+//       );
+//       // vtitle.append(vclose);
 
-      vimg.append(iimg);
-      vdiv.append(va);
-      vdesc.append(vname);
-      vdesc.append(vdiv);
+//       vimg.append(iimg);
+//       vdiv.append(va);
+//       vdesc.append(vname);
+//       vdesc.append(vdiv);
 
-      vbody.append(vimg, vclose, vdesc);
+//       vbody.append(vimg, vclose, vdesc);
 
-      vinfo.append(vbody);
+//       vinfo.append(vbody);
 
-      vwrap.append(vinfo);
+//       vwrap.append(vinfo);
 
-      // 닫기 이벤트 추가
-      vclose.onclick = function () {
-        ooverlay.value.forEach((overlay) => overlay.setMap(null));
-      };
+//       // 닫기 이벤트 추가
+//       vclose.onclick = function () {
+//         ooverlay.value.forEach((overlay) => overlay.setMap(null));
+//       };
 
-      content.appendChild(vwrap);
+//       content.appendChild(vwrap);
 
-      // customoverlay 생성, 이때 map을 선언하지 않으면 지도위에 올라가지 않습니다.
-      var tmpOverlay = new daum.maps.CustomOverlay({
-        position: mmarkPlace.latlng,
-        map: map,
-        content: content,
-      });
+//       // customoverlay 생성, 이때 map을 선언하지 않으면 지도위에 올라가지 않습니다.
+//       var tmpOverlay = new daum.maps.CustomOverlay({
+//         position: mmarkPlace.latlng,
+//         map: map,
+//         content: content,
+//       });
 
-      //기존 마커 제거
-      if (mmarker.value.length > 0) {
-        mmarker.value.forEach((marker) => marker.setMap(null));
-        mmarker.value.splice(0);
-      }
-      //기존 오버레이 제거
-      if (ooverlay.value.length > 0) {
-        ooverlay.value.forEach((overlay) => overlay.setMap(null));
-        ooverlay.value.splice(0);
-      }
+//       //기존 마커 제거
+//       if (mmarker.value.length > 0) {
+//         mmarker.value.forEach((marker) => marker.setMap(null));
+//         mmarker.value.splice(0);
+//       }
+//       //기존 오버레이 제거
+//       if (ooverlay.value.length > 0) {
+//         ooverlay.value.forEach((overlay) => overlay.setMap(null));
+//         ooverlay.value.splice(0);
+//       }
 
-      //새로운 마커 추가
-      mmarker.value.push(tmpMarker);
-      //새로운 오버레이 추가
-      ooverlay.value.push(tmpOverlay);
-      loadMarker();
-    }
-  },
-  { deep: true }
-);
+//       //새로운 마커 추가
+//       mmarker.value.push(tmpMarker);
+//       //새로운 오버레이 추가
+//       ooverlay.value.push(tmpOverlay);
+//       loadMarker();
+//     }
+//   },
+//   { deep: true }
+// );
 
-const makeHtmlElement = function (tagName, ...attr) {
-  const element = document.createElement(tagName);
-  for (let prop of attr) {
-    const [key, value] = Object.entries(prop)[0];
-    if (key == "textContent" || key == "innerText") {
-      element.textContent = value;
-    } else {
-      element.setAttribute(key, value);
-    }
-  }
-  return element;
-};
+// const makeHtmlElement = function (tagName, ...attr) {
+//   const element = document.createElement(tagName);
+//   for (let prop of attr) {
+//     const [key, value] = Object.entries(prop)[0];
+//     if (key == "textContent" || key == "innerText") {
+//       element.textContent = value;
+//     } else {
+//       element.setAttribute(key, value);
+//     }
+//   }
+//   return element;
+// };
 
-const loadMarker = () => {
-  if (mmarker.value.length > 0) {
-    mmarker.value.forEach((marker) => {
-      marker.setPosition(mmarkPlace.latlng);
-      console.log("하이", marker);
-      marker.setMap(map);
-      map.panTo(mmarkPlace.latlng);
-      ooverlay.value.forEach((overlay) => overlay.setMap(map));
-    });
-  }
-};
+// const loadMarker = () => {
+//   if (mmarker.value.length > 0) {
+//     mmarker.value.forEach((marker) => {
+//       marker.setPosition(mmarkPlace.latlng);
+//       console.log("하이", marker);
+//       marker.setMap(map);
+//       map.panTo(mmarkPlace.latlng);
+//       ooverlay.value.forEach((overlay) => overlay.setMap(map));
+//     });
+//   }
+// };
 </script>
 
 <template>

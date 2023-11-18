@@ -47,7 +47,7 @@ const addPlace = (place) => {
   console.log(plan.value.attrInfo);
 
   //지도에 전달할 배열에 장소 추가
-  addedPlaces.push(place);
+  addedPlaces.value.push(place);
 };
 
 const markPlaceOnMap = (place) => {
