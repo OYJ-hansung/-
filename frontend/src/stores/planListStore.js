@@ -6,11 +6,12 @@ export const searchStore = defineStore("searchPiniaStore", {
   state: () => ({
     isSearch: false,
     isMy: false,
-    keyWord: "",
+    word: "",
+    key: "planName"
   }),
   getters: {
     getKeyWord: (state) => {
-      return state.keyWord;
+      return state.word;
     },
     checkIsSearch: (state) => {
       return state.isSearch;

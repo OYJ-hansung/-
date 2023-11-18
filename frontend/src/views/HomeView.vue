@@ -9,9 +9,9 @@ const sstore = searchStore();
 
 const router = useRouter();
 const hotTags = ref({});
-const keyWord = ref("");
+const word = ref("");
 const search = () => {
-  sstore.keyWord = keyWord;
+  sstore.word = word;
   sstore.isSearch = true;
   router.push({ name: "planlist" });
 };
@@ -43,8 +43,8 @@ onMounted(() => {
       type="text"
       class="form-control"
       placeholder="검색어를 입력하세요."
-      @keyup.enter="search(keyWord)"
-      v-model="keyWord"
+      @keyup.enter="search(word)"
+      v-model="word"
     />
     <i class="bi bi-search"></i>
 
