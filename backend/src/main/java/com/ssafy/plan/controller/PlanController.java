@@ -129,6 +129,10 @@ public class PlanController {
 	@PostMapping(value = "/new")
 	public ResponseEntity<?> writePlan(@RequestBody PlanDto planDto) {
 		logger.debug("writePlan call");
+		logger.debug("시작날짜: "+planDto.getStartDate());
+
+		System.out.println(planDto.getStartDate());
+		System.out.println(planDto.getEndDate());
 		try {
 			planService.writePlan(planDto);
 			return new ResponseEntity<ResultDto>(new ResultDto("success", "추가 성공"), HttpStatus.OK);

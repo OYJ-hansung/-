@@ -2,7 +2,6 @@
 import { RouterLink } from "vue-router";
 import { userStore } from "@/stores/userStore";
 const ustore = userStore();
-console.log("ustore userInfo - 네비게이션바: " + ustore.isLogin);
 </script>
 
 <template>

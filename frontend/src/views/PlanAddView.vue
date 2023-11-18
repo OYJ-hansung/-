@@ -1,9 +1,15 @@
 <script setup>
 import { useRoute } from "vue-router";
-import { ref, computed } from "vue";
+import { ref, computed, reactive } from "vue";
+import { ko } from 'date-fns/locale';
 import { useRouter } from "vue-router";
 import api from "axios";
 import VKakaoMapAdd from "@/components/common/VKakaoMapAdd.vue";
+
+
+// import Datepicker from 'vue3-datepicker';
+import { userStore } from "@/stores/userStore";
+const ustore = userStore();
 
 const markPlace = ref({});
 const addedPlaces = ref([]);
@@ -12,8 +18,21 @@ const searchWord = ref("");
 const searchResult = ref([]);
 const tagContent = ref("");
 const tagSearchResult = ref([]);
+// 날짜
+const inputDate = ref({
+  start:new Date(),
+  end:new Date()
+})
+
+const getFormatDate = (date)=>{
+  const YYYY = String(date.getFullYear())
+  const MM = String((date.getMonth()+1)>=10?(date.getMonth()+1):"0"+(date.getMonth()+1));
+  const dd = String(date.getDate()>=10?date.getDate():"0"+date.getDate())
+  return YYYY+"-"+MM+"-"+dd;
+}
+
 const plan = ref({
-  userId: "JohnOh",
+  userId: ustore.userInfo.userId,
   planName: "",
   startDate: "",
   endDate: "",
@@ -33,6 +52,8 @@ const searchTag = async () => {
   await api
     .get(`http://localhost:8090/trip/plan/tag/${tagContent.value}`)
     .then(({ data }) => {
+      console.log(getFormatDate(inputDate.value.start));
+
       tagSearchResult.value = data;
     })
     .catch((e) => {
@@ -73,8 +94,8 @@ const addPlan = async () => {
     .post(`http://localhost:8090/trip/plan/new`, {
       userId: "JohnOh",
       planName: plan.value.planName,
-      startDate: plan.value.startDate,
-      endDate: plan.value.endDate,
+      startDate: getFormatDate(inputDate.value.start),
+      endDate: getFormatDate(inputDate.value.end),
       planDetail: plan.value.planDetail,
       tagList: plan.value.tagList,
       img: "https://img.freepik.com/free-photo/airplane_74190-464.jpg?w=1380&t=st=1699807779~exp=1699808379~hmac=aa5cc0c5c8e05a2a1437b84eec67fc7e174e450c93e37d6996ca134b2a9a4184",
@@ -130,13 +151,13 @@ const searchAttraction = async () => {
               <input type="text" class="form-control mb-5 input-lg" id="planName" placeholder="제목을 입력하세요."
                 v-model="plan.planName" />
 
-              <h6 class="card-subtitle mx-auto d-block mb-3">
-                [{{ plan.userId }}]님
-              </h6>
 
-              <input type="text" class="form-control mb-3" id="startDate" placeholder="시작날짜를 입력하세요."
-                v-model="plan.startDate" />
-              <input type="text" class="form-control" id="endDate" placeholder="마지막날짜를 입력하세요." v-model="plan.endDate" />
+              <h4 class="box-title">[ 날짜 ]</h4>
+              <div class="input-group mb-3">
+                <VDatePicker v-model.range="inputDate" mode="date" style="width: 50%
+                ;"/>
+                
+              </div>
 
               <h4 class="box-title mt-5 mb-0">[ 세부 내용 ]</h4>
               <textarea class="form-control mb-5" id="planDetail" rows="3" v-model="plan.planDetail"
@@ -148,35 +169,19 @@ const searchAttraction = async () => {
                 <!-- <div class="overflow-scroll"> -->
                 <input type="text" class="form-control" placeholder="태그를 검색하세요." aria-label="태그를 검색하세요."
                   aria-describedby="button-addon2" v-model="tagContent" @keyup="searchTag()" />
-                <!-- <button class="btn btn-outline-secondary" type="button" id="addTag" @click="addTag()">
-                  추가
-                </button> -->
+
                 <div>
                   <ul class="list-group" v-for="(tag, index) in tagSearchResult" :key="index">
                     <li class="list-group-item" @click="addTag()">{{ tag.tagName }}</li>
                   </ul>
                 </div>
-                <!-- </div> -->
-
               </div>
 
-
-
-
-              <!-- 
-                <div class="overflow-scroll">.
-                  <ul class="list-group" v-for="(tag,index) in tagSearchResult" :key="index">
-                    <li class="list-group-item">{{ tag.tagName }}</li>
-                  </ul>
-                </div> -->
-
-
-
               <div class="mb-4 row" style="
-                      float: left;
-                      justify-content: space-between;
-                      display: flex;
-                    " v-for="(tag, index) in plan.tagList" :key="index">
+                              float: left;
+                              justify-content: space-between;
+                              display: flex;
+                            " v-for="(tag, index) in plan.tagList" :key="index">
                 <div class="col-md-12">
                   <button type="button" class="btn btn-primary rounded-pill m-1" @click="deleteTag(tag)">
                     {{ tag.tagName }} <span class="badge">X</span>
@@ -547,5 +552,9 @@ body {
   border-radius: 15px;
   text-align: center;
   font-size: 12px;
+}
+
+div.date {
+  display: inline-flex;
 }
 </style>
