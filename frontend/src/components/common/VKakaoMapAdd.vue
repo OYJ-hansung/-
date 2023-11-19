@@ -1,7 +1,11 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 var map;
-const props = defineProps({ addedPlaces: Array, markPlace: Object });
+const props = defineProps({
+  addedPlaces: Array,
+  markPlace: Object,
+  reload: Boolean,
+});
 //여행지 단순 조회시 사용하는 변수
 const mmarkPlace = ref({});
 const mmarker = ref([]);
@@ -33,6 +37,17 @@ const initMap = () => {
   map = new kakao.maps.Map(container, options);
   console.log("아악", props.markPlace);
 };
+
+watch(
+  () => props.reload,
+  () => {
+    console.log("relayout하기@!");
+    if (window.kakao && window.kakao.maps) {
+      map.relayout();
+    }
+  },
+  { deep: true }
+);
 
 //여행계획에 여행지 추가시 작동하는 watch
 watch(
