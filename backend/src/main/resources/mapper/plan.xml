@@ -48,13 +48,8 @@
 
 	<sql id="search">
 		<if test='word !=null'>
-			<if test='key !=null and key.equals("planName")'>
-				where plan_name like concat('%', #{word}, '%')
-			</if>
-			<if test='key !=null and key.equals("userId")'>
-				where user_id like concat('%', #{word}, '%')
-			</if>
-			<!-- <if test="key != 'subject'"> and ${key} = #{word} </if> -->
+			where plan_name like concat('%', #{word}, '%')
+			or plan_detail like concat('%', #{word}, '%')
 		</if>
 	</sql>
 
