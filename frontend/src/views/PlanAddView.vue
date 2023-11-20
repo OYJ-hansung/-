@@ -61,20 +61,6 @@ const deletePlace = (index) => {
   console.log("삭제 후: ", addedPlaces.value);
 };
 
-const searchTag = async () => {
-  await api
-    .get(`http://localhost:8090/trip/plan/tag/${tagContent.value}`)
-    .then(({ data }) => {
-      console.log(getFormatDate(inputDate.value.start));
-
-      tagSearchResult.value = data;
-    })
-    .catch((e) => {
-      console.log(e);
-      tagSearchResult.value = "";
-    });
-};
-
 const addPlace = (place) => {
   plan.value.attrInfo.push(place);
   searchResult.value = [];
@@ -122,7 +108,7 @@ const addPlan = async () => {
         planDetail: plan.value.planDetail,
         tagList: plan.value.tagList,
         attrInfoList: plan.value.attrInfo,
-      img: "https://img.freepik.com/free-photo/airplane_74190-464.jpg?w=1380&t=st=1699807779~exp=1699808379~hmac=aa5cc0c5c8e05a2a1437b84eec67fc7e174e450c93e37d6996ca134b2a9a4184",
+        img: "https://img.freepik.com/free-photo/airplane_74190-464.jpg?w=1380&t=st=1699807779~exp=1699808379~hmac=aa5cc0c5c8e05a2a1437b84eec67fc7e174e450c93e37d6996ca134b2a9a4184",
       })
       .then(() => {
         router.push({ path: "/myplan" });
@@ -386,66 +372,66 @@ async function searchTag() {
         <div class="col-md-12">
           <div v-show="hasAttr" class="timeline">
             <div class="timeline-row" v-for="(attr, index) in plan.attrInfo" :key="index">
-            <div class="timeline-row" v-for="(attr, index) in plan.attrInfo" :key="index">
-              <div class="timeline-time">7:45PM<small>Dec 21</small></div>
-              <div class="timeline-content">
-                <i class="icon-attachment"></i>
-                <h4>{{ attr.title }}</h4>
-                <p>내용</p>
-                <!-- 사진 -->
-                <div class="thumbs">
-                  <img class="img-fluid rounded" :src="attr.firstImage" alt="Maxwell Admin" />
-                  <img class="img-fluid rounded" :src="attr.firstImage" alt="Maxwell Admin" />
+              <div class="timeline-row" v-for="(attr, index) in plan.attrInfo" :key="index">
+                <div class="timeline-time">7:45PM<small>Dec 21</small></div>
+                <div class="timeline-content">
+                  <i class="icon-attachment"></i>
+                  <h4>{{ attr.title }}</h4>
+                  <p>내용</p>
+                  <!-- 사진 -->
+                  <div class="thumbs">
+                    <img class="img-fluid rounded" :src="attr.firstImage" alt="Maxwell Admin" />
+                    <img class="img-fluid rounded" :src="attr.firstImage" alt="Maxwell Admin" />
+                  </div>
+                  <div @click="deletePlace(index)">삭제</div>
                 </div>
-                <div @click="deletePlace(index)">삭제</div>
               </div>
             </div>
+            <div class="m-2 p-1 row justify-content-end">
+              <button
+                type="button"
+                class="btn btn-primary float-right m-2 col-1"
+                data-bs-toggle="modal"
+                data-bs-target="#addModal"
+              >
+                완료
+              </button>
+            </div>
           </div>
-          <div class="m-2 p-1 row justify-content-end">
-            <button
-              type="button"
-              class="btn btn-primary float-right m-2 col-1"
-              data-bs-toggle="modal"
-              data-bs-target="#addModal"
-            >
-              완료
-            </button>
-          </div>
-        </div>
 
-        <div
-          class="modal fade"
-          id="addModal"
-          tabindex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">추가하기</h1>
-                <h1 class="modal-title fs-5" id="exampleModalLabel">추가하기</h1>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body">정말 추가하시겠습니까?</div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                  아니요
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  @click="addPlan()"
-                  data-bs-dismiss="modal"
-                >
-                  네
-                </button>
+          <div
+            class="modal fade"
+            id="addModal"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">추가하기</h1>
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">추가하기</h1>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">정말 추가하시겠습니까?</div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    아니요
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    @click="addPlan()"
+                    data-bs-dismiss="modal"
+                  >
+                    네
+                  </button>
+                </div>
               </div>
             </div>
           </div>
