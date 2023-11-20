@@ -160,7 +160,6 @@ async function searchTag() {
   <div class="row g-5">
     <div class="col-md-12">
       <h3 class="pb-4 mb-4 fst-italic border-bottom">내 마음대로 여행코스!!!</h3>
-      <h3 class="pb-4 mb-4 fst-italic border-bottom">내 마음대로 여행코스!!!</h3>
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <button
@@ -368,35 +367,33 @@ async function searchTag() {
           </div>
         </div>
         <!-- 여기까지가 탭 별 화면 -->
-        <!-- 타임라인 -->
+
         <div class="col-md-12">
+          <!-- 타임라인 -->
           <div v-show="hasAttr" class="timeline">
             <div class="timeline-row" v-for="(attr, index) in plan.attrInfo" :key="index">
-              <div class="timeline-row" v-for="(attr, index) in plan.attrInfo" :key="index">
-                <div class="timeline-time">7:45PM<small>Dec 21</small></div>
-                <div class="timeline-content">
-                  <i class="icon-attachment"></i>
-                  <h4>{{ attr.title }}</h4>
-                  <p>내용</p>
-                  <!-- 사진 -->
-                  <div class="thumbs">
-                    <img class="img-fluid rounded" :src="attr.firstImage" alt="Maxwell Admin" />
-                    <img class="img-fluid rounded" :src="attr.firstImage" alt="Maxwell Admin" />
-                  </div>
-                  <div @click="deletePlace(index)">삭제</div>
+              <div class="timeline-time">7:45PM<small>Dec 21</small></div>
+              <div class="timeline-content">
+                <i class="icon-attachment"></i>
+                <h4>{{ attr.title }}</h4>
+                <p>내용</p>
+                <!-- 사진 -->
+                <div class="thumbs">
+                  <img class="img-fluid rounded" :src="attr.firstImage" alt="Maxwell Admin" />
                 </div>
+                <div @click="deletePlace(index)">삭제</div>
               </div>
             </div>
-            <div class="m-2 p-1 row justify-content-end">
-              <button
-                type="button"
-                class="btn btn-primary float-right m-2 col-1"
-                data-bs-toggle="modal"
-                data-bs-target="#addModal"
-              >
-                완료
-              </button>
-            </div>
+          </div>
+          <div class="m-2 p-1 row justify-content-end">
+            <button
+              type="button"
+              class="btn btn-primary float-right m-2 col-1"
+              data-bs-toggle="modal"
+              data-bs-target="#addModal"
+            >
+              완료
+            </button>
           </div>
 
           <div

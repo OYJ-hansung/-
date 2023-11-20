@@ -9,7 +9,7 @@ import FooterNav from "./components/common/FooterNav.vue";
     <header-nav></header-nav>
   </header>
 
-  <main class="container">
+  <main class="container-fluid">
     <router-view></router-view>
   </main>
   <footer class="blog-footer">
