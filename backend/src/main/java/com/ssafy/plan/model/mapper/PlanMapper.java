@@ -8,6 +8,7 @@ import com.ssafy.plan.model.TagDto;
 import com.ssafy.plan.model.TagToPlanDto;
 import org.apache.ibatis.annotations.Mapper;
 
+import com.ssafy.plan.model.FavoriteDto;
 import com.ssafy.plan.model.PlanDto;
 import com.ssafy.plan.model.PlanParamDto;
 import org.apache.ibatis.jdbc.SQL;
@@ -29,4 +30,6 @@ public interface PlanMapper {
 
 	List<TagDto> searchTag(String tagName) throws SQLException;
 	void insertPlanToAttr(Map<String, Object> map) throws SQLException;
+	void addFavorite(FavoriteDto favoriteDto) throws SQLException;
+	void cancelFavorite(FavoriteDto favoriteDto) throws SQLException;
 }

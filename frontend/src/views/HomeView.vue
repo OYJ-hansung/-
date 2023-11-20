@@ -53,14 +53,9 @@ onMounted(() => {
       @keyup.enter="search(word)"
       v-model="word"
     />
-    <i class="bi bi-search"></i>
 
     <div class="icon">
       <div class="search"><span class="material-symbols-outlined">search</span></div>
-      <div class="plus-option">
-        <i class="fas fa-keyboard"></i>
-        <i class="fas fa-microphone"></i>
-      </div>
     </div>
   </div>
 

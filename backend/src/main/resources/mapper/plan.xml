@@ -19,6 +19,12 @@
 		<result column="tag_id" property="tagId" />
 		<result column="tag_name" property="tagName" />
 	</resultMap>
+	
+	<resultMap type="favoriteDto" id="favorite">
+		<result column="favorite_id" property="favoriteId" />
+		<result column="plan_id" property="planId" />
+		<result column="user_id" property="userId" />
+	</resultMap>
  
 	<resultMap type="planDto" id="viewPlans" extends="plan">
 		<collection property="attrInfoList" column="plan_id"
@@ -148,6 +154,18 @@
 		set tag_cnt = tag_cnt+1
 		where tag_id = #{tagId}
 	</update> 
+	
+	
+	
+	<!-- favorite -->
+	<insert id="addFavorite" parameterType="favoriteDto">
+		insert into favorite (user_id, plan_id)
+		values (#{userId}, #{planId})
+	</insert> 
+	<delete id="cancelFavorite" parameterType="favoriteDto">
+		delete from favorite
+		where user_id=#{userId} and plan_id=#{planId}
+	</delete> 
 	
 	<update id="modifyPlan" parameterType="planDto">
 		update plan

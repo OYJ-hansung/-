@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.plan.model.FavoriteDto;
 import com.ssafy.plan.model.PlanDto;
 import com.ssafy.plan.model.PlanParamDto;
 import com.ssafy.plan.model.mapper.PlanMapper;
@@ -111,4 +112,13 @@ public class PlanServiceImpl implements PlanService {
 		return planMapper.searchTag(tagName);
 	}
 
+	@Override
+	public void addFavorite(FavoriteDto favoriteDto) throws Exception {
+		planMapper.addFavorite(favoriteDto);
+	}
+
+	@Override
+	public void cancelFavorite(FavoriteDto favoriteDto) throws Exception {
+		planMapper.cancelFavorite(favoriteDto);
+	}
 }

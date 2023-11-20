@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.ssafy.plan.model.FavoriteDto;
 import com.ssafy.plan.model.PlanDto;
 import com.ssafy.plan.model.PlanParamDto;
 import com.ssafy.plan.model.TagDto;
@@ -23,4 +24,6 @@ public interface PlanService {
 
 
 	List<TagDto> searchTag(String tagName) throws Exception;
+	void addFavorite(FavoriteDto favoriteDto) throws Exception;
+	void cancelFavorite(FavoriteDto favoriteDto) throws Exception;
 }
