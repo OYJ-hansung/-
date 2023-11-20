@@ -139,6 +139,22 @@ public class AdminUserController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	@GetMapping(value = "/logout/{userid}")
+	public ResponseEntity<?> removeToken(@PathVariable("userid") String userid) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		try {
+			memberService.deleRefreshToken(userid);
+			resultMap.put("message", "success");
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+
+	}
 
 	@ApiOperation(value = "비밀번호 찾기", notes = "회원의 비밀번호를 찾습니다.") //조건문 추가하기 (빈칸, 중복 등)
 	@GetMapping(value = "/login/{userId}")
