@@ -1,7 +1,14 @@
 <script setup>
 import { RouterLink } from "vue-router";
+import { searchStore } from "@/stores/planListStore";
 import { userStore } from "@/stores/userStore";
+import { onMounted } from "vue";
+
+const sstore = searchStore();
 const ustore = userStore();
+onMounted(() => {
+  sstore.isMy = false;
+});
 </script>
 
 <template>

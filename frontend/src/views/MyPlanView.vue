@@ -1,16 +1,19 @@
 <script setup>
 import BoardCardList from "../components/board/BoardCardList.vue";
-import { ref } from "vue";
-import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
+import { searchStore } from "@/stores/planListStore";
+import { onMounted, ref } from "vue";
 
+const sstore = searchStore();
 const router = useRouter();
-const route = useRoute(); // 경로 매칭
-const planId = ref(route.params.planId);
 
 const addPlan = () => {
   router.push({ path: "/addplan" });
 };
+
+onMounted(() => {
+  sstore.isMy = true;
+});
 </script>
 
 <template>

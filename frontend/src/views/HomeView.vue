@@ -30,6 +30,7 @@ const getHotTags = async () => {
 
 onMounted(() => {
   getHotTags();
+  sstore.isMy = false;
 });
 </script>
 
