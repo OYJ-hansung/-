@@ -117,20 +117,20 @@ const addPlan = async () => {
         console.log(e);
       });
   }
+};
 
-  const searchAttraction = async () => {
-    await api
-      .post(`http://localhost:8090/trip/attraction/search`, searchWord.value, {
-        headers: { "Content-Type": "application/text" },
-      })
-      .then(({ data }) => {
-        searchResult.value = data;
-        console.log(searchResult.value);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
+const searchAttraction = async () => {
+  await api
+    .post(`http://localhost:8090/trip/attraction/search`, searchWord.value, {
+      headers: { "Content-Type": "application/text" },
+    })
+    .then(({ data }) => {
+      searchResult.value = data;
+      console.log(searchResult.value);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
 };
 
 const onTagInput = (event) => {
