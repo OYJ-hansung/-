@@ -50,6 +50,11 @@
 		<if test='word !=null'>
 			where plan_name like concat('%', #{word}, '%')
 			or plan_detail like concat('%', #{word}, '%')
+			or plan_id in (select ttp.plan_id
+				from tag_to_plan ttp join tag t
+				on ttp.tag_id = t.tag_id
+				where t.tag_name like concat('%', #{word}, '%')
+				);
 		</if>
 	</sql>
 
