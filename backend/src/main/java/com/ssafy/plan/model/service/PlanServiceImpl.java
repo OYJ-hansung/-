@@ -50,6 +50,14 @@ public class PlanServiceImpl implements PlanService {
 		List<TagDto> tagList = planDto.getTagList();
 		System.out.println("태그리스트 :"+tagList);
 		planMapper.writePlan(planDto);
+		
+		
+		Map<String, Object> map = new HashMap<>();
+        map.put("planId", planDto.getPlanId());
+        map.put("attrInfoList", planDto.getAttrInfoList());
+		planMapper.insertPlanToAttr(map);
+		
+		
 		System.out.println("태그리스트 :"+tagList);
 		
 		for(TagDto tagDto: tagList){

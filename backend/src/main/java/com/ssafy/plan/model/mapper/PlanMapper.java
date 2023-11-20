@@ -28,4 +28,5 @@ public interface PlanMapper {
 	List<TagDto> hotTagList() throws SQLException;
 
 	List<TagDto> searchTag(String tagName) throws SQLException;
+	void insertPlanToAttr(Map<String, Object> map) throws SQLException;
 }

@@ -106,6 +106,15 @@
 			select last_insert_id()
 		</selectKey>
 	</insert>
+	
+	
+	<insert id="insertPlanToAttr" parameterType="java.util.Map">
+        INSERT INTO plan_to_attr(plan_id, content_id)
+        VALUES
+        <foreach collection="attrInfoList" item="attrInfo" separator=",">
+            (#{planId}, #{attrInfo.contentId})
+        </foreach>
+    </insert>
 
 	<insert id="addTag" parameterType="tagDto">
 		insert into tag (tag_name)

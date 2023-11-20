@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 var map;
+
 const props = defineProps({
   addedPlaces: Array,
   markPlace: Object,
@@ -13,6 +14,7 @@ const ooverlay = ref([]);
 //여행계획에 여행지 추가시 사용하는 변수
 const positions = ref([]);
 const markers = ref([]);
+const lines = ref([]);
 
 onMounted(() => {
   if (window.kakao && window.kakao.maps) {
@@ -49,7 +51,7 @@ watch(
   { deep: true }
 );
 
-//여행계획에 여행지 추가시 작동하는 watch
+//여행계획에 여행지 추가,삭제시 작동하는 watch
 watch(
   () => props.addedPlaces,
   () => {
@@ -79,17 +81,19 @@ watch(
 
 const loadMarkers = () => {
   // 현재 표시되어있는 marker들이 있다면 map에 등록된 marker를 제거한다.
-  //deleteMarkers();
+  deleteMarkers();
+  // 현재 표시되어있는 line들이 있다면 map에 등록된 line을 제거한다.
+  deleteLines();
 
   // 마커 이미지를 생성합니다
-  const imageSrc =
-    "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+  const imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
   // 마커이미지의 주소입니다
   const imageSize = new kakao.maps.Size(24, 35);
   const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
   // 마커를 생성합니다
   markers.value = [];
+  lines.value = [];
 
   for (var i = 0; i < positions.value.length; i++) {
     var linePath;
@@ -122,6 +126,7 @@ const loadMarkers = () => {
       strokeStyle: "solid",
     });
     drawLine.setMap(map);
+    lines.value.push(drawLine);
     // distance = Math.round(lineLine.getLength());
     // displayCircleDot(positions.value[i].latlng, distance);
   }
@@ -137,24 +142,6 @@ const loadMarkers = () => {
   showMarkers(markers);
 };
 
-// const displayCircleDot = function (position, distance) {
-//   if (distance > 0) {
-//     //클릭한 지점까지의 그려진 선의 총 거리를 표시할 커스텀 오버레이를 생성합니다.
-//     var distanceOverlay = new daum.maps.CustomOverlay({
-//       content:
-//         '<div class="dotOverlay">거리<span class="number">' +
-//         distance +
-//         "</span>m</div>",
-//       position: position,
-//       yAnchor: 1,
-//       zIndex: 2,
-//     });
-
-//     //지도에 표시
-//     distanceOverlay.setMap(map);
-//   }
-// };
-
 const showMarkers = () => {
   if (markers.value.length > 0) {
     markers.value.forEach((marker) => {
@@ -166,6 +153,11 @@ const showMarkers = () => {
 const deleteMarkers = () => {
   if (markers.value.length > 0) {
     markers.value.forEach((marker) => marker.setMap(null));
+  }
+};
+const deleteLines = () => {
+  if (lines.value.length > 0) {
+    lines.value.forEach((line) => line.setMap(null));
   }
 };
 
@@ -196,11 +188,7 @@ watch(
       const vwrap = makeHtmlElement("div", { class: "wrap" });
       const vinfo = makeHtmlElement("div", { class: "info" });
 
-      const vname = makeHtmlElement(
-        "div",
-        { class: "name" },
-        { textContent: mmarkPlace.title }
-      );
+      const vname = makeHtmlElement("div", { class: "name" }, { textContent: mmarkPlace.title });
       const vclose = makeHtmlElement("div", { class: "close" });
 
       const vbody = makeHtmlElement("div", { class: "body" });
@@ -217,8 +205,7 @@ watch(
       const va = makeHtmlElement(
         "a",
         {
-          href:
-            "https://search.naver.com/search.naver?query=" + mmarkPlace.title,
+          href: "https://search.naver.com/search.naver?query=" + mmarkPlace.title,
         },
         { target: "_blank" },
         { class: "link" },

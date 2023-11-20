@@ -52,6 +52,29 @@ const deleteTag = (tag) => {
   plan.value.tagList = planFilter;
 };
 
+const deletePlace = (index) => {
+  console.log("삭제 전: ", addedPlaces.value);
+
+  plan.value.attrInfo.splice(index, 1);
+  addedPlaces.value.splice(index, 1);
+
+  console.log("삭제 후: ", addedPlaces.value);
+};
+
+const searchTag = async () => {
+  await api
+    .get(`http://localhost:8090/trip/plan/tag/${tagContent.value}`)
+    .then(({ data }) => {
+      console.log(getFormatDate(inputDate.value.start));
+
+      tagSearchResult.value = data;
+    })
+    .catch((e) => {
+      console.log(e);
+      tagSearchResult.value = "";
+    });
+};
+
 const addPlace = (place) => {
   plan.value.attrInfo.push(place);
   searchResult.value = [];
@@ -98,10 +121,11 @@ const addPlan = async () => {
         endDate: getFormatDate(inputDate.value.end),
         planDetail: plan.value.planDetail,
         tagList: plan.value.tagList,
-        img: "https://img.freepik.com/free-photo/airplane_74190-464.jpg?w=1380&t=st=1699807779~exp=1699808379~hmac=aa5cc0c5c8e05a2a1437b84eec67fc7e174e450c93e37d6996ca134b2a9a4184",
+        attrInfoList: plan.value.attrInfo,
+      img: "https://img.freepik.com/free-photo/airplane_74190-464.jpg?w=1380&t=st=1699807779~exp=1699808379~hmac=aa5cc0c5c8e05a2a1437b84eec67fc7e174e450c93e37d6996ca134b2a9a4184",
       })
       .then(() => {
-        router.push({ path: "/planlist" });
+        router.push({ path: "/myplan" });
       })
       .catch((e) => {
         console.log(e);
@@ -149,6 +173,7 @@ async function searchTag() {
 <template>
   <div class="row g-5">
     <div class="col-md-12">
+      <h3 class="pb-4 mb-4 fst-italic border-bottom">내 마음대로 여행코스!!!</h3>
       <h3 class="pb-4 mb-4 fst-italic border-bottom">내 마음대로 여행코스!!!</h3>
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -333,9 +358,9 @@ async function searchTag() {
                                 </div>
                                 <!-- </div> -->
                                 <!-- <div class="col-md-4 align-items-center"> -->
-                                <a href="#" @click="addPlace(place)" aria-current="true">
-                                  <div class="align-middle">여행계획에 추가</div>
-                                </a>
+                                <div @click="addPlace(place)" aria-current="true">
+                                  <div class="align-middle blue">여행계획에 추가</div>
+                                </div>
                                 <!-- </div> -->
                               </div>
                             </a>
@@ -353,7 +378,6 @@ async function searchTag() {
                   />
                 </div>
               </div>
-              <div>ddddddddd</div>
             </div>
           </div>
         </div>
@@ -361,6 +385,7 @@ async function searchTag() {
         <!-- 타임라인 -->
         <div class="col-md-12">
           <div v-show="hasAttr" class="timeline">
+            <div class="timeline-row" v-for="(attr, index) in plan.attrInfo" :key="index">
             <div class="timeline-row" v-for="(attr, index) in plan.attrInfo" :key="index">
               <div class="timeline-time">7:45PM<small>Dec 21</small></div>
               <div class="timeline-content">
@@ -370,7 +395,9 @@ async function searchTag() {
                 <!-- 사진 -->
                 <div class="thumbs">
                   <img class="img-fluid rounded" :src="attr.firstImage" alt="Maxwell Admin" />
+                  <img class="img-fluid rounded" :src="attr.firstImage" alt="Maxwell Admin" />
                 </div>
+                <div @click="deletePlace(index)">삭제</div>
               </div>
             </div>
           </div>
@@ -397,6 +424,7 @@ async function searchTag() {
             <div class="modal-content">
               <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">추가하기</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">추가하기</h1>
                 <button
                   type="button"
                   class="btn-close"
@@ -406,6 +434,7 @@ async function searchTag() {
               </div>
               <div class="modal-body">정말 추가하시겠습니까?</div>
               <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                   아니요
                 </button>
@@ -436,6 +465,11 @@ body {
 
 * {
   font-family: "Malgun Gothic", dotum, "돋움", sans-serif;
+}
+
+.blue {
+  color: blue;
+  text-decoration: underline;
 }
 
 .timeline {
