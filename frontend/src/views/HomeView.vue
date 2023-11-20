@@ -6,10 +6,11 @@ import api from "axios";
 import { useRouter } from "vue-router";
 import { searchStore } from "@/stores/planListStore";
 const sstore = searchStore();
-
 const router = useRouter();
 const hotTags = ref({});
 const word = ref("");
+const searchRef = ref(null);
+
 const search = () => {
   sstore.word = word;
   sstore.isSearch = true;
@@ -28,6 +29,10 @@ const getHotTags = async () => {
     });
 };
 
+const searchInput = () => {
+  searchRef.value.focus();
+};
+
 onMounted(() => {
   getHotTags();
   sstore.isMy = false;
@@ -39,11 +44,12 @@ onMounted(() => {
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
     rel="stylesheet"
   />
-  <div class="search-mode mb-2">
+  <div class="search-mode mb-2" @click="searchInput">
     <input
       type="text"
       class="form-control"
       placeholder="검색어를 입력하세요."
+      ref="searchRef"
       @keyup.enter="search(word)"
       v-model="word"
     />
