@@ -69,6 +69,7 @@ public class PlanController {
 				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 			}
 		} catch (Exception e) {
+			System.out.println(e);
 			return new ResponseEntity<ResultDto>(new ResultDto("fail", "NO LIST"), HttpStatus.OK);
 		}
 	}
