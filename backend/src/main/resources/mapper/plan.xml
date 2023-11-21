@@ -162,6 +162,7 @@
 		insert into favorite (user_id, plan_id)
 		values (#{userId}, #{planId})
 	</insert> 
+	
 	<delete id="cancelFavorite" parameterType="favoriteDto">
 		delete from favorite
 		where user_id=#{userId} and plan_id=#{planId}

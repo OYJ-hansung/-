@@ -8,16 +8,14 @@ import router from "./router";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
-import VCalendar from 'v-calendar';
-import 'v-calendar/style.css';
-// import VueDatePicker from '@vuepic/vue-datepicker';
+import VCalendar from "v-calendar";
+import "v-calendar/style.css";
 
 const app = createApp(App);
 const pinia = createPinia();
 
 pinia.use(piniaPluginPersistedstate);
-// app.component('VueDatePicker', VueDatePicker);
 app.use(createPinia());
-app.use(router).use(pinia).use(VCalendar,{});
+app.use(router).use(pinia).use(VCalendar, {});
 
 app.mount("#app");

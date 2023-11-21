@@ -168,6 +168,7 @@ public class PlanController {
 			planService.addFavorite(favoriteDto);
 			return new ResponseEntity<ResultDto>(new ResultDto("success", "좋아요 성공"), HttpStatus.OK);
 		} catch (Exception e) {
+			System.out.println(e);
 			return new ResponseEntity<ResultDto>(new ResultDto("fail", "좋아요 실패"), HttpStatus.OK);
 			
 		}

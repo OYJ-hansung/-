@@ -61,10 +61,11 @@ async function signIn() {
         autoClose: 1000,
       });
     } else {
-      toast.success(ustore.userInfo.userId + "님 환영합니다!", {
-        position: toast.POSITION.TOP_RIGHT,
-        autoClose: 1000,
-      });
+      // toast.success(ustore.userInfo.userId + "님 환영합니다!", {
+      //   position: toast.POSITION.TOP_RIGHT,
+      //   autoClose: 1000,
+      // });
+      router.push({ path: "/" });
     }
     if (click.rememeberId) {
       // 아이디 저장 필요함

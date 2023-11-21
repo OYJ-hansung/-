@@ -1,9 +1,19 @@
 <script setup>
 import { defineProps } from "vue";
-defineProps(["plan"]);
+import api from "axios";
+import { userStore } from "@/stores/userStore";
+
+const p = defineProps(["plan"]);
+const ustore = userStore();
+
+// console.log("p: " + JSON.stringify(p.plan.planId));
+
 const addFavorite = async () => {
   await api
-    .post(`http://localhost:8090/trip/plan/favorite`, {})
+    .put(`http://localhost:8090/trip/plan/favorite`, {
+      userId: ustore.userInfo.userId,
+      planId: p.plan.planId,
+    })
     .then(() => {})
     .catch((e) => {
       console.log(e);

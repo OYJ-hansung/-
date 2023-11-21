@@ -114,6 +114,7 @@ public class PlanServiceImpl implements PlanService {
 
 	@Override
 	public void addFavorite(FavoriteDto favoriteDto) throws Exception {
+		System.out.println(favoriteDto);
 		planMapper.addFavorite(favoriteDto);
 	}
 
