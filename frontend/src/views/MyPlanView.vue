@@ -19,7 +19,7 @@ onMounted(() => {
 <template>
   <div class="row g-5">
     <div class="col-md-12">
-      <h3 class="pb-4 mt-4 mb-4 fst-italic border-bottom">나의여행계획게시판</h3>
+      <h3 class="pb-4 mt-4 mb-4 fst-italic border-bottom">나의 여행계획</h3>
       <div class="m-2 p-1 row justify-content-end">
         <button type="button" class="btn btn-primary float-right m-2 col-2" @click="addPlan()">
           <b>여행계획추가</b>

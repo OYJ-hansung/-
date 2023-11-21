@@ -84,10 +84,6 @@ public class PlanServiceImpl implements PlanService {
 				tagToPlanDto.setPlanId(planDto.getPlanId());
 				planMapper.addTagToPlan(tagToPlanDto);
 			}
-			
-			
-			
-			
 		}
 	}
 
@@ -121,5 +117,12 @@ public class PlanServiceImpl implements PlanService {
 	@Override
 	public void cancelFavorite(FavoriteDto favoriteDto) throws Exception {
 		planMapper.cancelFavorite(favoriteDto);
+	}
+
+	@Override
+	public int shareMyPlan(int planId) throws Exception {
+		planMapper.shareMyPlan(planId);
+		return planMapper.getShared(planId);
+		
 	}
 }

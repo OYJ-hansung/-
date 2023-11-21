@@ -19,7 +19,7 @@ const search = () => {
 
 const getHotTags = async () => {
   await api
-    .get(`http://localhost:8090/trip/plan/hottag`)
+    .get(`${import.meta.env.VITE_VUE_API_URL}/plan/hottag`)
     .then(({ data }) => {
       hotTags.value = data;
       console.log("hotTags: " + hotTags);

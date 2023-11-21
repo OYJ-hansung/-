@@ -26,4 +26,5 @@ public interface PlanService {
 	List<TagDto> searchTag(String tagName) throws Exception;
 	void addFavorite(FavoriteDto favoriteDto) throws Exception;
 	void cancelFavorite(FavoriteDto favoriteDto) throws Exception;
+	int shareMyPlan(int planId) throws Exception;
 }

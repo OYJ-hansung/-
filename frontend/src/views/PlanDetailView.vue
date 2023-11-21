@@ -5,18 +5,24 @@ import { useRouter } from "vue-router";
 import api from "axios";
 import PlanTimeLine from "../components/board/PlanTimeLine.vue";
 import VKakaoMap from "@/components/common/VKakaoMap.vue";
+import { searchStore } from "@/stores/planListStore";
+import { userStore } from "@/stores/userStore";
 
+const sstore = searchStore();
+const ustore = userStore();
 const router = useRouter();
 const route = useRoute();
 
 const planId = ref(route.params.id);
 const plan = ref({});
+const shared = ref("");
 const attractions = ref([]);
 const planNameEdit = ref("");
 const planDetailEdit = ref(""); // 변경된 데이터
 const startDateEdit = ref(""); // 변경된 데이터
 const endDateEdit = ref(""); // 변경된 데이터
 
+const isMyPlan = sstore.isMy;
 // 수정
 const isEdit = ref(false);
 const editPlan = () => {
@@ -36,7 +42,7 @@ const editPlan = () => {
 
 const editDetail = async () => {
   await api
-    .put(`http://localhost:8090/trip/plan`, {
+    .put(`${import.meta.env.VITE_VUE_API_URL}/plan`, {
       planId: planId.value,
       planName: planNameEdit.value,
       startDate: startDateEdit.value,
@@ -53,10 +59,11 @@ const editDetail = async () => {
 
 const getDetail = async () => {
   await api
-    .get(`http://localhost:8090/trip/plan/${planId.value}`)
+    .get(`${import.meta.env.VITE_VUE_API_URL}/plan/${planId.value}`)
     .then(({ data }) => {
       plan.value = data;
       attractions.value = plan.value.attrInfoList;
+      shared.value = plan.value.shared;
     })
     .catch((e) => {
       console.log(e);
@@ -65,9 +72,24 @@ const getDetail = async () => {
 
 const deletePlan = async () => {
   await api
-    .delete(`http://localhost:8090/trip/plan/${planId.value}`)
+    .delete(`${import.meta.env.VITE_VUE_API_URL}/plan/${planId.value}`)
     .then(() => {
       router.push({ path: "/planlist", params: { planId: planId } });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+
+const shareMyPlan = async () => {
+  await api
+    .put(`${import.meta.env.VITE_VUE_API_URL}/plan/${planId.value}`, {
+      planId: planId.value,
+    })
+    .then(({ data }) => {
+      shared.value = data;
+      console.log("shared 값 ");
+      console.log(shared.value);
     })
     .catch((e) => {
       console.log(e);
@@ -84,6 +106,13 @@ getDetail();
         <div class="col-md-12">
           <div class="card shadow-sm">
             <div class="card-body">
+              <div v-if="isMyPlan">
+                <button class="w-btn w-btn-blue" type="button" @click="shareMyPlan()">
+                  <div v-if="shared == 0">공유하기</div>
+                  <div v-if="shared == 1">공유 취소하기</div>
+                </button>
+              </div>
+
               <div class="row g-5">
                 <div class="col-md-4">
                   <img
@@ -279,7 +308,22 @@ body {
   color: #bcd0f7;
   background: #1a233a;
 }
-
+.w-btn {
+  position: relative;
+  border: none;
+  display: inline-block;
+  padding: 15px 30px;
+  border-radius: 15px;
+  font-family: "paybooc-Light", sans-serif;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.25s;
+}
+.w-btn-blue {
+  background-color: #6aafe6;
+  color: #d4dfe6;
+}
 .timeline {
   position: relative;
   /* background: #272e48; */

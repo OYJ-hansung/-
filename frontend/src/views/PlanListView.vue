@@ -8,7 +8,7 @@ import { useRouter } from "vue-router";
 <template>
   <div class="row g-5">
     <div class="col-md-12">
-      <h3 class="pb-4 mb-4 fst-italic border-bottom">나의여행계획게시판</h3>
+      <h3 class="pb-4 mb-4 fst-italic border-bottom">여행계획 게시판</h3>
       <board-card-list></board-card-list>
     </div>
   </div>

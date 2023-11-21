@@ -22,7 +22,7 @@ const boardlist = async () => {
         // 내여행계획
         planList.value = data.filter((d) => d.userId === ustore.userInfo.userId);
       } else {
-        planList.value = data;
+        planList.value = data.filter((d) => d.shared === 1);
       }
     })
     .catch((e) => {

@@ -32,4 +32,6 @@ public interface PlanMapper {
 	void insertPlanToAttr(Map<String, Object> map) throws SQLException;
 	void addFavorite(FavoriteDto favoriteDto) throws SQLException;
 	void cancelFavorite(FavoriteDto favoriteDto) throws SQLException;
+	void shareMyPlan(int planId) throws SQLException;
+	int getShared(int planId) throws SQLException;
 }

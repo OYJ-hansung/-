@@ -10,6 +10,9 @@ import "vue3-toastify/dist/index.css";
 
 // import Datepicker from 'vue3-datepicker';
 import { userStore } from "@/stores/userStore";
+import { searchStore } from "@/stores/planListStore";
+
+const sstore = searchStore();
 const ustore = userStore();
 
 const markPlace = ref({});
@@ -100,7 +103,7 @@ const addPlan = async () => {
     });
   } else {
     await api
-      .post(`http://localhost:8090/trip/plan/new`, {
+      .post(`${import.meta.env.VITE_VUE_API_URL}/plan/new`, {
         userId: plan.value.userId,
         planName: plan.value.planName,
         startDate: getFormatDate(inputDate.value.start),
@@ -121,7 +124,7 @@ const addPlan = async () => {
 
 const searchAttraction = async () => {
   await api
-    .post(`http://localhost:8090/trip/attraction/search`, searchWord.value, {
+    .post(`${import.meta.env.VITE_VUE_API_URL}/attraction/search`, searchWord.value, {
       headers: { "Content-Type": "application/text" },
     })
     .then(({ data }) => {
@@ -145,7 +148,7 @@ const onTitleInput = (event) => {
 
 async function searchTag() {
   await api
-    .get(`http://localhost:8090/trip/plan/tag/${tagContent.value}`)
+    .get(`${import.meta.env.VITE_VUE_API_URL}/plan/tag/${tagContent.value}`)
     .then(({ data }) => {
       tagSearchResult.value = data;
     })
@@ -347,6 +350,7 @@ async function searchTag() {
                     :markPlace="markPlace"
                     :addedPlaces="addedPlaces"
                     :reload="reload"
+                    style="width: 100%"
                   />
                 </div>
 
