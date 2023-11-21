@@ -162,7 +162,7 @@ public class PlanController {
 	@ApiOperation(value = "게시물 좋아하기", notes = "게시물에 좋아요를 합니다.")
 	@ApiResponses({ @ApiResponse(code = 200, message = "게시물에 좋아요 OK!!"), @ApiResponse(code = 404, message = "페이지없어!!"),
 			@ApiResponse(code = 500, message = "서버에러!!") })
-	@PutMapping(value = "/favorite")
+	@PostMapping(value = "/addfavorite")
 	public ResponseEntity<?> addFavorite(@RequestBody FavoriteDto favoriteDto) {
 		logger.debug("favoriteDto : {}", favoriteDto);
 		try {
@@ -174,19 +174,19 @@ public class PlanController {
 			
 		}
 	}
-
 	
 	@ApiOperation(value = "게시물 좋아요 취소", notes = "게시물에 좋아요 취소를 합니다.")
 	@ApiResponses({ @ApiResponse(code = 200, message = "게시물에 좋아요 취소 OK!!"), @ApiResponse(code = 404, message = "페이지없어!!"),
 			@ApiResponse(code = 500, message = "서버에러!!") })
-	@DeleteMapping(value = "/favorite")
+	@PostMapping(value = "/delfavorite")
 	public ResponseEntity<?> cancelFavorite(@RequestBody FavoriteDto favoriteDto) {
 		logger.debug("cancelFavorite : {}", favoriteDto);
 		try {
 			planService.cancelFavorite(favoriteDto);
-			return new ResponseEntity<ResultDto>(new ResultDto("success", "좋아요 성공"), HttpStatus.OK);
+			return new ResponseEntity<ResultDto>(new ResultDto("success", "좋아요취소 성공"), HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<ResultDto>(new ResultDto("fail", "좋아요 실패"), HttpStatus.OK);
+			System.out.println(e);
+			return new ResponseEntity<ResultDto>(new ResultDto("fail", "좋아요취소 실패"), HttpStatus.OK);
 			
 		}
 	}

@@ -14,6 +14,7 @@ const boardlist = async () => {
     .post(`http://localhost:8090/trip/plan`, {
       key: sstore.key,
       word: sstore.word,
+      userId: ustore.userInfo.userId
     })
     .then(({ data }) => {
       console.log(data);

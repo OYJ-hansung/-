@@ -73,11 +73,11 @@
 	</select> -->
 	
 	<select id="planList" parameterType="planParamDto" resultMap="plan">
-		select  p.plan_id, p.user_id, p.plan_name, p.start_date, p.end_date, p.reg_date, p.plan_detail, p.img, if(isnull(f.user_id), false, true) as isfavorite
+		select p.plan_id, p.user_id, p.plan_name, p.start_date, p.end_date, p.reg_date, p.plan_detail, p.img, if(f.user_id = "Johnohwb", true, false) as isfavorite
 		from plan p left join favorite f
-		on p.user_id = f.user_id
+		on p.plan_id = f.plan_id
 		<include refid="search"></include>
-		group by p.plan_id
+		group by p.plan_id, f.user_id;
 		
 		<!-- limit #{start}, #{listsize} -->
 	</select>
