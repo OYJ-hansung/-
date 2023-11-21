@@ -172,7 +172,9 @@ async function signIn() {
         <button class="btn btn-primary w-100 py-2" type="submit" @click="signIn()">로그인</button>
       </div>
       <div class="col-sm-6">
-        <button class="btn btn-primary w-100 py-2" type="submit" @click="register">회원가입</button>
+        <button class="btn btn-primary w-100 py-2" type="submit" @click="register()">
+          회원가입
+        </button>
       </div>
     </div>
   </form>

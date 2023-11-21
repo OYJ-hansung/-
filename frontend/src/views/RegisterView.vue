@@ -1,10 +1,18 @@
 <script setup>
-import { reactive, ref, onMounted } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import api from "axios";
 
 const router = useRouter();
-
+const idVerification = computed(() => {
+  return userInfo.value.userId.length > 0 ? false : true;
+});
+const nameVerification = computed(() => {
+  return userInfo.value.userName.length > 0 ? false : true;
+});
+const passwordVerification = computed(() => {
+  return userInfo.value.userPassword.length > 0 ? false : true;
+});
 const userInfo = ref({
   userId: "",
   userName: "",
@@ -13,40 +21,31 @@ const userInfo = ref({
   emailDomain: "",
 });
 
-const forms = document.querySelectorAll(".needs-validation");
-
-onMounted(() => {
-  Array.from(forms).forEach((form) => {
-    form.addEventListener(
-      "submit",
-      (event) => {
-        if (!form.checkValidity()) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-
-        form.classList.add("was-validated");
-      },
-      false
-    );
-  });
-});
-
 const register = async () => {
-  await api
-    .post(`${import.meta.env.VITE_VUE_API_URL}/members/`, {
-      userId: userInfo.value.userId,
-      userName: userInfo.value.userName,
-      userPassword: userInfo.value.userPassword,
-      emailId: userInfo.value.emailId,
-      emailDomain: userInfo.value.emailDomain,
-    })
-    .then(() => {
-      router.push({ name: "login" });
-    })
-    .catch((e) => {
-      console.log(e);
-    });
+  if (
+    userInfo.value.userId != "" &&
+    userInfo.value.userPassword != "" &&
+    userInfo.value.userName != "" &&
+    userInfo.value.emailId != "" &&
+    userInfo.value.emailDomain != ""
+  ) {
+    await api
+      .post(`${import.meta.env.VITE_VUE_API_URL}/members/`, {
+        userId: userInfo.value.userId,
+        userName: userInfo.value.userName,
+        userPassword: userInfo.value.userPassword,
+        emailId: userInfo.value.emailId,
+        emailDomain: userInfo.value.emailDomain,
+      })
+      .then(() => {
+        router.push({ path: "/login" });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  } else {
+    alert("오류");
+  }
 };
 </script>
 
@@ -57,158 +56,82 @@ const register = async () => {
         <div class="py-5 text-center">
           <h2>회원가입</h2>
         </div>
-
         <div class="row">
           <div class="col-md-7 col-lg-12">
-            <form class="needs-validation" novalidate>
-              <div class="row g-3">
-                <div class="col-sm-12 mb-3">
-                  <label for="firstName" class="form-label">아이디</label>
+            <div class="row g-3">
+              <div class="col-sm-12 mb-3">
+                <label for="firstName" class="form-label">아이디</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="id"
+                  placeholder=""
+                  v-model="userInfo.userId"
+                />
+                <p v-show="idVerification" class="error-message mb-2 mt-2">아이디는 필수입니다.</p>
+              </div>
+            </div>
+            <div class="row g-3">
+              <div class="col-sm-12 mb-3">
+                <label for="firstName" class="form-label">이름</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  placeholder=""
+                  v-model="userInfo.userName"
+                />
+                <p v-show="nameVerification" class="error-message mb-2 mt-2">이름은 필수입니다.</p>
+              </div>
+            </div>
+            <div class="row g-3">
+              <div class="col-sm-12 mb-3">
+                <label for="firstName" class="form-label">비밀번호</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  placeholder=""
+                  v-model="userInfo.userPassword"
+                />
+                <p v-show="passwordVerification" class="error-message mb-2 mt-2">
+                  비밀번호는 필수입니다.
+                </p>
+              </div>
+            </div>
+            <div class="row g-3">
+              <div class="col-sm-12">
+                <label for="firstName" class="form-label">이메일</label>
+                <div class="input-group mb-3">
                   <input
                     type="text"
                     class="form-control"
-                    id="id"
-                    placeholder=""
-                    v-model="userInfo.userId"
-                    required
+                    placeholder="아이디"
+                    aria-label="emailId"
+                    v-model="userInfo.emailId"
                   />
-                  <div class="invalid-feedback">Valid first name is required.</div>
-                </div>
-              </div>
-              <div class="row g-3">
-                <div class="col-sm-12 mb-3">
-                  <label for="firstName" class="form-label">이름</label>
+                  <span class="input-group-text">@</span>
                   <input
                     type="text"
                     class="form-control"
-                    id="name"
-                    placeholder=""
-                    v-model="userInfo.userName"
-                    required
+                    placeholder="도메인"
+                    aria-label="emailDomain"
+                    v-model="userInfo.emailDomain"
                   />
-                  <div class="invalid-feedback">Valid first name is required.</div>
                 </div>
               </div>
-              <div class="row g-3">
-                <div class="col-sm-12 mb-3">
-                  <label for="firstName" class="form-label">비밀번호</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="password"
-                    placeholder=""
-                    v-model="userInfo.userPassword"
-                    required
-                  />
-                  <div class="invalid-feedback">Valid first name is required.</div>
-                </div>
-              </div>
-              <div class="row g-3">
-                <div class="col-sm-12">
-                  <label for="firstName" class="form-label">이메일</label>
-                  <div class="input-group mb-3">
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="아이디"
-                      aria-label="emailId"
-                      v-model="userInfo.emailId"
-                    />
-                    <span class="input-group-text">@</span>
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="도메인"
-                      aria-label="emailDomain"
-                      v-model="userInfo.emailDomain"
-                    />
-                  </div>
-                </div>
-              </div>
-            </form>
+            </div>
+            <button class="w-100 btn btn-primary btn-lg" @click="register">회원가입</button>
           </div>
         </div>
-        <button class="w-100 btn btn-primary btn-lg" @click="register">회원가입</button>
       </main>
     </div>
   </body>
 </template>
 
 <style scoped>
-.bd-placeholder-img {
-  font-size: 1.125rem;
-  text-anchor: middle;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-}
-
-@media (min-width: 768px) {
-  .bd-placeholder-img-lg {
-    font-size: 3.5rem;
-  }
-}
-
-.b-example-divider {
-  width: 100%;
-  height: 3rem;
-  background-color: rgba(0, 0, 0, 0.1);
-  border: solid rgba(0, 0, 0, 0.15);
-  border-width: 1px 0;
-  box-shadow: inset 0 0.5em 1.5em rgba(0, 0, 0, 0.1), inset 0 0.125em 0.5em rgba(0, 0, 0, 0.15);
-}
-
-.b-example-vr {
-  flex-shrink: 0;
-  width: 1.5rem;
-  height: 100vh;
-}
-
-.bi {
-  vertical-align: -0.125em;
-  fill: currentColor;
-}
-
-.nav-scroller {
-  position: relative;
-  z-index: 2;
-  height: 2.75rem;
-  overflow-y: hidden;
-}
-
-.nav-scroller .nav {
-  display: flex;
-  flex-wrap: nowrap;
-  padding-bottom: 1rem;
-  margin-top: -1px;
-  overflow-x: auto;
-  text-align: center;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
-}
-
-.btn-bd-primary {
-  --bd-violet-bg: #712cf9;
-  --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
-
-  --bs-btn-font-weight: 600;
-  --bs-btn-color: var(--bs-white);
-  --bs-btn-bg: var(--bd-violet-bg);
-  --bs-btn-border-color: var(--bd-violet-bg);
-  --bs-btn-hover-color: var(--bs-white);
-  --bs-btn-hover-bg: #6528e0;
-  --bs-btn-hover-border-color: #6528e0;
-  --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
-  --bs-btn-active-color: var(--bs-btn-hover-color);
-  --bs-btn-active-bg: #5a23c8;
-  --bs-btn-active-border-color: #5a23c8;
-}
-
-.bd-mode-toggle {
-  z-index: 1500;
-}
-
-.bd-mode-toggle .dropdown-menu .active .bi {
-  display: block !important;
+.error-message {
+  color: rgba(231, 78, 78, 0.829);
+  font-size: 14px;
 }
 </style>
