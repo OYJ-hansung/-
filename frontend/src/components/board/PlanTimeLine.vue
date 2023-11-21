@@ -1,20 +1,35 @@
 <script setup>
 import { defineProps } from "vue";
-defineProps(["attrInfo"]);
+const props = defineProps({
+  attractions: Array,
+  isDetail: String,
+});
+const emit = defineEmits(["deletePlace"]);
+
+const deletePlace = function (index) {
+  emit("deletePlace", index);
+};
 </script>
 
 <template>
-  <div class="timeline-time">
-    7:45PM<small>Dec 21</small>
-  </div>
-  <div class="timeline-content">
-    <!-- <i class="icon-attachment"></i> -->
-    <h4>{{ attrInfo.title }}</h4>
-    <p>여기서는 무엇을 할것입니다. 첫번째 여행지의 세부내용입니다.여기서는 무엇을 할것입니다. 첫번째 여행지의 세부내용입니다.여기서는 무엇을 할것입니다. 첫번째 여행지의
-      세부내용입니다.여기서는 무엇을 할것입니다. 첫번째 여행지의 세부내용입니다.여기서는 무엇을 할것입니다. 첫번째 여행지의 세부내용입니다.여기서는 무엇을 할것입니다. 첫번째 여행지의
-      세부내용입니다.</p>
-    <div class="thumbs">
-      <img class="img-fluid rounded" :src="attrInfo.firstImage" alt="Maxwell Admin">
+  <div
+    id="timescroll"
+    class="overflow-y-scroll h-100 rounded-2 timeline"
+    style="max-height: 800px"
+  >
+    <div class="timeline-row" v-for="(attr, index) in attractions" :key="index">
+      <div class="timeline-content">
+        <div class="time-title">{{ attr.title }}</div>
+        <!-- 사진 -->
+        <div class="thumbs">
+          <img
+            class="img-fluid rounded"
+            :src="attr.firstImage"
+            alt="Maxwell Admin"
+          />
+        </div>
+        <div v-if="isDetail == 'false'" @click="deletePlace(index)">삭제</div>
+      </div>
     </div>
   </div>
 </template>
@@ -23,40 +38,44 @@ defineProps(["attrInfo"]);
 body {
   margin-top: 20px;
   color: #bcd0f7;
-  background: #1A233A;
+  background: #1a233a;
+}
+
+.time-title {
+  font-weight: bold;
 }
 
 .timeline {
   position: relative;
   /* background: #272e48; */
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
+  /* -webkit-border-radius: 4px; */
+  /* -moz-border-radius: 4px; */
   border-radius: 4px;
-  padding: 5rem;
-  margin: 0 auto 1rem auto;
+  /* padding: 1rem; */
+  /* margin: 0 auto 1rem auto; */
   overflow: hidden;
 }
 
-.timeline:after {
+.timeline-row:after {
   content: "";
   position: absolute;
   top: 0;
-  left: 50%;
-  margin-left: -2px;
-  border-right: 2px dashed #4b546f;
+  right: 90%;
+  margin-right: -2px;
+  border-left: 2px dashed #4b546f;
   height: 100%;
   display: block;
 }
 
 .timeline-row {
-  padding-left: 50%;
+  /* padding-left: 50%; */
   position: relative;
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
 }
 
 .timeline-row .timeline-time {
   position: absolute;
-  right: 50%;
+  right: 60%;
   top: 15px;
   text-align: right;
   margin-right: 20px;
@@ -72,32 +91,27 @@ body {
 .timeline-row .timeline-content {
   border: solid #272e48;
   position: relative;
-  padding: 20px 30px;
+  left: 20%;
+  width: 70%;
+  padding: 10px 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
   background: #ffffff;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  /* align-items: center; */
+  /* justify-content: center; */
   flex-direction: column;
-  text-align: center;
-}
-
-.timeline-row .timeline-content:after {
-  content: "";
-  position: absolute;
-  top: 20px;
-  height: 16px;
-  width: 16px;
-  background: #1a233a;
+  /* text-align: center; */
 }
 
 .timeline-row .timeline-content:before {
   content: "";
   position: absolute;
   top: 20px;
-  right: -49px;
+  right: 112%;
   width: 20px;
   height: 20px;
   -webkit-border-radius: 100px;
@@ -108,7 +122,7 @@ body {
   border: 2px dashed #4b546f;
 }
 
-.timeline-row .timeline-content h4 {
+.timeline-row .timeline-content h5 {
   margin: 0 0 20px 0;
   overflow: hidden;
   white-space: nowrap;
@@ -134,13 +148,17 @@ body {
 }
 
 .timeline-row .timeline-content .thumbs {
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
   display: flex;
 }
 
 .timeline-row .timeline-content .thumbs img {
-  margin: 5px;
+  margin-top: 5px;
+  /* margin: 5px; */
   /* max-width: px; */
+  /* width: 90%; */
+  display: flex;
+  align-content: center;
 }
 
 .timeline-row .timeline-content .badge {
@@ -148,30 +166,12 @@ body {
   background: linear-gradient(120deg, #00b5fd 0%, #0047b1 100%);
 }
 
-.timeline-row:nth-child(even) .timeline-content {
-  margin-left: 40px;
-  text-align: left;
-}
-
-.timeline-row:nth-child(even) .timeline-content:after {
-  left: -8px;
-  right: initial;
-  border-bottom: 0;
-  border-left: 0;
-  transform: rotate(-135deg);
-}
-
-.timeline-row:nth-child(even) .timeline-content:before {
-  left: -52px;
-  right: initial;
-}
-
-.timeline-row:nth-child(odd) {
+.timeline-row:nth-child() {
   padding-left: 0;
   padding-right: 50%;
 }
 
-.timeline-row:nth-child(odd) .timeline-time {
+.timeline-row:nth-child() .timeline-time {
   right: auto;
   left: 50%;
   text-align: left;
@@ -179,11 +179,11 @@ body {
   margin-left: 20px;
 }
 
-.timeline-row:nth-child(odd) .timeline-content {
+.timeline-row:nth-child() .timeline-content {
   margin-right: 40px;
 }
 
-.timeline-row:nth-child(odd) .timeline-content:after {
+.timeline-row:nth-child() .timeline-content:after {
   right: -8px;
   border-left: 0;
   border-bottom: 0;
@@ -199,50 +199,26 @@ body {
     border: 0;
   }
 
-  .timeline .timeline-row:nth-child(odd) {
+  .timeline .timeline-row:nth-child() {
     padding: 0;
   }
 
-  .timeline .timeline-row:nth-child(odd) .timeline-time {
+  .timeline .timeline-row:nth-child() .timeline-time {
     position: relative;
     top: 0;
     left: 0;
     margin: 0 0 10px 0;
   }
 
-  .timeline .timeline-row:nth-child(odd) .timeline-content {
+  .timeline .timeline-row:nth-child() .timeline-content {
     margin: 0;
   }
 
-  .timeline .timeline-row:nth-child(odd) .timeline-content:before {
+  .timeline .timeline-row:nth-child() .timeline-content:before {
     display: none;
   }
 
-  .timeline .timeline-row:nth-child(odd) .timeline-content:after {
-    display: none;
-  }
-
-  .timeline .timeline-row:nth-child(even) {
-    padding: 0;
-  }
-
-  .timeline .timeline-row:nth-child(even) .timeline-time {
-    position: relative;
-    top: 0;
-    left: 0;
-    margin: 0 0 10px 0;
-    text-align: left;
-  }
-
-  .timeline .timeline-row:nth-child(even) .timeline-content {
-    margin: 0;
-  }
-
-  .timeline .timeline-row:nth-child(even) .timeline-content:before {
-    display: none;
-  }
-
-  .timeline .timeline-row:nth-child(even) .timeline-content:after {
+  .timeline .timeline-row:nth-child() .timeline-content:after {
     display: none;
   }
 }

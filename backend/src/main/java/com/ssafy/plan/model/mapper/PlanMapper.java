@@ -24,14 +24,17 @@ public interface PlanMapper {
 
 	TagDto getTag(String tagName) throws SQLException;
 	void addTag(TagDto tagDto) throws SQLException;
+	void deleteTagToPlan(int planId) throws SQLException;
 	void addTagToPlan(TagToPlanDto tagToPlanDto) throws SQLException;
 	void raiseTagCount(int tagId) throws SQLException;
 	List<TagDto> hotTagList() throws SQLException;
 
 	List<TagDto> searchTag(String tagName) throws SQLException;
+	void deletePlanToAttr(int planId) throws SQLException;
 	void insertPlanToAttr(Map<String, Object> map) throws SQLException;
 	void addFavorite(FavoriteDto favoriteDto) throws SQLException;
 	void cancelFavorite(FavoriteDto favoriteDto) throws SQLException;
 	void shareMyPlan(int planId) throws SQLException;
 	int getShared(int planId) throws SQLException;
+
 }

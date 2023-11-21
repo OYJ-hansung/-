@@ -4,6 +4,7 @@ import BoardDetailView from "../views/BoardDetailView.vue";
 import PlanListView from "../views/PlanListView.vue";
 import PlanDetailView from "../views/PlanDetailView.vue";
 import PlanAddView from "../views/PlanAddView.vue";
+import PlanEditView from "../views/PlanEditView.vue";
 import LoginView from "../views/LoginView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import MyPlanView from "../views/MyPlanView.vue";
@@ -105,6 +106,11 @@ const router = createRouter({
       path: "/myplan",
       name: "myplan",
       component: MyPlanView,
+    },
+    {
+      path: "/editplan/:id",
+      name: "editplan",
+      component: PlanEditView,
     },
     {
       path: "/userinfo",

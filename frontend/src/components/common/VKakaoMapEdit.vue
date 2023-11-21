@@ -5,7 +5,6 @@ var map;
 const props = defineProps({
   addedPlaces: Array,
   markPlace: Object,
-  reload: Boolean,
 });
 //여행지 단순 조회시 사용하는 변수
 const mmarkPlace = ref({});
@@ -37,19 +36,18 @@ const initMap = () => {
     level: 3,
   };
   map = new kakao.maps.Map(container, options);
-  console.log("아악", props.markPlace);
+  positions.value = [];
+  props.addedPlaces.forEach((place) => {
+    let obj = {};
+    obj.latlng = new kakao.maps.LatLng(place.latitude, place.longitude);
+    obj.title = place.title;
+    obj.firstImage = place.firstImage;
+    positions.value.push(obj);
+  });
+  if (positions.value.length !== 0) {
+    loadMarkers();
+  }
 };
-
-watch(
-  () => props.reload,
-  () => {
-    console.log("relayout하기@!");
-    if (window.kakao && window.kakao.maps) {
-      map.relayout();
-    }
-  },
-  { deep: true }
-);
 
 //여행계획에 여행지 추가,삭제시 작동하는 watch
 watch(
@@ -57,23 +55,25 @@ watch(
   () => {
     console.log("2마커 어디감");
     positions.value = [];
-    props.addedPlaces.forEach((place) => {
-      let obj = {};
-      obj.latlng = new kakao.maps.LatLng(place.latitude, place.longitude);
-      obj.title = place.title;
+    if (window.kakao && window.kakao.maps) {
+      props.addedPlaces.forEach((place) => {
+        let obj = {};
+        obj.latlng = new kakao.maps.LatLng(place.latitude, place.longitude);
+        obj.title = place.title;
 
-      positions.value.push(obj);
-    });
-    loadMarkers();
-    //기존 마커 제거
-    if (mmarker.value.length > 0) {
-      mmarker.value.forEach((marker) => marker.setMap(null));
-      mmarker.value.splice(0);
-    }
-    //기존 오버레이 제거
-    if (ooverlay.value.length > 0) {
-      ooverlay.value.forEach((overlay) => overlay.setMap(null));
-      ooverlay.value.splice(0);
+        positions.value.push(obj);
+      });
+      loadMarkers();
+      //기존 마커 제거
+      if (mmarker.value.length > 0) {
+        mmarker.value.forEach((marker) => marker.setMap(null));
+        mmarker.value.splice(0);
+      }
+      //기존 오버레이 제거
+      if (ooverlay.value.length > 0) {
+        ooverlay.value.forEach((overlay) => overlay.setMap(null));
+        ooverlay.value.splice(0);
+      }
     }
   },
   { deep: true }

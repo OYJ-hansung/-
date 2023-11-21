@@ -154,6 +154,12 @@
     </insert>
 
 
+
+    <delete id="deletePlanToAttr" parameterType="int">
+        delete from plan_to_attr
+        where plan_id=#{planId}
+    </delete>
+
     <insert id="insertPlanToAttr" parameterType="java.util.Map">
         INSERT INTO plan_to_attr(plan_id, content_id)
         VALUES
@@ -171,6 +177,13 @@
             select last_insert_id()
         </selectKey>
     </insert>
+
+
+
+    <delete id="deleteTagToPlan" parameterType="int">
+        delete from tag_to_plan
+        where plan_id=#{planId}
+    </delete>
 
     <insert id="addTagToPlan" parameterType="tagToPlanDto">
         insert into tag_to_plan

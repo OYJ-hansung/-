@@ -11,7 +11,7 @@ const ustore = userStore();
 const planList = ref([]);
 const boardlist = async () => {
   await api
-    .post(`http://localhost:8090/trip/plan`, {
+    .post(`${import.meta.env.VITE_VUE_API_URL}/plan`, {
       key: sstore.key,
       word: sstore.word,
       userId: ustore.userInfo.userId,

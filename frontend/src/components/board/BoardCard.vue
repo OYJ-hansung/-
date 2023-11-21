@@ -12,7 +12,7 @@ console.log("p: " + JSON.stringify(p.plan.isFavorite));
 const addFavorite = async () => {
   console.log("좋아요합니다!");
   await api
-    .post(`http://localhost:8090/trip/plan/addfavorite`, {
+    .post(`${import.meta.env.VITE_VUE_API_URL}/plan/addfavorite`, {
       userId: ustore.userInfo.userId,
       planId: p.plan.planId,
     })
@@ -29,7 +29,7 @@ const deleteFavorite = async () => {
   console.log(ustore.userInfo.userId);
   console.log(p.plan.planId);
   await api
-    .post(`http://localhost:8090/trip/plan/delfavorite`, {
+    .post(`${import.meta.env.VITE_VUE_API_URL}/plan/delfavorite`, {
       userId: ustore.userInfo.userId,
       planId: p.plan.planId,
     })
