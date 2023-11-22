@@ -18,8 +18,30 @@ public class MemberDto {
     private String emailDomain;
     @ApiModelProperty(value = "가입일")
     private String joinDate;
+    @ApiModelProperty(value = "삭제여부")
+    private Boolean idDel;
 
-    public String getUserId() {
+    public Boolean getIdDel() {
+		return idDel;
+	}
+
+	public MemberDto(String userId, String userName, String userPassword, String emailId, String emailDomain,
+			String joinDate, Boolean idDel) {
+		super();
+		this.userId = userId;
+		this.userName = userName;
+		this.userPassword = userPassword;
+		this.emailId = emailId;
+		this.emailDomain = emailDomain;
+		this.joinDate = joinDate;
+		this.idDel = idDel;
+	}
+
+	public void setIdDel(Boolean idDel) {
+		this.idDel = idDel;
+	}
+
+	public String getUserId() {
         return userId;
     }
 
@@ -63,7 +85,12 @@ public class MemberDto {
         return joinDate;
     }
 
-    public void setJoinDate(String joinDate) {
+    public MemberDto() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public void setJoinDate(String joinDate) {
         this.joinDate = joinDate;
     }
 

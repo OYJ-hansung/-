@@ -60,6 +60,9 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void deleteMember(String userId) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", userId);
+		memberMapper.deleteRefreshToken(map);
 		memberMapper.deleteMember(userId);		
 	}
 

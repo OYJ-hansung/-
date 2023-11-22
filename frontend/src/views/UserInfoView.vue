@@ -33,6 +33,19 @@ const userInfo = ref({
   emailDomain: ustore.userInfo.emailDomain,
 });
 
+const deleteAccount = async () => {
+  // 회원삭제
+  await api
+    .delete(`${import.meta.env.VITE_VUE_API_URL}/members/${ustore.userInfo.userId}`)
+    .then(async () => {
+      await ustore.userLogout(ustore.userInfo.userId);
+      router.push({ path: "/" });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+
 const modify = async () => {
   if ((isChangePass.value && passwordVerifcation.value) || !isChangePass.value) {
     // 비밀번호변경했고 조건을 만족했다면, 비밀번호를 변경하지 않았다면
@@ -44,7 +57,7 @@ const modify = async () => {
         emailDomain: userInfo.value.emailDomain,
       })
       .then(() => {
-        router.push({ name: "login" });
+        router.push({ path: "/" });
       })
       .catch((e) => {
         console.log(e);
@@ -178,13 +191,59 @@ const changePassword = () => {
                       v-model="userInfo.emailDomain"
                     />
                   </div>
+                  <input
+                    type="button"
+                    class="w-100 btn btn-primary btn-lg"
+                    @click="modify()"
+                    value="저장"
+                  />
+                  <input
+                    type="button"
+                    class="w-100 btn btn-danger btn-lg mt-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteModal"
+                    value="회원탈퇴"
+                  />
                 </div>
               </div>
             </form>
           </div>
         </div>
-        <button class="w-100 btn btn-primary btn-lg" @click="modify()">저장</button>
       </main>
+    </div>
+
+    <div
+      class="modal fade"
+      id="deleteModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">회원 탈퇴</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">정말 탈퇴하시겠습니까?</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니요</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="deleteAccount()"
+              data-bs-dismiss="modal"
+            >
+              네
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </template>

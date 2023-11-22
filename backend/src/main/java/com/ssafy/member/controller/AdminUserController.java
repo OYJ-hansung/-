@@ -191,6 +191,7 @@ public class AdminUserController {
 			memberService.deleteMember(userId);
 			return new ResponseEntity<ResultDto>(new ResultDto("success", "회원정보삭제 완료"), HttpStatus.OK);
 		} catch (Exception e) {
+			System.out.println(e);
 			return new ResponseEntity<ResultDto>(new ResultDto("fail", "회원정보삭제 실패"), HttpStatus.OK);
 		}
 	}
