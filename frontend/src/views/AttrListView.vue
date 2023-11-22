@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, defineProps } from "vue";
-import VKakaoMapDetail from "@/components/common/VKakaoMapDetail.vue";
+import VKakaoMapSearch from "@/components/common/VKakaoMapSearch.vue";
 import api from "axios";
 
 const attrList = ref([]);
@@ -77,7 +77,7 @@ const setType = () => {
 
 const attrlist = async () => {
   await api
-    .post(`${import.meta.env.VITE_VUE_API_URL}/attraction/search`, {
+    .post(`${import.meta.env.VITE_VUE_API_URL}/attraction/list`, {
       sortType: sortType.value,
       contentTypeId: contentTypeId.value,
       sidoCode: sidoCode.value,
@@ -97,13 +97,21 @@ const attrlist = async () => {
 <template>
   <div id="form-search" class="d-flex my-3">
     <!-- <input type="hidden" id="ccommand" value="ssearch" /> -->
-    <select id="search-area" class="form-select me-2 search-sido" @change="changeSido()">
+    <select
+      id="search-area"
+      class="form-select me-2 search-sido"
+      @change="changeSido()"
+    >
       <option value="0" selected>시도선택</option>
       <option v-for="sido in sidoList" :value="sido.sidoCode">
         {{ sido.sidoName }}
       </option>
     </select>
-    <select id="search-sub-area" class="form-select me-2 search-gugun" @change="setGugun()">
+    <select
+      id="search-sub-area"
+      class="form-select me-2 search-gugun"
+      @change="setGugun()"
+    >
       <option value="0" selected>구군선택</option>
       <option v-for="gugun in gugunList" :value="gugun.gugunCode">
         {{ gugun.gugunName }}
@@ -116,7 +124,10 @@ const attrlist = async () => {
       @change="setType()"
     >
       <option value="0" selected>관광지 유형</option>
-      <option v-for="contentType in contentTypeList" :value="contentType.contentTypeId">
+      <option
+        v-for="contentType in contentTypeList"
+        :value="contentType.contentTypeId"
+      >
         {{ contentType.contentTypeName }}
       </option>
     </select>
@@ -140,7 +151,24 @@ const attrlist = async () => {
   <!-- <div id="map" class="row col-12 my-3 rounded ms-1" style="height: 500px"></div> -->
   <!-- kakao map end -->
   <div class="row col-12 mt-2 ms-1 card-table"></div>
-  <VKakaoMapDetail :attractions="attrList" style="width: 80%" />
+  <VKakaoMapSearch :attractions="attrList" style="width: 80%" />
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">이름</th>
+        <th scope="col">주소</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(attraction, index) in attrList" :key="index">
+        <td>{{ index + 1 }}</td>
+        <td>{{ attraction.title }}</td>
+        <td>{{ attraction.addr1 }}</td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 
 <style scoped></style>

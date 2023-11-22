@@ -3,7 +3,6 @@ import { ref, onMounted, watch } from "vue";
 var map;
 const positions = ref([]);
 const markers = ref([]);
-const lines = ref([]);
 const props = defineProps({ attractions: Array });
 
 onMounted(() => {
@@ -44,33 +43,30 @@ const initMap = () => {
   });
   if (positions.value.length !== 0) {
     loadMarkers();
-    loadLines();
   }
 };
 
-const loadLines = () => {
-  lines.value = [];
+watch(
+  () => props.attractions.value,
+  () => {
+    console.log("2마커 어디감");
+    positions.value = [];
+    if (window.kakao && window.kakao.maps) {
+      props.attractions.forEach((attraction) => {
+        let obj = {};
+        obj.latlng = new kakao.maps.LatLng(
+          attraction.latitude,
+          attraction.longitude
+        );
+        obj.title = attraction.title;
 
-  for (var i = 0; i < positions.value.length; i++) {
-    var linePath;
-    const position = positions.value[i];
-
-    if (i != 0) {
-      linePath = [positions.value[i - 1].latlng, positions.value[i].latlng];
+        positions.value.push(obj);
+      });
+      loadMarkers();
     }
-
-    var drawLine = new kakao.maps.Polyline({
-      map: map,
-      path: linePath,
-      strokeWeight: 2,
-      strokeColor: "#db4040",
-      strokeOpacity: 1,
-      strokeStyle: "solid",
-    });
-    drawLine.setMap(map);
-    lines.value.push(drawLine);
-  }
-};
+  },
+  { deep: true }
+);
 
 const makeHtmlElement = function (tagName, ...attr) {
   const element = document.createElement(tagName);
