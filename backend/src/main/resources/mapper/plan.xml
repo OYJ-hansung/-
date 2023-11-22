@@ -54,17 +54,44 @@
 	</resultMap>
 
 
-	<sql id="search">
-		<if test='word !=null'>
-			where p.plan_name like concat('%', #{word}, '%')
-			or p.plan_detail like concat('%', #{word}, '%')
-			or p.plan_id in (select ttp.plan_id
-			from tag_to_plan ttp join tag t
-			on ttp.tag_id = t.tag_id
-			where t.tag_name like concat('%', #{word}, '%')
-			)
-		</if>
-	</sql>
+    <sql id="search">
+        <if test='word !=null'>
+            where m.is_Del=0 and (p.plan_name like concat('%', #{word}, '%')
+            or p.plan_detail like concat('%', #{word}, '%')
+            or p.plan_id in (select ttp.plan_id
+                from tag_to_plan ttp join tag t
+                on ttp.tag_id = t.tag_id
+                where t.tag_name like concat('%', #{word}, '%')
+                )
+            )
+        </if>
+    </sql>
+        
+    <!-- </sql>
+    <select id="planList" parameterType="planParamDto"
+        resultMap="plan">
+        select plan_id, user_id, plan_name, start_date, end_date, reg_date,
+        plan_detail, img, shared
+            where p.plan_name like concat('%', #{word}, '%')
+            or p.plan_detail like concat('%', #{word}, '%')
+            or p.plan_id in (select ttp.plan_id
+                from tag_to_plan ttp join tag t
+                on ttp.tag_id = t.tag_id
+                where t.tag_name like concat('%', #{word}, '%')
+                )
+        </if>
+    </sql> -->
+    
+    <select id="planList" parameterType="planParamDto" resultMap="plan">
+        select p.plan_id, p.user_id, p.plan_name, p.start_date, p.end_date, p.reg_date, p.plan_detail, p.img, if(f.user_id = #{userId}, true, false) as isfavorite, p.shared, m.is_del
+        from plan p left join favorite f
+		on p.plan_id = f.plan_id
+		left join members m
+		on p.user_id = m.user_id
+        <include refid="search"></include>
+        group by p.plan_id, f.user_id;
+        <!-- limit #{start}, #{listsize} -->
+    </select>
 
 	<!-- </sql> <select id="planList" parameterType="planParamDto" resultMap="plan"> 
 		select plan_id, user_id, plan_name, start_date, end_date, reg_date, plan_detail, 

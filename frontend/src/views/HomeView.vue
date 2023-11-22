@@ -33,6 +33,13 @@ const searchInput = () => {
   searchRef.value.focus();
 };
 
+const searchTag = (t) => {
+  console.log(t);
+  sstore.word = t;
+  sstore.isSearch = true;
+  router.push({ name: "planlist" });
+};
+
 onMounted(() => {
   getHotTags();
   sstore.isMy = false;
@@ -67,7 +74,7 @@ onMounted(() => {
       v-for="(tag, index) in hotTags"
       :key="index"
     >
-      # {{ tag.tagName }}
+      <p @click="searchTag(tag.tagName)"># {{ tag.tagName }}</p>
     </div>
   </div>
 
