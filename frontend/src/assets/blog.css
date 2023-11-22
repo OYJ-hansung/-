@@ -1,16 +1,25 @@
 /* stylelint-disable selector-list-comma-newline-after */
+/* 
+@import "bootstrap/dist/css/bootstrap.min.css";
+@font-face {
+  font-family: "NanumBarunpen";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumBarunpen.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+} */
 
-@import url("https://fonts.googleapis.com/css2?family=Ubuntu&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500;600&display=swap");
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: "Noto Sans KR", sans-serif;
 }
 
 body {
   padding: 10px;
-  font-family: "Ubuntu", sans-serif;
 }
 
 .blog-header {
@@ -19,8 +28,9 @@ body {
 }
 
 .blog-header-logo {
-  font-family: "Playfair Display", Georgia, "Times New Roman",
-    serif /*rtl:Amiri, Georgia, "Times New Roman", serif*/;
+  /* font-family: "Playfair Display", Georgia, "Times New Roman",
+    serif; */
+  /*rtl:Amiri, Georgia, "Times New Roman", serif*/
   font-size: 2.25rem;
 }
 
@@ -28,15 +38,15 @@ body {
   text-decoration: none;
 }
 
-h1,
+/* h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
   font-family: "Playfair Display", Georgia, "Times New Roman",
-    serif /*rtl:Amiri, Georgia, "Times New Roman", serif*/;
-}
+    serif;
+} */
 
 .display-4 {
   font-size: 2.5rem;

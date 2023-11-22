@@ -72,7 +72,7 @@ onMounted(() => {
 <template>
   <div class="row g-5">
     <div class="col-md-12">
-      <h3 class="pb-4 mb-4 fst-italic border-bottom">내 마음대로 여행코스!!!</h3>
+      <h3 class="pb-4 mb-4 border-bottom">내 마음대로 여행코스!!!</h3>
       <div class="row g-5">
         <div class="col-md-12">
           <div class="card shadow-sm">
@@ -220,7 +220,6 @@ body {
   display: inline-block;
   padding: 15px 30px;
   border-radius: 15px;
-  font-family: "paybooc-Light", sans-serif;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
   text-decoration: none;
   font-weight: 600;
