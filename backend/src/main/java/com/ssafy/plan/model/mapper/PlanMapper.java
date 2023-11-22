@@ -23,10 +23,12 @@ public interface PlanMapper {
 	void deletePlan(int planId) throws SQLException;
 
 	TagDto getTag(String tagName) throws SQLException;
+	List<Integer> getCurrentTagList(int planId) throws SQLException;
 	void addTag(TagDto tagDto) throws SQLException;
-	void deleteTagToPlan(int planId) throws SQLException;
+	void deleteTagToPlan(TagToPlanDto tagToPlanDto) throws SQLException;
 	void addTagToPlan(TagToPlanDto tagToPlanDto) throws SQLException;
 	void raiseTagCount(int tagId) throws SQLException;
+	void decreaseTagCount(int tagId) throws SQLException;
 	List<TagDto> hotTagList() throws SQLException;
 
 	List<TagDto> searchTag(String tagName) throws SQLException;

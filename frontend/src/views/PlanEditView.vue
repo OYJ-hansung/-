@@ -26,6 +26,19 @@ const tagList = ref([]);
 
 const isMyPlan = sstore.isMy;
 
+// 날짜
+const inputDate = ref({
+  start: null,
+  end: null,
+});
+
+const getFormatDate = (date) => {
+  const YYYY = String(date.getFullYear());
+  const MM = String(date.getMonth() + 1 >= 10 ? date.getMonth() + 1 : "0" + (date.getMonth() + 1));
+  const dd = String(date.getDate() >= 10 ? date.getDate() : "0" + date.getDate());
+  return YYYY + "-" + MM + "-" + dd;
+};
+
 const tagContent = ref("");
 const tagSearchResult = ref([]);
 
@@ -45,13 +58,9 @@ const deletePlace = function (index) {
 
 const searchAttraction = async () => {
   await api
-    .post(
-      `${import.meta.env.VITE_VUE_API_URL}/attraction/search`,
-      searchWord.value,
-      {
-        headers: { "Content-Type": "application/text" },
-      }
-    )
+    .post(`${import.meta.env.VITE_VUE_API_URL}/attraction/search`, searchWord.value, {
+      headers: { "Content-Type": "application/text" },
+    })
     .then(({ data }) => {
       searchResult.value = data;
       console.log(searchResult.value);
@@ -98,8 +107,8 @@ const editPlan = async () => {
     .put(`${import.meta.env.VITE_VUE_API_URL}/plan`, {
       planId: planId.value,
       planName: planName.value,
-      startDate: startDate.value,
-      endDate: endDate.value,
+      startDate: getFormatDate(inputDate.value.start),
+      endDate: getFormatDate(inputDate.value.end),
       planDetail: planDetail.value,
       attrInfoList: attrInfoList.value,
       tagList: tagList.value,
@@ -118,11 +127,15 @@ const initInfo = async () => {
     .then(({ data }) => {
       plan.value = data;
       planName.value = plan.value.planName;
-      startDate.value = plan.value.startDate;
-      endDate.value = plan.value.endDate;
+      inputDate.value.start = new Date(plan.value.startDate);
+      inputDate.value.end = new Date(plan.value.endDate);
       planDetail.value = plan.value.planDetail;
       tagList.value = plan.value.tagList;
       attrInfoList.value = plan.value.attrInfoList;
+      console.log("시작일");
+      console.log(inputDate.value.start);
+      console.log("마지막일");
+      console.log(inputDate.value.end);
     })
     .catch((e) => {
       console.log(e);
@@ -158,7 +171,7 @@ onMounted(() => {
                     :placeholder="planName"
                     v-model="planName"
                   />
-                  <h5>시작일</h5>
+                  <!-- <h5>시작일</h5>
                   <div>
                     <input
                       type="text"
@@ -175,13 +188,17 @@ onMounted(() => {
                     id="endDate"
                     :placeholder="endDate"
                     v-model="endDate"
-                  />
+                  /> -->
+
+                  <div class="input-group mb-3">
+                    <VDatePicker v-model.range="inputDate" mode="date" style="width: 50%" />
+                  </div>
+
                   <h5>세부내용</h5>
                   <textarea
                     class="form-control mb-2"
                     id="planDetail"
                     rows="3"
-                    :placeholder="planDetail"
                     v-model="planDetail"
                   ></textarea>
                   <!-- <h4>[ 태그 ]</h4>
@@ -218,21 +235,13 @@ onMounted(() => {
 
                     <div>
                       <ul
-                        v-if="
-                          tagSearchResult.length === 0 && tagContent.length != 0
-                        "
+                        v-if="tagSearchResult.length === 0 && tagContent.length != 0"
                         class="list-group"
                       >
-                        <li class="list-group-item" @click="addTag()">
-                          직접 태그 추가하기
-                        </li>
+                        <li class="list-group-item" @click="addTag()">직접 태그 추가하기</li>
                       </ul>
 
-                      <ul
-                        class="list-group"
-                        v-for="(tag, index) in tagSearchResult"
-                        :key="index"
-                      >
+                      <ul class="list-group" v-for="(tag, index) in tagSearchResult" :key="index">
                         <li class="list-group-item" @click="addTag()">
                           {{ tag.tagName }}
                         </li>
@@ -242,11 +251,7 @@ onMounted(() => {
 
                   <div
                     class="mb-4 row"
-                    style="
-                      float: left;
-                      justify-content: space-between;
-                      display: flex;
-                    "
+                    style="float: left; justify-content: space-between; display: flex"
                     v-for="(tag, index) in tagList"
                     :key="index"
                   >
@@ -294,11 +299,7 @@ onMounted(() => {
                       class="overflow-y-scroll h-100 bg-body-tertiary p-2 rounded-2"
                       style="max-height: 800px"
                     >
-                      <ul
-                        class="list-group"
-                        v-for="(place, index) in searchResult"
-                        :key="index"
-                      >
+                      <ul class="list-group" v-for="(place, index) in searchResult" :key="index">
                         <a
                           @click="markPlaceOnMap(place)"
                           class="list-group-item list-group-item-action"
@@ -313,9 +314,7 @@ onMounted(() => {
                             <!-- </div> -->
                             <!-- <div class="col-md-4 align-items-center"> -->
                             <div @click="addPlace(place)" aria-current="true">
-                              <div class="align-middle blue">
-                                여행계획에 추가
-                              </div>
+                              <div class="align-middle blue">여행계획에 추가</div>
                             </div>
                             <!-- </div> -->
                           </div>
@@ -365,9 +364,7 @@ onMounted(() => {
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">
-                        수정하기
-                      </h1>
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">수정하기</h1>
                       <button
                         type="button"
                         class="btn-close"
@@ -377,11 +374,7 @@ onMounted(() => {
                     </div>
                     <div class="modal-body">정말 수정하시겠습니까?</div>
                     <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         아니요
                       </button>
                       <a

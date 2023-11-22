@@ -4,268 +4,277 @@
 
 <mapper namespace="com.ssafy.plan.model.mapper.PlanMapper">
 
-    <resultMap type="planDto" id="plan">
-        <result column="plan_id" property="planId" />
-        <result column="user_id" property="userId" />
-        <result column="plan_name" property="planName" />
-        <result column="start_date" property="startDate" />
-        <result column="end_date" property="endDate" />
-        <result column="reg_date" property="regDate" />
-        <result column="plan_detail" property="planDetail" />
-        <result column="img" property="img" />
-        <result column="shared" property="shared" />
-        <result column="isfavorite" property="isFavorite" />
-    </resultMap>
+	<resultMap type="planDto" id="plan">
+		<result column="plan_id" property="planId" />
+		<result column="user_id" property="userId" />
+		<result column="plan_name" property="planName" />
+		<result column="start_date" property="startDate" />
+		<result column="end_date" property="endDate" />
+		<result column="reg_date" property="regDate" />
+		<result column="plan_detail" property="planDetail" />
+		<result column="img" property="img" />
+		<result column="shared" property="shared" />
+		<result column="isfavorite" property="isFavorite" />
+	</resultMap>
 
-    <resultMap type="tagDto" id="tag">
-        <result column="tag_id" property="tagId" />
-        <result column="tag_name" property="tagName" />
-    </resultMap>
+	<resultMap type="tagDto" id="tag">
+		<result column="tag_id" property="tagId" />
+		<result column="tag_name" property="tagName" />
+	</resultMap>
 
-    <resultMap type="favoriteDto" id="favorite">
-        <result column="favorite_id" property="favoriteId" />
-        <result column="plan_id" property="planId" />
-        <result column="user_id" property="userId" />
-    </resultMap>
+	<resultMap type="favoriteDto" id="favorite">
+		<result column="favorite_id" property="favoriteId" />
+		<result column="plan_id" property="planId" />
+		<result column="user_id" property="userId" />
+	</resultMap>
 
-    <resultMap type="planDto" id="viewPlans" extends="plan">
-        <collection property="attrInfoList" column="plan_id"
-            javaType="list" ofType="attractionInfoDto" select="getAttrInfoList" />
-        <collection property="tagList" column="plan_id"
-            javaType="list" ofType="tagDto" select="getTagList" />
-    </resultMap>
+	<resultMap type="planDto" id="viewPlans" extends="plan">
+		<collection property="attrInfoList" column="plan_id"
+			javaType="list" ofType="attractionInfoDto" select="getAttrInfoList" />
+		<collection property="tagList" column="plan_id"
+			javaType="list" ofType="tagDto" select="getTagList" />
+	</resultMap>
 
-    <resultMap type="attractionInfoDto" id="attr">
-        <result column="addr1" property="addr1" />
-        <result column="addr2" property="addr2" />
-        <result column="content_id" property="contentId" />
-        <result column="content_type_id" property="contentTypeId" />
-        <result column="first_image" property="firstImage" />
-        <result column="first_image2" property="firstImage2" />
-        <result column="gugun_code" property="gugunCode" />
-        <result column="latitude" property="latitude" />
-        <result column="longitude" property="longitude" />
-        <result column="mlevel" property="mlevel" />
-        <result column="readcount" property="readcount" />
-        <result column="sido_code" property="sidoCode" />
-        <result column="tel" property="tel" />
-        <result column="title" property="title" />
-        <result column="zipcode" property="zipcode" />
-    </resultMap>
+	<resultMap type="attractionInfoDto" id="attr">
+		<result column="addr1" property="addr1" />
+		<result column="addr2" property="addr2" />
+		<result column="content_id" property="contentId" />
+		<result column="content_type_id" property="contentTypeId" />
+		<result column="first_image" property="firstImage" />
+		<result column="first_image2" property="firstImage2" />
+		<result column="gugun_code" property="gugunCode" />
+		<result column="latitude" property="latitude" />
+		<result column="longitude" property="longitude" />
+		<result column="mlevel" property="mlevel" />
+		<result column="readcount" property="readcount" />
+		<result column="sido_code" property="sidoCode" />
+		<result column="tel" property="tel" />
+		<result column="title" property="title" />
+		<result column="zipcode" property="zipcode" />
+	</resultMap>
 
 
-    <sql id="search">
-        <if test='word !=null'>
-            where p.plan_name like concat('%', #{word}, '%')
-            or p.plan_detail like concat('%', #{word}, '%')
-            or p.plan_id in (select ttp.plan_id
-                from tag_to_plan ttp join tag t
-                on ttp.tag_id = t.tag_id
-                where t.tag_name like concat('%', #{word}, '%')
-                )
-        </if>
-    </sql>
-        
-    <!-- </sql>
-    <select id="planList" parameterType="planParamDto"
-        resultMap="plan">
-        select plan_id, user_id, plan_name, start_date, end_date, reg_date,
-        plan_detail, img, shared
-            where p.plan_name like concat('%', #{word}, '%')
-            or p.plan_detail like concat('%', #{word}, '%')
-            or p.plan_id in (select ttp.plan_id
-                from tag_to_plan ttp join tag t
-                on ttp.tag_id = t.tag_id
-                where t.tag_name like concat('%', #{word}, '%')
-                )
-        </if>
-    </sql> -->
-    
-    <select id="planList" parameterType="planParamDto" resultMap="plan">
-        select p.plan_id, p.user_id, p.plan_name, p.start_date, p.end_date, p.reg_date, p.plan_detail, p.img, if(f.user_id = #{userId}, true, false) as isfavorite, p.shared
-        from plan p left join favorite f
-        on p.plan_id = f.plan_id
-        <include refid="search"></include>
-        group by p.plan_id, f.user_id;
-        
-        <!-- limit #{start}, #{listsize} -->
-    </select>
+	<sql id="search">
+		<if test='word !=null'>
+			where p.plan_name like concat('%', #{word}, '%')
+			or p.plan_detail like concat('%', #{word}, '%')
+			or p.plan_id in (select ttp.plan_id
+			from tag_to_plan ttp join tag t
+			on ttp.tag_id = t.tag_id
+			where t.tag_name like concat('%', #{word}, '%')
+			)
+		</if>
+	</sql>
 
-    <select id="planDetail" parameterType="int"
-        resultMap="viewPlans">
-        select plan_id, user_id, plan_name, start_date, end_date,
-        reg_date, plan_detail, img, shared
-        from plan
-        where plan_id = #{planId}
-    </select>
+	<!-- </sql> <select id="planList" parameterType="planParamDto" resultMap="plan"> 
+		select plan_id, user_id, plan_name, start_date, end_date, reg_date, plan_detail, 
+		img, shared where p.plan_name like concat('%', #{word}, '%') or p.plan_detail 
+		like concat('%', #{word}, '%') or p.plan_id in (select ttp.plan_id from tag_to_plan 
+		ttp join tag t on ttp.tag_id = t.tag_id where t.tag_name like concat('%', 
+		#{word}, '%') ) </if> </sql> -->
 
-    <select id="getAttrInfoList" resultMap="attr">
-        select addr1, addr2,
-        content_id, content_type_id, first_image, first_image2, gugun_code,
-        latitude, longitude, mlevel, readcount, sido_code, tel, title, zipcode
-        from attraction_info
-        where content_id in (
-        select pta.content_id
-        from plan_to_attr pta
-        where pta.plan_id= #{planId}
-        )
-    </select>
+	<select id="planList" parameterType="planParamDto"
+		resultMap="plan">
+		select p.plan_id, p.user_id, p.plan_name, p.start_date, p.end_date,
+		p.reg_date, p.plan_detail, p.img, if(f.user_id = #{userId}, true,
+		false) as isfavorite, p.shared
+		from plan p left join favorite f
+		on p.plan_id = f.plan_id
+		<include refid="search"></include>
+		group by p.plan_id, f.user_id;
 
-    <update id="shareMyPlan" parameterType="int">
-        update plan
-        set shared = if(shared=1,0,1)
-        where plan_id = #{planId}
-    </update>
-    
-    <select id="getShared" parameterType="int"
-        resultType="int">
-        SELECT shared
-        FROM plan
-        WHERE plan_id = #{planId}
-    </select>
-    
+		<!-- limit #{start}, #{listsize} -->
+	</select>
 
-    <select id="getTagList" resultMap="tag">
-        select tag_id,tag_name
-        from tag
-        where tag_id in (
-        select ttp.tag_id
-        from tag_to_plan ttp
-        where ttp.plan_id= #{planId}
-        )
-    </select>
+	<select id="planDetail" parameterType="int"
+		resultMap="viewPlans">
+		select plan_id, user_id, plan_name, start_date, end_date,
+		reg_date, plan_detail, img, shared
+		from plan
+		where plan_id = #{planId}
+	</select>
 
-    <select id="hotTagList" resultMap="tag">
-        select tag_id,tag_name
-        from tag
-        order by tag_cnt desc
-        limit 5
-    </select>
+	<select id="getAttrInfoList" resultMap="attr">
+		select addr1, addr2,
+		content_id, content_type_id, first_image, first_image2, gugun_code,
+		latitude, longitude, mlevel, readcount, sido_code, tel, title, zipcode
+		from attraction_info
+		where content_id in (
+		select pta.content_id
+		from plan_to_attr pta
+		where pta.plan_id= #{planId}
+		)
+	</select>
 
-    <insert id="writePlan" parameterType="planDto">
-        insert into plan (user_id, plan_name, start_date, end_date, reg_date,
-        plan_detail,img)
-        values (#{userId}, #{planName}, #{startDate},
-        #{endDate}, curdate(),#{planDetail},#{img})
-        <selectKey resultType="int" keyProperty="planId"
-            order="AFTER">
-            select last_insert_id()
-        </selectKey>
-    </insert>
+	<update id="shareMyPlan" parameterType="int">
+		update plan
+		set shared = if(shared=1,0,1)
+		where plan_id = #{planId}
+	</update>
+
+	<select id="getShared" parameterType="int" resultType="int">
+		SELECT shared
+		FROM plan
+		WHERE plan_id = #{planId}
+	</select>
+
+
+	<select id="getTagList" resultMap="tag">
+		select tag_id,tag_name
+		from tag
+		where tag_id in (
+		select ttp.tag_id
+		from tag_to_plan ttp
+		where ttp.plan_id= #{planId}
+		)
+	</select>
+
+	<select id="hotTagList" resultMap="tag">
+		select tag_id,tag_name
+		from tag
+		order by tag_cnt desc
+		limit 5
+	</select>
+
+	<insert id="writePlan" parameterType="planDto">
+		insert into plan (user_id, plan_name, start_date, end_date, reg_date,
+		plan_detail,img)
+		values (#{userId}, #{planName}, #{startDate},
+		#{endDate}, curdate(),#{planDetail},#{img})
+		<selectKey resultType="int" keyProperty="planId"
+			order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
 
 
 
-    <delete id="deletePlanToAttr" parameterType="int">
-        delete from plan_to_attr
-        where plan_id=#{planId}
-    </delete>
+	<delete id="deletePlanToAttr" parameterType="int">
+		delete from plan_to_attr
+		where plan_id=#{planId}
+	</delete>
 
-    <insert id="insertPlanToAttr" parameterType="java.util.Map">
-        INSERT INTO plan_to_attr(plan_id, content_id)
-        VALUES
-        <foreach collection="attrInfoList" item="attrInfo"
-            separator=",">
-            (#{planId}, #{attrInfo.contentId})
-        </foreach>
-    </insert>
+	<insert id="insertPlanToAttr" parameterType="java.util.Map">
+		INSERT INTO plan_to_attr(plan_id, content_id)
+		VALUES
+		<foreach collection="attrInfoList" item="attrInfo"
+			separator=",">
+			(#{planId}, #{attrInfo.contentId})
+		</foreach>
+	</insert>
 
-    <insert id="addTag" parameterType="tagDto">
-        insert into tag (tag_name)
-        values (#{tagName})
-        <selectKey resultType="int" keyProperty="tagId"
-            order="AFTER">
-            select last_insert_id()
-        </selectKey>
-    </insert>
-
-
-
-    <delete id="deleteTagToPlan" parameterType="int">
-        delete from tag_to_plan
-        where plan_id=#{planId}
-    </delete>
-
-    <insert id="addTagToPlan" parameterType="tagToPlanDto">
-        insert into tag_to_plan
-        (plan_id, tag_id)
-        values (#{planId},${tagId})
-    </insert>
-
-
-    <select id="getTag" parameterType="String" resultMap="tag">
-        select
-        tag_id, tag_name
-        from tag
-        where tag_name = #{tagName}
-    </select>
-
-    <select id="searchTag" parameterType="String" resultMap="tag">
-        select
-        tag_id, tag_name
-        from tag
-        where tag_name like concat('%', #{tagName},
-        '%')
-    </select>
-
-
-    <update id="raiseTagCount" parameterType="int">
-        update tag
-        set tag_cnt =
-        tag_cnt+1
-        where tag_id = #{tagId}
-    </update>
+	<insert id="addTag" parameterType="tagDto">
+		insert into tag (tag_name)
+		values (#{tagName})
+		<selectKey resultType="int" keyProperty="tagId"
+			order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
 
 
 
-    <!-- favorite -->
-    <insert id="addFavorite" parameterType="favoriteDto">
-        insert into favorite
-        (user_id, plan_id)
-        values (#{userId}, #{planId})
-    </insert> 
-    
-    <delete id="cancelFavorite" parameterType="favoriteDto">
-        delete from favorite
-        where user_id=#{userId} and plan_id=#{planId}
-    </delete>
+	<delete id="deleteTagToPlan" parameterType="tagToPlanDto">
+		delete from tag_to_plan
+		where plan_id=#{planId} and tag_id=#{tagId}
+	</delete>
 
-    <update id="modifyPlan" parameterType="planDto">
-        update plan
-        set
-        <if test='planName !=null'>
-            plan_name = #{planName}
-            <if
-                test='startDate !=null or endDate !=null or planDetail !=null or img !=null'>
-                ,
-            </if>
-        </if>
-        <if test='startDate !=null'>
-            start_date = #{startDate}
-            <if test='endDate !=null or planDetail !=null or img !=null'>
-                ,
-            </if>
-        </if>
-        <if test='endDate !=null'>
-            end_date = #{endDate}
-            <if test='planDetail !=null or img !=null'>
-                ,
-            </if>
-        </if>
-        <if test='planDetail !=null'>
-            plan_detail = #{planDetail}
-            <if test='img !=null'>
-                ,
-            </if>
-        </if>
-        <if test='img !=null'>
-            img = #{img}
-        </if>
-        where plan_id = #{planId}
-    </update>
+	<insert id="addTagToPlan" parameterType="tagToPlanDto">
+		insert into tag_to_plan
+		(plan_id, tag_id)
+		values (#{planId},${tagId})
+	</insert>
 
-    <delete id="deletePlan" parameterType="int">
-        delete from plan
-        where
-        plan_id = #{planId}
-    </delete>
+
+	<select id="getTag" parameterType="String" resultMap="tag">
+		select
+		tag_id, tag_name
+		from tag
+		where tag_name = #{tagName}
+	</select>
+
+	<select id="getCurrentTagList" parameterType="int" resultType="java.lang.Integer">
+		select
+		tag_id
+		from tag_to_plan
+		where plan_id = #{planId}
+	</select> 
+
+
+	<select id="searchTag" parameterType="String" resultMap="tag">
+		select
+		tag_id, tag_name
+		from tag
+		where tag_name like concat('%', #{tagName},
+		'%')
+	</select>
+
+
+	<update id="raiseTagCount" parameterType="int">
+		update tag
+		set tag_cnt =
+		tag_cnt+1
+		where tag_id = #{tagId}
+	</update>
+
+<update id="decreaseTagCount" parameterType="int">
+		update tag
+		set tag_cnt =
+		if(tag_cnt>1, tag_cnt-1,0)
+		where tag_id = #{tagId}
+	</update>
+
+
+
+	<!-- favorite -->
+	<insert id="addFavorite" parameterType="favoriteDto">
+		insert into favorite
+		(user_id, plan_id)
+		values (#{userId}, #{planId})
+	</insert>
+
+	<delete id="cancelFavorite" parameterType="favoriteDto">
+		delete from favorite
+		where user_id=#{userId} and plan_id=#{planId}
+	</delete>
+
+	<update id="modifyPlan" parameterType="planDto">
+		update plan
+		set
+		<if test='planName !=null'>
+			plan_name = #{planName}
+			<if
+				test='startDate !=null or endDate !=null or planDetail !=null or img !=null'>
+				,
+			</if>
+		</if>
+		<if test='startDate !=null'>
+			start_date = #{startDate}
+			<if test='endDate !=null or planDetail !=null or img !=null'>
+				,
+			</if>
+		</if>
+		<if test='endDate !=null'>
+			end_date = #{endDate}
+			<if test='planDetail !=null or img !=null'>
+				,
+			</if>
+		</if>
+		<if test='planDetail !=null'>
+			plan_detail = #{planDetail}
+			<if test='img !=null'>
+				,
+			</if>
+		</if>
+		<if test='img !=null'>
+			img = #{img}
+		</if>
+		where plan_id = #{planId}
+	</update>
+
+	<delete id="deletePlan" parameterType="int">
+		delete from plan
+		where
+		plan_id = #{planId}
+	</delete>
 </mapper>

@@ -72,19 +72,13 @@ onMounted(() => {
 <template>
   <div class="row g-5">
     <div class="col-md-12">
-      <h3 class="pb-4 mb-4 fst-italic border-bottom">
-        내 마음대로 여행코스!!!
-      </h3>
+      <h3 class="pb-4 mb-4 fst-italic border-bottom">내 마음대로 여행코스!!!</h3>
       <div class="row g-5">
         <div class="col-md-12">
           <div class="card shadow-sm">
             <div class="card-body">
               <div v-if="isMyPlan">
-                <button
-                  class="w-btn w-btn-blue"
-                  type="button"
-                  @click="shareMyPlan()"
-                >
+                <button class="w-btn w-btn-blue" type="button" @click="shareMyPlan()">
                   <div v-if="shared == 0">공유하기</div>
                   <div v-if="shared == 1">공유 취소하기</div>
                 </button>
@@ -103,15 +97,14 @@ onMounted(() => {
                     {{ plan.planName }}
                   </h2>
 
-                  <h6 class="card-subtitle mx-auto d-block mb-3">
-                    [{{ plan.userId }}]님
-                  </h6>
-                  <figcaption class="blockquote-footer mt-3">
-                    시작일: {{ plan.startDate }}
-                  </figcaption>
-                  <figcaption class="blockquote-footer">
-                    마지막일: {{ plan.endDate }}
-                  </figcaption>
+                  <h6 class="card-subtitle mx-auto d-block mb-3">[{{ plan.userId }}]님</h6>
+
+                  <span class="bold-text">- 여행 시작 날짜</span>
+                  {{ new Date(plan.startDate).toLocaleDateString() }}
+                  <br />
+                  <span class="bold-text">- 여행 마지막 날짜</span>
+                  {{ new Date(plan.endDate).toLocaleDateString() }}
+
                   <h4 class="box-title mt-5">[ 세부 내용 ]</h4>
                   <p class="card-text mb-5">
                     {{ plan.planDetail }}
@@ -120,19 +113,12 @@ onMounted(() => {
                   <h4>[ 태그 ]</h4>
                   <div
                     class="mb-4 row"
-                    style="
-                      float: left;
-                      justify-content: space-between;
-                      display: flex;
-                    "
+                    style="float: left; justify-content: space-between; display: flex"
                     v-for="(tag, index) in plan.tagList"
                     :key="index"
                   >
                     <div class="col-md-12">
-                      <button
-                        type="button"
-                        class="btn btn-primary rounded-pill m-1"
-                      >
+                      <button type="button" class="btn btn-primary rounded-pill m-1">
                         # {{ tag.tagName }}
                       </button>
                     </div>
@@ -185,9 +171,7 @@ onMounted(() => {
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">
-                        삭제하기
-                      </h1>
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">삭제하기</h1>
                       <button
                         type="button"
                         class="btn-close"
@@ -197,11 +181,7 @@ onMounted(() => {
                     </div>
                     <div class="modal-body">정말 삭제하시겠습니까?</div>
                     <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         아니요
                       </button>
                       <button
@@ -231,6 +211,9 @@ body {
   background: #1a233a;
 }
 
+.bold-text {
+  font-weight: bold;
+}
 .w-btn {
   position: relative;
   border: none;
