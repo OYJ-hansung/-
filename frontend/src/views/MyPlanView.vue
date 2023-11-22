@@ -10,6 +10,9 @@ const router = useRouter();
 const addPlan = () => {
   router.push({ path: "/addplan" });
 };
+const check = () => {
+  console.log(sstore.onlyShared);
+};
 
 onMounted(() => {
   sstore.isMy = true;
@@ -25,7 +28,16 @@ onMounted(() => {
           <b>여행계획추가</b>
         </button>
       </div>
-      <!-- <board-card-list :props="props"></board-card-list> -->
+      <div class="form-check form-check-inline d-flex justify-content-center m-3">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="favoriteCheckBox"
+          v-model="sstore.onlyShared"
+          @change="check($event)"
+        />
+        <label class="form-check-label ms-3" for="favoriteCheckBox">공유된 여행계획만</label>
+      </div>
       <board-card-list></board-card-list>
     </div>
   </div>

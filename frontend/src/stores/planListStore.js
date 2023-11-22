@@ -8,7 +8,8 @@ export const searchStore = defineStore("searchPiniaStore", {
     isMy: false,
     word: "",
     key: "planName",
-    onlyFavorite: false
+    onlyFavorite: false,
+    onlyShared: false
   }),
   getters: {
     getKeyWord: (state) => {

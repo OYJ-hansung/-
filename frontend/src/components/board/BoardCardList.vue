@@ -8,7 +8,10 @@ const sstore = searchStore();
 const ustore = userStore();
 const planList = ref([]);
 const onlyFavoriteList = ref([]);
+const onlySharedList = ref([]);
 const onlyFavoriteToggle = ref("");
+const onlySharedToggle = ref("");
+
 const boardlist = async () => {
   await api
     .post(`${import.meta.env.VITE_VUE_API_URL}/plan`, {
@@ -26,10 +29,13 @@ const boardlist = async () => {
       }
 
       onlyFavoriteList.value = planList.value.filter((plan) => {
-        console.log("하이", plan.isFavorite);
         return plan.isFavorite === true;
       });
-      console.log("onlyFavoriteList", onlyFavoriteList.value);
+      
+      onlySharedList.value = planList.value.filter((plan) => {
+        return plan.shared === 1;
+      });
+      console.log("onlySharedList", onlySharedList.value);
     })
     .catch((e) => {
       console.log(e);
@@ -41,7 +47,18 @@ watch(
   () => {
     if (sstore.onlyFavorite) {
       onlyFavoriteToggle.value = true;
+      onlySharedToggle.value = false;
     } else onlyFavoriteToggle.value = false;
+  }
+);
+
+watch(
+  () => sstore.onlyShared,
+  () => {
+    if (sstore.onlyShared) {
+      onlySharedToggle.value = true;
+      onlyFavoriteToggle.value = false;
+    } else onlySharedToggle.value = false;
   }
 );
 
@@ -52,7 +69,7 @@ onMounted(() => {
 
 <template>
   <div class="col-md-12">
-    <div v-if="!onlyFavoriteToggle" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    <div v-if="!onlyFavoriteToggle && !onlySharedToggle" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
       <div v-for="(plan, index) in planList" :key="index">
         <board-card :plan="plan"></board-card>
       </div>
@@ -61,6 +78,14 @@ onMounted(() => {
     <div class="col-md-12">
       <div v-if="onlyFavoriteToggle" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         <div v-for="(plan, index) in onlyFavoriteList" :key="index">
+          <board-card :plan="plan"></board-card>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <div v-if="onlySharedToggle" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div v-for="(plan, index) in onlySharedList" :key="index">
           <board-card :plan="plan"></board-card>
         </div>
       </div>
