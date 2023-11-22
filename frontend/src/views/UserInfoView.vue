@@ -1,19 +1,22 @@
 <script setup>
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import { userStore } from "@/stores/userStore";
 import api from "axios";
 
 const router = useRouter();
+const ustore = userStore();
+const isChangePass = ref(false);
 
 const userInfo = ref({
-  userId: "",
-  userName: "",
-  userPassword: "",
-  emailId: "",
-  emailDomain: "",
+  userId: ustore.userInfo.userId,
+  userName: ustore.userInfo.userName,
+  userPassword: ustore.userInfo.userPassword,
+  emailId: ustore.userInfo.emailId,
+  emailDomain: ustore.userInfo.emailDomain
 });
 
-const register = async () => {
+const modify = async () => {
   await api
     .post(`${import.meta.env.VITE_VUE_API_URL}/members/`, {
       userId: userInfo.value.userId,
@@ -29,6 +32,10 @@ const register = async () => {
       console.log(e);
     });
 };
+
+const changePassword = ()=>{
+  isChangePass.value = true
+}
 </script>
 
 <template>
@@ -36,80 +43,65 @@ const register = async () => {
     <div class="container d-flex justify-content-center">
       <main>
         <div class="py-5 text-center">
-          <h2>회원가입</h2>
+          <h2>회원정보</h2>
         </div>
 
         <div class="row">
           <div class="col-md-7 col-lg-12">
-            <form class="needs-validation" novalidate>
+            <form >
               <div class="row g-3">
                 <div class="col-sm-12 mb-3">
                   <label for="firstName" class="form-label">아이디</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="id"
-                    placeholder=""
-                    v-model="userInfo.userId"
-                    required
-                  />
-                  <div class="invalid-feedback">Valid first name is required.</div>
+                  <input type="text" class="form-control" id="id" placeholder="" v-model="userInfo.userId" disabled />
                 </div>
               </div>
               <div class="row g-3">
                 <div class="col-sm-12 mb-3">
                   <label for="firstName" class="form-label">이름</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="name"
-                    placeholder=""
-                    v-model="userInfo.userName"
-                    required
-                  />
-                  <div class="invalid-feedback">Valid first name is required.</div>
+                  <input type="text" class="form-control" id="name" placeholder="" v-model="userInfo.userName" disabled />
                 </div>
               </div>
               <div class="row g-3">
                 <div class="col-sm-12 mb-3">
                   <label for="firstName" class="form-label">비밀번호</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="password"
-                    placeholder=""
-                    v-model="userInfo.userPassword"
-                    required
-                  />
-                  <div class="invalid-feedback">Valid first name is required.</div>
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="******" disabled>
+                    <button class="btn btn-primary" @click="changePassword()">변경하기</button>
+                  </div>
                 </div>
               </div>
+
+              <div v-if="isChangePass" class="row g-3">
+                <div class="col-sm-12 mb-3">
+                  <label for="firstName" class="form-label">새로운 비밀번호</label>
+                  <input type="text" class="form-control" id="name" placeholder="" v-model="userInfo.userName" disabled />
+                </div>
+              </div>
+
+              <div v-if="isChangePass" class="row g-3">
+                <div class="col-sm-12 mb-3">
+                  <label for="firstName" class="form-label">비밀번호 확인</label>
+                  <input type="text" class="form-control" id="name" placeholder="" v-model="userInfo.userName" disabled />
+                </div>
+              </div>
+
+
               <div class="row g-3">
                 <div class="col-sm-12">
                   <label for="firstName" class="form-label">이메일</label>
                   <div class="input-group mb-3">
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="아이디"
-                      aria-label="emailId"
-                      v-model="userInfo.emailId"
-                    />
+                    <input type="text" class="form-control" placeholder="아이디" aria-label="emailId"
+                      v-model="userInfo.emailId" />
                     <span class="input-group-text">@</span>
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="도메인"
-                      aria-label="emailDomain"
-                      v-model="userInfo.emailDomain"
-                    />
+                    <input type="text" class="form-control" placeholder="도메인" aria-label="emailDomain"
+                      v-model="userInfo.emailDomain" />
                   </div>
                 </div>
               </div>
             </form>
           </div>
         </div>
-        <button class="w-100 btn btn-primary btn-lg" @click="register">회원가입</button>
+        <button class="w-100 btn btn-primary btn-lg" @click="register">저장</button>
       </main>
     </div>
   </body>
