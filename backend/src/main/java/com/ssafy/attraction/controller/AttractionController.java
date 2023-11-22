@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.attraction.model.AttractionInfoDto;
 import com.ssafy.util.ResultDto;
 import com.ssafy.attraction.model.AttractionSearchDto;
+import com.ssafy.attraction.model.GugunDto;
 import com.ssafy.attraction.model.service.AttractionService;
+import com.ssafy.plan.model.TagDto;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,17 +49,31 @@ public class AttractionController {
 		logger.debug("list call");
 		try {
 			List<AttractionInfoDto> list = attractionService.attractionList(attractionSearchDto);
-			list=attractionSort(list, attractionSearchDto.getSortType());
-			//System.out.println("list: "+list);
+			list = attractionSort(list, attractionSearchDto.getSortType());
+			// System.out.println("list: "+list);
 			if (list != null && !list.isEmpty()) {
 				return new ResponseEntity<List<AttractionInfoDto>>(list, HttpStatus.OK);
 			} else {
-				
+
 				return new ResponseEntity<ResultDto>(new ResultDto("fail", "NO RESULT"), HttpStatus.OK);
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return new ResponseEntity<ResultDto>(new ResultDto("fail", "NO LIST"), HttpStatus.OK);
+		}
+	}
+
+	@ApiOperation(value = "구군 검색", notes = "선택한 시도의 구군 목록을 반환해 줍니다.")
+	@ApiResponses({ @ApiResponse(code = 200, message = "구군 목록 OK!!"), @ApiResponse(code = 404, message = "페이지 없어!!"),
+			@ApiResponse(code = 500, message = "서버에러!!") })
+	@GetMapping(value = "/search/{sidoCode}")
+	public ResponseEntity<?> getGugunList(@PathVariable("sidoCode") int sidoCode) {
+		logger.debug("getGugunList call");
+		try {
+			List<GugunDto> gugunList = attractionService.getGugunList(sidoCode);
+			return new ResponseEntity<List<GugunDto>>(gugunList, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<ResultDto>(new ResultDto("fail", "구군 목록 조회 실패"), HttpStatus.OK);
 		}
 	}
 
@@ -78,12 +96,12 @@ public class AttractionController {
 			return new ResponseEntity<ResultDto>(new ResultDto("fail", "NO LIST"), HttpStatus.OK);
 		}
 	}
-	
+
 	private List<AttractionInfoDto> attractionSort(List<AttractionInfoDto> attractions, int search_sort) {
 
 		if (search_sort == 0) {
 			return attractions;
-		} else if (search_sort == 1) { //거리순
+		} else if (search_sort == 1) { // 거리순
 
 			// 기준이 멀티캠퍼스
 			double pointX = 37.501328668708;
@@ -106,13 +124,13 @@ public class AttractionController {
 				}
 			}
 
-		}else if (search_sort == 2) { //이름순
+		} else if (search_sort == 2) { // 이름순
 			for (int i = 0; i < attractions.size() - 1; i++) {
 				for (int j = 0; j < attractions.size() - 1 - i; j++) {
 					String stringj = attractions.get(j).getTitle();
 					String stringj1 = attractions.get(j + 1).getTitle();
-					
-					if ( stringj.compareTo(stringj1) > 0) {
+
+					if (stringj.compareTo(stringj1) > 0) {
 						attractions.add(j, attractions.get(j + 1));
 						attractions.remove(j + 2);
 					}
@@ -122,7 +140,6 @@ public class AttractionController {
 
 		return attractions;
 	}
-	
 
 	public static double distanceHaversine(double x1, double y1, double x2, double y2) {
 		double distance;
@@ -141,6 +158,5 @@ public class AttractionController {
 
 		return distance;
 	}
-	
 
 }

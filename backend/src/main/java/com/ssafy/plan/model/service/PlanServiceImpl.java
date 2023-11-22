@@ -1,3 +1,5 @@
+
+
 package com.ssafy.plan.model.service;
 
 import java.util.HashMap;
@@ -87,7 +89,6 @@ public class PlanServiceImpl implements PlanService {
 	}
 
 	@Override
-	@Transactional
 	public void modifyPlan(PlanDto planDto) throws Exception {
 
 		planMapper.modifyPlan(planDto);
@@ -99,9 +100,16 @@ public class PlanServiceImpl implements PlanService {
 		planMapper.deletePlanToAttr(planDto.getPlanId());
 		planMapper.insertPlanToAttr(map);
 
-		int planId = planDto.getPlanId();
 
+
+		int planId = planDto.getPlanId();
 		List<TagDto> newTagList = planDto.getTagList();
+		System.out.println("newTagList"+newTagList);
+		for(TagDto tag : newTagList){
+			System.out.println("tagId:"+tag.getTagId());
+			System.out.println("tagName:"+tag.getTagName());
+		}
+
 		Set<Integer> newTagSet = new HashSet();
 		for (TagDto tagDto : newTagList) {
 			newTagSet.add(tagDto.getTagId());
@@ -123,14 +131,17 @@ public class PlanServiceImpl implements PlanService {
 		//추가된 태그 처리
 		for (TagDto tagDto : newTagList) {
 			TagDto tag = planMapper.getTag(tagDto.getTagName());
-			System.out.println("태그:" + tagDto.getTagName());
-			if (tag == null) { // 태그리스트에 없는 태그라면 태그 추가
+			if (tag==null) { // 태그리스트에 없는 태그라면 태그 추가
 				System.out.println("하이");
 				System.out.println("기존에 없는 태그입니다");
-				planMapper.addTag(tagDto);
+				System.out.println("아아아악"+tagDto.getTagName());
+				TagDto newTag = new TagDto();
+				newTag.setTagName(tagDto.getTagName());
+				planMapper.addTag(newTag);
+
 				TagToPlanDto tagToPlanDto = new TagToPlanDto();
-				tagToPlanDto.setTagId(tagDto.getTagId());
-				tagToPlanDto.setPlanId(planDto.getPlanId());
+				tagToPlanDto.setTagId(newTag.getTagId());
+				tagToPlanDto.setPlanId(planId);
 				planMapper.addTagToPlan(tagToPlanDto);
 			} else if (!originalTagList.contains(tag.getTagId())) { // 태그리스트에 있고, 추가된 태그라면 카운트 증가
 				System.out.println("하이2");
@@ -139,7 +150,7 @@ public class PlanServiceImpl implements PlanService {
 
 				TagToPlanDto tagToPlanDto = new TagToPlanDto();
 				tagToPlanDto.setTagId(tag.getTagId());
-				tagToPlanDto.setPlanId(planDto.getPlanId());
+				tagToPlanDto.setPlanId(planId);
 				planMapper.addTagToPlan(tagToPlanDto);
 			}
 
@@ -185,3 +196,4 @@ public class PlanServiceImpl implements PlanService {
 		return planMapper.hotPlanList();
 	}
 }
+

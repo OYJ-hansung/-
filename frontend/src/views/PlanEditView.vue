@@ -23,8 +23,9 @@ const startDate = ref("");
 const endDate = ref("");
 const attrInfoList = ref([]);
 const tagList = ref([]);
-
-const isMyPlan = sstore.isMy;
+const tagContent = ref("");
+const tagSearchResult = ref([]);
+const sameTag = ref(false);
 
 // 날짜
 const inputDate = ref({
@@ -34,13 +35,16 @@ const inputDate = ref({
 
 const getFormatDate = (date) => {
   const YYYY = String(date.getFullYear());
-  const MM = String(date.getMonth() + 1 >= 10 ? date.getMonth() + 1 : "0" + (date.getMonth() + 1));
-  const dd = String(date.getDate() >= 10 ? date.getDate() : "0" + date.getDate());
+  const MM = String(
+    date.getMonth() + 1 >= 10
+      ? date.getMonth() + 1
+      : "0" + (date.getMonth() + 1)
+  );
+  const dd = String(
+    date.getDate() >= 10 ? date.getDate() : "0" + date.getDate()
+  );
   return YYYY + "-" + MM + "-" + dd;
 };
-
-const tagContent = ref("");
-const tagSearchResult = ref([]);
 
 const addPlace = (place) => {
   attrInfoList.value.push(place);
@@ -58,9 +62,13 @@ const deletePlace = function (index) {
 
 const searchAttraction = async () => {
   await api
-    .post(`${import.meta.env.VITE_VUE_API_URL}/attraction/search`, searchWord.value, {
-      headers: { "Content-Type": "application/text" },
-    })
+    .post(
+      `${import.meta.env.VITE_VUE_API_URL}/attraction/search`,
+      searchWord.value,
+      {
+        headers: { "Content-Type": "application/text" },
+      }
+    )
     .then(({ data }) => {
       searchResult.value = data;
       console.log(searchResult.value);
@@ -76,12 +84,24 @@ const deleteTag = (tag) => {
   var planFilter = [];
   planFilter = tagList.value.filter((t) => t != tag);
   tagList.value = planFilter;
+  console.log("태그 삭제됨");
+  console.log(tagList.value);
 };
 
 const addTag = () => {
-  plan.value.tagList.push({ tagName: tagContent.value });
+  tagList.value.push({ tagId: -1, tagName: tagContent.value });
   tagContent.value = "";
   tagSearchResult.value = "";
+  console.log("addTag 호출");
+  console.log(tagList.value);
+};
+
+const addTagLike = (tag) => {
+  tagList.value.push({ tagId: tag.tagId, tagName: tag.tagName });
+  tagContent.value = "";
+  tagSearchResult.value = "";
+  console.log("addTagLike 호출");
+  console.log(tagList.value);
 };
 
 const onTagInput = (event) => {
@@ -93,7 +113,14 @@ async function searchTag() {
   await api
     .get(`${import.meta.env.VITE_VUE_API_URL}/plan/tag/${tagContent.value}`)
     .then(({ data }) => {
+      sameTag.value = false;
       tagSearchResult.value = data;
+      tagSearchResult.value.forEach((tag) => {
+        if (tag.tagName === tagContent.value) {
+          console.log("완전 같은 태그");
+          sameTag.value = true;
+        }
+      });
     })
     .catch((e) => {
       console.log(e);
@@ -103,6 +130,9 @@ async function searchTag() {
 
 // 수정
 const editPlan = async () => {
+  console.log("전달된 태그 리스트");
+  console.log(tagList.value);
+
   await api
     .put(`${import.meta.env.VITE_VUE_API_URL}/plan`, {
       planId: planId.value,
@@ -191,7 +221,11 @@ onMounted(() => {
                   /> -->
 
                   <div class="input-group mb-3">
-                    <VDatePicker v-model.range="inputDate" mode="date" style="width: 50%" />
+                    <VDatePicker
+                      v-model.range="inputDate"
+                      mode="date"
+                      style="width: 50%"
+                    />
                   </div>
 
                   <h5>세부내용</h5>
@@ -235,14 +269,24 @@ onMounted(() => {
 
                     <div>
                       <ul
-                        v-if="tagSearchResult.length === 0 && tagContent.length != 0"
+                        v-if="
+                          (tagSearchResult.length === 0 &&
+                            tagContent.length != 0) ||
+                          (!sameTag && tagContent.length != 0)
+                        "
                         class="list-group"
                       >
-                        <li class="list-group-item" @click="addTag()">직접 태그 추가하기</li>
+                        <li class="list-group-item" @click="addTag()">
+                          직접 태그 추가하기
+                        </li>
                       </ul>
 
-                      <ul class="list-group" v-for="(tag, index) in tagSearchResult" :key="index">
-                        <li class="list-group-item" @click="addTag()">
+                      <ul
+                        class="list-group"
+                        v-for="(tag, index) in tagSearchResult"
+                        :key="index"
+                      >
+                        <li class="list-group-item" @click="addTagLike(tag)">
                           {{ tag.tagName }}
                         </li>
                       </ul>
@@ -251,7 +295,11 @@ onMounted(() => {
 
                   <div
                     class="mb-4 row"
-                    style="float: left; justify-content: space-between; display: flex"
+                    style="
+                      float: left;
+                      justify-content: space-between;
+                      display: flex;
+                    "
                     v-for="(tag, index) in tagList"
                     :key="index"
                   >
@@ -299,7 +347,11 @@ onMounted(() => {
                       class="overflow-y-scroll h-100 bg-body-tertiary p-2 rounded-2"
                       style="max-height: 800px"
                     >
-                      <ul class="list-group" v-for="(place, index) in searchResult" :key="index">
+                      <ul
+                        class="list-group"
+                        v-for="(place, index) in searchResult"
+                        :key="index"
+                      >
                         <a
                           @click="markPlaceOnMap(place)"
                           class="list-group-item list-group-item-action"
@@ -314,7 +366,9 @@ onMounted(() => {
                             <!-- </div> -->
                             <!-- <div class="col-md-4 align-items-center"> -->
                             <div @click="addPlace(place)" aria-current="true">
-                              <div class="align-middle blue">여행계획에 추가</div>
+                              <div class="align-middle blue">
+                                여행계획에 추가
+                              </div>
                             </div>
                             <!-- </div> -->
                           </div>
@@ -364,7 +418,9 @@ onMounted(() => {
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">수정하기</h1>
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">
+                        수정하기
+                      </h1>
                       <button
                         type="button"
                         class="btn-close"
@@ -374,7 +430,11 @@ onMounted(() => {
                     </div>
                     <div class="modal-body">정말 수정하시겠습니까?</div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                      >
                         아니요
                       </button>
                       <a

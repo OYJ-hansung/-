@@ -9,6 +9,7 @@ import LoginView from "../views/LoginView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import MyPlanView from "../views/MyPlanView.vue";
 import UserInfoView from "../views/UserInfoView.vue";
+import AttrListView from "../views/AttrListView.vue";
 import { toast } from "vue3-toastify";
 import { userStore } from "@/stores/userStore";
 import "vue3-toastify/dist/index.css";
@@ -116,6 +117,11 @@ const router = createRouter({
       path: "/userinfo",
       name: "userinfo",
       component: UserInfoView,
+    },
+    {
+      path: "/attrlist",
+      name: "attrlist",
+      component: AttrListView,
     },
   ],
 });

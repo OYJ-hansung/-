@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.plan.model.mapper.PlanMapper">
 
@@ -31,9 +31,9 @@
 
     <resultMap type="planDto" id="viewPlans" extends="plan">
         <collection property="attrInfoList" column="plan_id"
-            javaType="list" ofType="attractionInfoDto" select="getAttrInfoList" />
+                    javaType="list" ofType="attractionInfoDto" select="getAttrInfoList" />
         <collection property="tagList" column="plan_id"
-            javaType="list" ofType="tagDto" select="getTagList" />
+                    javaType="list" ofType="tagDto" select="getTagList" />
     </resultMap>
 
     <resultMap type="attractionInfoDto" id="attr">
@@ -60,51 +60,51 @@
             where m.is_Del=0 and (p.plan_name like concat('%', #{word}, '%')
             or p.plan_detail like concat('%', #{word}, '%')
             or p.plan_id in (select ttp.plan_id
-                from tag_to_plan ttp join tag t
-                on ttp.tag_id = t.tag_id
-                where t.tag_name like concat('%', #{word}, '%')
-                )
+            from tag_to_plan ttp join tag t
+            on ttp.tag_id = t.tag_id
+            where t.tag_name like concat('%', #{word}, '%')
+            )
             )
         </if>
     </sql>
-    
+
     <select id="planList" parameterType="planParamDto" resultMap="plan">
         select p.plan_id, p.user_id, p.plan_name, p.start_date, p.end_date, p.reg_date, p.plan_detail, p.img, if(f.user_id = #{userId}, true, false) as isfavorite, p.shared,
         (
-		  select count(*) 
-		  from favorite 
-		  where plan_id = p.plan_id
-		  ) as total_favorite
+        select count(*)
+        from favorite
+        where plan_id = p.plan_id
+        ) as total_favorite
         from plan p left join (
-			select user_id, plan_id
-			from favorite
-			where user_id = #{userId}
-			) as f
-		on p.plan_id = f.plan_id
-		left join members m
-		on p.user_id = m.user_id
+        select user_id, plan_id
+        from favorite
+        where user_id = #{userId}
+        ) as f
+        on p.plan_id = f.plan_id
+        left join members m
+        on p.user_id = m.user_id
         <include refid="search"></include>
         group by p.plan_id, f.user_id;
         <!-- limit #{start}, #{listsize} -->
     </select>
-    
+
     <select id="planDetail" parameterType="int"
-        resultMap="viewPlans">
+            resultMap="viewPlans">
         select plan_id, user_id, plan_name, start_date, end_date,
-        reg_date, plan_detail, img, shared
+               reg_date, plan_detail, img, shared
         from plan
         where plan_id = #{planId}
     </select>
 
     <select id="getAttrInfoList" resultMap="attr">
         select addr1, addr2,
-        content_id, content_type_id, first_image, first_image2, gugun_code,
-        latitude, longitude, mlevel, readcount, sido_code, tel, title, zipcode
+               content_id, content_type_id, first_image, first_image2, gugun_code,
+               latitude, longitude, mlevel, readcount, sido_code, tel, title, zipcode
         from attraction_info
         where content_id in (
-        select pta.content_id
-        from plan_to_attr pta
-        where pta.plan_id= #{planId}
+            select pta.content_id
+            from plan_to_attr pta
+            where pta.plan_id= #{planId}
         )
     </select>
 
@@ -113,22 +113,31 @@
         set shared = if(shared=1,0,1)
         where plan_id = #{planId}
     </update>
-    
+
     <select id="getShared" parameterType="int"
-        resultType="int">
+            resultType="int">
         SELECT shared
         FROM plan
         WHERE plan_id = #{planId}
     </select>
-    
 
     <select id="getTagList" resultMap="tag">
         select tag_id,tag_name
         from tag
         where tag_id in (
-        select ttp.tag_id
-        from tag_to_plan ttp
-        where ttp.plan_id= #{planId}
+            select ttp.tag_id
+            from tag_to_plan ttp
+            where ttp.plan_id= #{planId}
+        )
+    </select>
+
+    <select id="getCurrentTagList" parameterType="int" resultType="java.lang.Integer">
+        select tag_id
+        from tag
+        where tag_id in (
+            select ttp.tag_id
+            from tag_to_plan ttp
+            where ttp.plan_id= #{planId}
         )
     </select>
 
@@ -136,7 +145,7 @@
         select tag_id,tag_name
         from tag
         order by tag_cnt desc
-        limit 5
+            limit 5
     </select>
     
     <select id="hotPlanList" resultMap="plan">
@@ -161,7 +170,7 @@
         values (#{userId}, #{planName}, #{startDate},
         #{endDate}, curdate(),#{planDetail},#{img})
         <selectKey resultType="int" keyProperty="planId"
-            order="AFTER">
+                   order="AFTER">
             select last_insert_id()
         </selectKey>
     </insert>
@@ -177,7 +186,7 @@
         INSERT INTO plan_to_attr(plan_id, content_id)
         VALUES
         <foreach collection="attrInfoList" item="attrInfo"
-            separator=",">
+                 separator=",">
             (#{planId}, #{attrInfo.contentId})
         </foreach>
     </insert>
@@ -186,57 +195,63 @@
         insert into tag (tag_name)
         values (#{tagName})
         <selectKey resultType="int" keyProperty="tagId"
-            order="AFTER">
+                   order="AFTER">
             select last_insert_id()
         </selectKey>
     </insert>
 
 
 
-    <delete id="deleteTagToPlan" parameterType="int">
+    <delete id="deleteTagToPlan" parameterType="tagToPlanDto">
         delete from tag_to_plan
-        where plan_id=#{planId}
+        where plan_id=#{planId} and tag_id=#{tagId}
     </delete>
 
     <insert id="addTagToPlan" parameterType="tagToPlanDto">
         insert into tag_to_plan
-        (plan_id, tag_id)
+            (plan_id, tag_id)
         values (#{planId},${tagId})
     </insert>
 
 
     <select id="getTag" parameterType="String" resultMap="tag">
         select
-        tag_id, tag_name
+            tag_id, tag_name
         from tag
         where tag_name = #{tagName}
     </select>
 
     <select id="searchTag" parameterType="String" resultMap="tag">
         select
-        tag_id, tag_name
+            tag_id, tag_name
         from tag
         where tag_name like concat('%', #{tagName},
-        '%')
+                                   '%')
     </select>
 
+
+    <update id="decreaseTagCount" parameterType="int">
+        update tag
+        set tag_cnt =
+                if(tag_cnt>1,tag_cnt-1,0)
+        where tag_id = #{tagId}
+    </update>
 
     <update id="raiseTagCount" parameterType="int">
         update tag
         set tag_cnt =
-        tag_cnt+1
+                tag_cnt+1
         where tag_id = #{tagId}
     </update>
-
 
 
     <!-- favorite -->
     <insert id="addFavorite" parameterType="favoriteDto">
         insert into favorite
-        (user_id, plan_id)
+            (user_id, plan_id)
         values (#{userId}, #{planId})
-    </insert> 
-    
+    </insert>
+
     <delete id="cancelFavorite" parameterType="favoriteDto">
         delete from favorite
         where user_id=#{userId} and plan_id=#{planId}
@@ -248,7 +263,7 @@
         <if test='planName !=null'>
             plan_name = #{planName}
             <if
-                test='startDate !=null or endDate !=null or planDetail !=null or img !=null'>
+                    test='startDate !=null or endDate !=null or planDetail !=null or img !=null'>
                 ,
             </if>
         </if>
@@ -279,6 +294,7 @@
     <delete id="deletePlan" parameterType="int">
         delete from plan
         where
-        plan_id = #{planId}
+            plan_id = #{planId}
     </delete>
 </mapper>
+

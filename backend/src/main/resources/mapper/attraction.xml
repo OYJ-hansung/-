@@ -22,6 +22,12 @@
 		<result column="title" property="title" />
 		<result column="zipcode" property="zipcode" />
 	</resultMap>
+	
+	<resultMap type="gugunDto" id="gugun">
+		<result column="gugun_code" property="gugunCode" />
+		<result column="gugun_name" property="gugunName" />
+		<result column="sido_code" property="sidoCode" />
+	</resultMap>
 
 
 	<select id="attractionSearch" parameterType="String"
@@ -33,6 +39,13 @@
 	from attraction_info
 	where title like CONCAT('%',#{word},'%')
 	</select>
+	
+	<select id="getGugunList" parameterType="int" resultMap="gugun">
+	select gugun_code, gugun_name,sido_code
+	from gugun
+	where sido_code=#{sidoCode}
+	</select>
+	
 
 	<select id="attractionList" parameterType="AttractionSearchDto"
 		resultMap="attractionInfo">

@@ -136,8 +136,9 @@ public class PlanController {
 			if (planDto != null)
 				return new ResponseEntity<PlanDto>(planDto, HttpStatus.OK);
 			else
-				return new ResponseEntity<ResultDto>(new ResultDto("fail", "NO ARTICLE"), HttpStatus.OK);
+				return new ResponseEntity<ResultDto>(new ResultDto("fail", "NO ARTICLE!"), HttpStatus.OK);
 		} catch (Exception e) {
+			System.out.println(e);
 			return new ResponseEntity<ResultDto>(new ResultDto("fail", "NO ARTICLE"), HttpStatus.OK);
 		}
 	}
@@ -181,7 +182,7 @@ public class PlanController {
 			@ApiResponse(code = 500, message = "서버에러!!") })
 	@PutMapping
 	public ResponseEntity<?> modifyPlan(@RequestBody PlanDto planDto) {
-		logger.debug("modifyPlan planDto : {}", planDto);
+		logger.debug("modifyPlan planDto : {}", planDto.getTagList());
 		try {
 			planService.modifyPlan(planDto);
 			return new ResponseEntity<ResultDto>(new ResultDto("success", "수정 성공"), HttpStatus.OK);

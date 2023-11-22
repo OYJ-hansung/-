@@ -15,7 +15,6 @@ const app = createApp(App);
 const pinia = createPinia();
 
 pinia.use(piniaPluginPersistedstate);
-app.use(createPinia());
 app.use(router).use(pinia).use(VCalendar, {});
 
 app.mount("#app");

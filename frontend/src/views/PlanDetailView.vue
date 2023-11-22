@@ -17,13 +17,14 @@ const planId = ref(route.params.id);
 const plan = ref({});
 const shared = ref("");
 const attractions = ref([]);
-const reload = ref(false);
 const isMyPlan = ref();
 
 const getDetail = async () => {
+  console.log("planId: ", planId.value);
   await api
     .get(`${import.meta.env.VITE_VUE_API_URL}/plan/${planId.value}`)
     .then(({ data }) => {
+      console.log("data: ", data);
       plan.value = data;
       attractions.value = plan.value.attrInfoList;
       shared.value = plan.value.shared;
@@ -65,7 +66,6 @@ const shareMyPlan = async () => {
     });
 };
 onMounted(() => {
-  reload.value = !reload.value;
   getDetail();
 });
 </script>
@@ -78,7 +78,11 @@ onMounted(() => {
           <div class="card shadow-sm">
             <div class="card-body">
               <div v-if="isMyPlan">
-                <button class="w-btn w-btn-blue" type="button" @click="shareMyPlan()">
+                <button
+                  class="w-btn w-btn-blue"
+                  type="button"
+                  @click="shareMyPlan()"
+                >
                   <div v-if="shared == 0">공유하기</div>
                   <div v-if="shared == 1">공유 취소하기</div>
                 </button>
@@ -97,7 +101,9 @@ onMounted(() => {
                     {{ plan.planName }}
                   </h2>
 
-                  <h6 class="card-subtitle mx-auto d-block mb-3">[{{ plan.userId }}]님</h6>
+                  <h6 class="card-subtitle mx-auto d-block mb-3">
+                    [{{ plan.userId }}]님
+                  </h6>
 
                   <span class="bold-text">- 여행 시작 날짜</span>
                   {{ new Date(plan.startDate).toLocaleDateString() }}
@@ -113,12 +119,19 @@ onMounted(() => {
                   <h4>[ 태그 ]</h4>
                   <div
                     class="mb-4 row"
-                    style="float: left; justify-content: space-between; display: flex"
+                    style="
+                      float: left;
+                      justify-content: space-between;
+                      display: flex;
+                    "
                     v-for="(tag, index) in plan.tagList"
                     :key="index"
                   >
                     <div class="col-md-12">
-                      <button type="button" class="btn btn-primary rounded-pill m-1">
+                      <button
+                        type="button"
+                        class="btn btn-primary rounded-pill m-1"
+                      >
                         # {{ tag.tagName }}
                       </button>
                     </div>
@@ -171,7 +184,9 @@ onMounted(() => {
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">삭제하기</h1>
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">
+                        삭제하기
+                      </h1>
                       <button
                         type="button"
                         class="btn-close"
@@ -181,7 +196,11 @@ onMounted(() => {
                     </div>
                     <div class="modal-body">정말 삭제하시겠습니까?</div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                      >
                         아니요
                       </button>
                       <button

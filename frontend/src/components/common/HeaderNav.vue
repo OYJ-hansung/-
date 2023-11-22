@@ -42,9 +42,7 @@ onMounted(() => {
       <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
         <ul class="navbar-nav m-1">
           <li class="nav-item">
-            <router-link to="/" class="nav-link active" aria-current="page"
-              >지역별 여행지</router-link
-            >
+            <a href="/attrlist" class="nav-link active" aria-current="page">지역별 여행지</a>
           </li>
           <li class="nav-item">
             <a href="/planlist" class="nav-link active" aria-current="page">여행계획목록</a>
