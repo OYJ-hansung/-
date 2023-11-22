@@ -140,7 +140,7 @@
     </select>
     
     <select id="hotPlanList" resultMap="plan">
-        select p.plan_id, p.user_id, p.plan_name, p.start_date, p.end_date, p.reg_date, p.plan_detail, p.img, p.shared,
+        select p.plan_id, p.user_id, p.plan_name, p.start_date, p.end_date, p.reg_date, p.plan_detail, p.img,
 			(
 			select count(*) 
 			  from favorite 
@@ -149,6 +149,7 @@
 		from plan p
 		left join members m
 		on p.user_id = m.user_id
+		where p.shared = 1
 		group by p.plan_id
 		order by total_favorite desc
 		limit 5
