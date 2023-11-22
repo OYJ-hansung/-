@@ -179,4 +179,9 @@ public class PlanServiceImpl implements PlanService {
 		return planMapper.getShared(planId);
 
 	}
+
+	@Override
+	public List<PlanDto> hotPlanList() throws Exception {
+		return planMapper.hotPlanList();
+	}
 }

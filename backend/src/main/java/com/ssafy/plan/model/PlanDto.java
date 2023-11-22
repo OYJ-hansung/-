@@ -32,9 +32,18 @@ public class PlanDto {
 	private List<TagDto> tagList;
 	@ApiModelProperty(value = "공유 여부")
 	private int shared;
-
 	@ApiModelProperty(value = "여행명소 리스트")
 	private Boolean isFavorite;
+	@ApiModelProperty(value = "총 좋아요 갯수")
+	private int totalFavorite;
+
+	public int getTotalFavorite() {
+		return totalFavorite;
+	}
+
+	public void setTotalFavorite(int totalFavorite) {
+		this.totalFavorite = totalFavorite;
+	}
 
 	public Boolean getIsFavorite() {
 		return isFavorite;
@@ -64,8 +73,10 @@ public class PlanDto {
 		super();
 	}
 
+
 	public PlanDto(int planId, String userId, String planName, String startDate, String endDate, String regDate,
-			String planDetail, String img, List<AttractionInfoDto> attrInfoList,List<TagDto> tagList,int shared) {
+			String planDetail, String img, List<AttractionInfoDto> attrInfoList, List<TagDto> tagList, int shared,
+			Boolean isFavorite, int totalFavorite) {
 		super();
 		this.planId = planId;
 		this.userId = userId;
@@ -77,7 +88,9 @@ public class PlanDto {
 		this.img = img;
 		this.attrInfoList = attrInfoList;
 		this.tagList = tagList;
-		this.shared=shared;
+		this.shared = shared;
+		this.isFavorite = isFavorite;
+		this.totalFavorite = totalFavorite;
 	}
 
 	public int getPlanId() {

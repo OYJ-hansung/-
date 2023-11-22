@@ -1,84 +1,33 @@
-<script setup></script>
+<script setup>
+import api from "axios";
+import { onMounted, ref } from "vue";
+import BoardCard from "../components/board/BoardCard.vue";
+
+const hotPlanList = ref([]);
+
+const getHotPlanList = async () => {
+  await api
+    .get(`${import.meta.env.VITE_VUE_API_URL}/plan/hot`)
+    .then(({ data }) => {
+      hotPlanList.value = data;
+      console.log(hotPlanList.value);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+
+onMounted(() => {
+  getHotPlanList();
+});
+</script>
 
 <template>
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-    <div class="col">
-      <div class="card shadow-sm">
-        <img
-          src="https://mdbootstrap.com/img/Others/documentation/1.webp"
-          class="img-fluid mx-auto d-block"
-          alt="Responsive image"
-        />
-
-        <div class="card-body">
-          <p class="card-text">
-            This is a wider card with supporting text below as a natural lead-in
-            to additional content. This content is a little bit longer.
-          </p>
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="btn-group">
-              <button type="button" class="btn btn-sm btn-outline-secondary">
-                View
-              </button>
-              <button type="button" class="btn btn-sm btn-outline-secondary">
-                Edit
-              </button>
-            </div>
-            <small class="text-muted">9 mins</small>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col">
-      <div class="card shadow-sm">
-        <img
-          src="https://mdbootstrap.com/img/Others/documentation/1.webp"
-          class="img-fluid mx-auto d-block"
-          alt="Responsive image"
-        />
-        <div class="card-body">
-          <p class="card-text">
-            This is a wider card with supporting text below as a natural lead-in
-            to additional content. This content is a little bit longer.
-          </p>
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="btn-group">
-              <button type="button" class="btn btn-sm btn-outline-secondary">
-                View
-              </button>
-              <button type="button" class="btn btn-sm btn-outline-secondary">
-                Edit
-              </button>
-            </div>
-            <small class="text-muted">9 mins</small>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="card shadow-sm">
-        <img
-          src="https://mdbootstrap.com/img/Others/documentation/1.webp"
-          class="img-fluid mx-auto d-block"
-          alt="Responsive image"
-        />
-        <div class="card-body">
-          <p class="card-text">
-            This is a wider card with supporting text below as a natural lead-in
-            to additional content. This content is a little bit longer.
-          </p>
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="btn-group">
-              <button type="button" class="btn btn-sm btn-outline-secondary">
-                View
-              </button>
-              <button type="button" class="btn btn-sm btn-outline-secondary">
-                Edit
-              </button>
-            </div>
-            <small class="text-muted">9 mins</small>
-          </div>
+    <div class="col-md-12">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div v-for="(plan, index) in hotPlanList" :key="index">
+          <board-card :plan="plan"></board-card>
         </div>
       </div>
     </div>

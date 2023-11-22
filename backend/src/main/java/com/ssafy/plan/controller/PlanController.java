@@ -73,6 +73,25 @@ public class PlanController {
 			return new ResponseEntity<ResultDto>(new ResultDto("fail", "NO LIST"), HttpStatus.OK);
 		}
 	}
+	
+	@ApiOperation(value = "인기 여행계획 목록", notes = "<big>인기 여행계획 목록</big>을 반환해 줍니다.")
+	@ApiResponses({ @ApiResponse(code = 200, message = "인기 여행계획 목록 OK!!"), @ApiResponse(code = 404, message = "페이지없어!!"),
+			@ApiResponse(code = 500, message = "서버에러!!") })
+	@GetMapping(value = "/hot")
+	public ResponseEntity<?> hotPlanList() {
+		logger.debug("getPlanList call");
+		try {
+			List<PlanDto> planlist = planService.hotPlanList();
+			if (planlist != null && !planlist.isEmpty()) {
+				return new ResponseEntity<List<PlanDto>>(planlist, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+			return new ResponseEntity<ResultDto>(new ResultDto("fail", "NO LIST"), HttpStatus.OK);
+		}
+	}
 
 	@ApiOperation(value = "태그 검색", notes = "<big> 태그검색결과</big>을 반환해 줍니다.")
 	@ApiResponses({ @ApiResponse(code = 200, message = "태그검색결과 OK!!"), @ApiResponse(code = 404, message = "페이지없어!!"),

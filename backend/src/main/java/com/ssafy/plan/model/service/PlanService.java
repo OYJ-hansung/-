@@ -27,4 +27,5 @@ public interface PlanService {
 	void addFavorite(FavoriteDto favoriteDto) throws Exception;
 	void cancelFavorite(FavoriteDto favoriteDto) throws Exception;
 	int shareMyPlan(int planId) throws Exception;
+	List<PlanDto> hotPlanList() throws Exception;
 }

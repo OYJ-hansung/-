@@ -67,10 +67,10 @@ onMounted(() => {
   </div>
 
   <div class="hot-tag mb-4 row" style="display: flex">
-    <div class="col-md-2" style="float: left; font-size: 16px"><b>인기 태그 :</b></div>
+    <div class="col-md-2" style="float: left; font-size: 18px"><b>인기 태그 :</b></div>
     <div
       class="col-md-2"
-      style="float: left; font-size: 16px; color: #1a75ff"
+      style="float: left; font-size: 18px; color: #0000cd"
       v-for="(tag, index) in hotTags"
       :key="index"
     >
@@ -552,9 +552,8 @@ input {
   border-radius: 50px;
   width: 100%;
   height: 100%;
-  border: 1.5px solid;
-  font-size: 19px;
-
+  border: 3px solid;
+  font-size: 23px;
   padding-left: 9%;
 }
 

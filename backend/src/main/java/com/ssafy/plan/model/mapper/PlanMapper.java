@@ -38,5 +38,6 @@ public interface PlanMapper {
 	void cancelFavorite(FavoriteDto favoriteDto) throws SQLException;
 	void shareMyPlan(int planId) throws SQLException;
 	int getShared(int planId) throws SQLException;
+	List<PlanDto> hotPlanList() throws SQLException;
 
 }
