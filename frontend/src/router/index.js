@@ -12,6 +12,7 @@ import UserInfoView from "../views/UserInfoView.vue";
 import AttrListView from "../views/AttrListView.vue";
 import { toast } from "vue3-toastify";
 import { userStore } from "@/stores/userStore";
+import test from "../views/test.vue";
 import "vue3-toastify/dist/index.css";
 
 const onlyAuthUser = async (to, from, next) => {
@@ -122,6 +123,11 @@ const router = createRouter({
       path: "/attrlist",
       name: "attrlist",
       component: AttrListView,
+    },
+    {
+      path: "/test",
+      name: "test",
+      component: test,
     },
   ],
 });

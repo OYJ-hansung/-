@@ -22,13 +22,9 @@ onMounted(() => {
 <template>
   <div class="row g-5">
     <div class="col-md-12">
-      <h3 class="pb-4 mt-4 mb-4 fst-italic border-bottom">나의 여행계획</h3>
-      <div class="m-2 p-1 row justify-content-end">
-        <button type="button" class="btn btn-primary float-right m-2 col-2" @click="addPlan()">
-          <b>여행계획추가</b>
-        </button>
-      </div>
-      <div class="form-check form-check-inline d-flex justify-content-center m-3">
+      <h1 class="fw-light d-flex justify-content-center mt-5">나의 여행 계획</h1>
+
+      <!-- <div class="form-check form-check-inline d-flex justify-content-center m-3">
         <input
           class="form-check-input"
           type="checkbox"
@@ -37,7 +33,7 @@ onMounted(() => {
           @change="check($event)"
         />
         <label class="form-check-label ms-3" for="favoriteCheckBox">공유된 여행계획만</label>
-      </div>
+      </div> -->
       <board-card-list></board-card-list>
     </div>
   </div>
