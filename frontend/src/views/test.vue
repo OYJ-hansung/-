@@ -1,91 +1,134 @@
 <script setup></script>
 
 <template>
-  <section class="bg-light p-3 p-md-4 p-xl-5">
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-12 col-xxl-11">
-          <div class="card border-light-subtle shadow-sm">
-            <div class="row g-0">
-              <div class="col-12 col-md-6">
-                <img
-                  class="img-fluid rounded-start w-100 h-100 object-fit-cover"
-                  loading="lazy"
-                  src="https://images.unsplash.com/photo-1500835556837-99ac94a94552?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  alt=""
-                />
-              </div>
-              <div class="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                <div class="col-12 col-lg-11 col-xl-10">
-                  <div class="card-body p-3 p-md-4 p-xl-5">
-                    <div class="row">
-                      <div class="col-12">
-                        <div class="mb-5">
-                          <div class="text-center mb-4">
-                            <a href="#!">
-                              <!-- <img src="./assets/img/bsb-logo.svg" alt="" width="175" height="57" /> -->
-                            </a>
-                          </div>
-                          <h1 class="fw-light d-flex justify-content-center mt-5">로그인</h1>
-                        </div>
-                      </div>
-                    </div>
-                    <form action="#!">
-                      <div class="row gy-3 overflow-hidden">
-                        <div class="col-12">
-                          <div class="form-floating mb-3">
-                            <input
-                              type="email"
-                              class="form-control"
-                              name="email"
-                              id="email"
-                              placeholder="name@example.com"
-                              required
-                            />
-                            <label for="email" class="form-label">아이디</label>
-                          </div>
-                        </div>
-                        <div class="col-12">
-                          <div class="form-floating mb-3">
-                            <input
-                              type="password"
-                              class="form-control"
-                              name="password"
-                              id="password"
-                              value=""
-                              placeholder="Password"
-                              required
-                            />
-                            <label for="password" class="form-label">비밀번호</label>
-                          </div>
-                        </div>
+      <a class="navbar-brand" href="#">Start Bootstrap</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarResponsive"
+        aria-controls="navbarResponsive"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-                        <div class="col-12">
-                          <div class="d-grid">
-                            <button class="btn btn-dark btn-lg" type="submit">로그인</button>
-                          </div>
-                        </div>
-                      </div>
-                    </form>
-                    <div class="row">
-                      <div class="col-12">
-                        <div
-                          class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-center mt-5"
-                        >
-                          <a href="#!" class="link-secondary text-decoration-none">회원가입</a>
-                          <a href="#!" class="link-secondary text-decoration-none">비밀번호 찾기</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+  <header>
+    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <button
+          type="button"
+          data-bs-target="#carouselExampleCaptions"
+          data-bs-slide-to="0"
+          class="active"
+          aria-current="true"
+          aria-label="Slide 1"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#carouselExampleCaptions"
+          data-bs-slide-to="1"
+          aria-label="Slide 2"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#carouselExampleCaptions"
+          data-bs-slide-to="2"
+          aria-label="Slide 3"
+        ></button>
+      </div>
+      <div class="carousel-inner">
+        <div
+          class="carousel-item active"
+          style="background-image: url('https://source.unsplash.com/RCAhiGJsUUE/1920x1080')"
+        >
+          <div class="carousel-caption">
+            <h5>First slide label</h5>
+            <p>Some representative placeholder content for the first slide.</p>
+          </div>
+        </div>
+        <div
+          class="carousel-item"
+          style="background-image: url('https://source.unsplash.com/wfh8dDlNFOk/1920x1080')"
+        >
+          <div class="carousel-caption">
+            <h5>Second slide label</h5>
+            <p>Some representative placeholder content for the second slide.</p>
+          </div>
+        </div>
+        <div
+          class="carousel-item"
+          style="background-image: url('https://source.unsplash.com/lHGeqh3XhRY/1920x1080')"
+        >
+          <div class="carousel-caption">
+            <h5>Third slide label</h5>
+            <p>Some representative placeholder content for the third slide.</p>
           </div>
         </div>
       </div>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#carouselExampleCaptions"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#carouselExampleCaptions"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Page Content -->
+  <section class="py-5">
+    <div class="container">
+      <h1 class="fw-light">Half Page Image Slider</h1>
+      <p class="lead">
+        The background images for the slider are set directly in the HTML using inline CSS. The
+        images in this snippet are from <a href="https://unsplash.com">Unsplash</a>!
+      </p>
     </div>
   </section>
 </template>
 
-<style scoped></style>
+<style scoped>
+.carousel-item {
+  height: 65vh;
+  min-height: 350px;
+  background: no-repeat center center scroll;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+</style>

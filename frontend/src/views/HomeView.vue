@@ -67,7 +67,7 @@ onMounted(() => {
       <link href="/src/assets/carousel.css" rel="stylesheet" />
     </head>
     <body>
-      <main>
+      <main class="mt-4">
         <div id="carouselExampleCaptions" class="carousel slide mb-2" data-bs-ride="carousel">
           <div class="carousel-indicators">
             <button
