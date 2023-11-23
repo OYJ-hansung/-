@@ -97,21 +97,13 @@ const attrlist = async () => {
 <template>
   <div id="form-search" class="d-flex my-3">
     <!-- <input type="hidden" id="ccommand" value="ssearch" /> -->
-    <select
-      id="search-area"
-      class="form-select me-2 search-sido"
-      @change="changeSido()"
-    >
+    <select id="search-area" class="form-select me-2 search-sido" @change="changeSido()">
       <option value="0" selected>시도선택</option>
       <option v-for="sido in sidoList" :value="sido.sidoCode">
         {{ sido.sidoName }}
       </option>
     </select>
-    <select
-      id="search-sub-area"
-      class="form-select me-2 search-gugun"
-      @change="setGugun()"
-    >
+    <select id="search-sub-area" class="form-select me-2 search-gugun" @change="setGugun()">
       <option value="0" selected>구군선택</option>
       <option v-for="gugun in gugunList" :value="gugun.gugunCode">
         {{ gugun.gugunName }}
@@ -124,10 +116,7 @@ const attrlist = async () => {
       @change="setType()"
     >
       <option value="0" selected>관광지 유형</option>
-      <option
-        v-for="contentType in contentTypeList"
-        :value="contentType.contentTypeId"
-      >
+      <option v-for="contentType in contentTypeList" :value="contentType.contentTypeId">
         {{ contentType.contentTypeName }}
       </option>
     </select>
@@ -153,19 +142,19 @@ const attrlist = async () => {
   <div class="row col-12 mt-2 ms-1 card-table"></div>
   <VKakaoMapSearch :attractions="attrList" style="width: 80%" />
 
-  <table class="table">
+  <table class="table" style="width: 50%; margin: auto">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">이름</th>
-        <th scope="col">주소</th>
+        <th scope="col" style="width: 5%">#</th>
+        <th scope="col" style="width: 40%">이름</th>
+        <th scope="col" style="width: 30%">주소</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="(attraction, index) in attrList" :key="index">
         <td>{{ index + 1 }}</td>
-        <td>{{ attraction.title }}</td>
-        <td>{{ attraction.addr1 }}</td>
+        <td style="width: 40%">{{ attraction.title }}</td>
+        <td style="width: 30%">{{ attraction.addr1 }}</td>
       </tr>
     </tbody>
   </table>

@@ -54,20 +54,29 @@ onMounted(() => {
           <li v-show="ustore.userInfo === null" class="nav-item">
             <a href="/login" class="nav-link active" aria-current="page">로그인/회원가입</a>
           </li>
-          <li v-if="ustore.userInfo !== null" class="nav-item">
+          <li v-if="ustore.userInfo !== null" class="nav-item mx-2">
             <div class="dropdown">
-              <a
-                href="#"
-                class="nav-link active dropdown-toggle"
-                aria-current="page"
+              <button
+                class="btn dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <b>{{ ustore.userInfo.userId }} 님 환영합니다.</b></a
-              >
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/userInfo">회원정보</a></li>
-                <li><a class="dropdown-item" style="color: red" @click="logout">로그아웃</a></li>
+                <b>{{ ustore.userInfo.userId }} 님 환영합니다.</b>
+              </button>
+
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li>
+                  <a class="dropdown-item my-2" href="/userInfo"
+                    ><i class="fa-solid fa-user ms-3"></i> &nbsp; 회원정보</a
+                  >
+                </li>
+                <li @click="logout">
+                  <a class="dropdown-item my-2 ms-3" href="#"
+                    ><i class="fa-solid fa-arrow-right-from-bracket"></i>&nbsp; 로그아웃</a
+                  >
+                </li>
               </ul>
             </div>
           </li>
