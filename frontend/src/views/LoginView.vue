@@ -160,7 +160,7 @@ async function signIn() {
                         <div class="col-12">
                           <div class="d-grid">
                             <input
-                              class="btn btn-dark btn-lg"
+                              class="btn btn-outline-dark align-items-center p-2"
                               type="button"
                               @click="signIn()"
                               value="로그인"
@@ -172,7 +172,7 @@ async function signIn() {
                     <div class="row">
                       <div class="col-12">
                         <div
-                          class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-center mt-5"
+                          class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-center mt-4"
                         >
                           <label class="link-secondary text-decoration-none" @click="register()"
                             >회원가입</label
