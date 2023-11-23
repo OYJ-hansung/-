@@ -5,7 +5,7 @@ import FooterNav from "./components/common/FooterNav.vue";
 </script>
 
 <template>
-  <header class="blog-header py-3">
+  <header class="blog-header py-1">
     <header-nav></header-nav>
   </header>
 

@@ -40,7 +40,7 @@ onMounted(() => {
       </button>
 
       <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-        <ul class="navbar-nav m-1">
+        <ul class="navbar-nav">
           <li class="nav-item">
             <a href="/attrlist" class="nav-link active" aria-current="page">지역별 여행지</a>
           </li>

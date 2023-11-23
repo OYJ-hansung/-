@@ -144,8 +144,7 @@
     <select id="hotTagList" resultMap="tag">
         select tag_id,tag_name
         from tag
-        order by tag_cnt desc
-            limit 5
+        order by tag_cnt desc limit 5
     </select>
     
     <select id="hotPlanList" resultMap="plan">
@@ -161,7 +160,7 @@
 		where p.shared = 1
 		group by p.plan_id
 		order by total_favorite desc
-		limit 5
+		limit 4
     </select>
 
     <insert id="writePlan" parameterType="planDto">
