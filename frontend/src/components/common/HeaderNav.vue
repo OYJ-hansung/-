@@ -10,7 +10,7 @@ const sstore = searchStore();
 const ustore = userStore();
 const logout = async () => {
   await ustore.userLogout(ustore.userInfo.userId);
-  router.push({ path: "/" });
+  router.push({ path: "/login" });
 };
 
 onMounted(() => {
@@ -47,7 +47,7 @@ onMounted(() => {
           <li class="nav-item">
             <a href="/planlist" class="nav-link active" aria-current="page">여행계획목록</a>
           </li>
-          <li class="nav-item"  v-if="ustore.userInfo !== null">
+          <li class="nav-item" v-if="ustore.userInfo !== null">
             <a class="nav-link active" href="/myplan">나의여행계획</a>
           </li>
 
@@ -66,7 +66,6 @@ onMounted(() => {
                 <b>{{ ustore.userInfo.userId }} 님 환영합니다.</b></a
               >
               <ul class="dropdown-menu">
-                
                 <li><a class="dropdown-item" href="/userInfo">회원정보</a></li>
                 <li><a class="dropdown-item" style="color: red" @click="logout">로그아웃</a></li>
               </ul>

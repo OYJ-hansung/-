@@ -99,151 +99,104 @@ async function signIn() {
 }
 </script>
 <template>
-  <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
-    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
-      <li>
-        <button
-          type="button"
-          class="dropdown-item d-flex align-items-center"
-          data-bs-theme-value="light"
-          aria-pressed="false"
-        >
-          <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
-            <use href="#sun-fill"></use>
-          </svg>
-          Light
-          <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-        </button>
-      </li>
-      <li>
-        <button
-          type="button"
-          class="dropdown-item d-flex align-items-center"
-          data-bs-theme-value="dark"
-          aria-pressed="false"
-        >
-          <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
-            <use href="#moon-stars-fill"></use>
-          </svg>
-          Dark
-          <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-        </button>
-      </li>
-      <li>
-        <button
-          type="button"
-          class="dropdown-item d-flex align-items-center active"
-          data-bs-theme-value="auto"
-          aria-pressed="true"
-        >
-          <svg class="bi me-2 opacity-50 theme-icon" width="1em" height="1em">
-            <use href="#circle-half"></use>
-          </svg>
-          Auto
-          <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-        </button>
-      </li>
-    </ul>
-  </div>
+  <section class="bg-light p-3 p-md-4 p-xl-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-xxl-11">
+          <div class="card border-light-subtle shadow-sm">
+            <div class="row g-0">
+              <div class="col-12 col-md-6">
+                <img
+                  class="img-fluid rounded-start w-100 h-100 object-fit-cover"
+                  loading="lazy"
+                  src="https://images.unsplash.com/photo-1500835556837-99ac94a94552?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  alt=""
+                />
+              </div>
+              <div class="col-12 col-md-6 d-flex align-items-center justify-content-center">
+                <div class="col-12 col-lg-11 col-xl-10">
+                  <div class="card-body p-3 p-md-4 p-xl-5">
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="mb-5">
+                          <div class="text-center mb-4">
+                            <a href="#!">
+                              <!-- <img src="./assets/img/bsb-logo.svg" alt="" width="175" height="57" /> -->
+                            </a>
+                          </div>
+                          <h1 class="fw-light d-flex justify-content-center mt-5">로그인</h1>
+                        </div>
+                      </div>
+                    </div>
+                    <form action="#!">
+                      <div class="row gy-3 overflow-hidden">
+                        <div class="col-12">
+                          <div class="form-floating mb-3">
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="floatingInput"
+                              placeholder="Id"
+                              v-model="user.userId"
+                            />
+                            <label for="email" class="form-label">아이디</label>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <div class="form-floating mb-3">
+                            <input
+                              type="password"
+                              class="form-control"
+                              id="floatingPassword"
+                              placeholder="Password"
+                              v-model="user.userPassword"
+                              required
+                            />
 
-  <form class="form-signin w-100 m-auto" @submit.prevent>
-    <h1 class="h3 mb-3 fw-normal">로그인</h1>
+                            <label for="password" class="form-label">비밀번호</label>
+                          </div>
+                        </div>
 
-    <div class="form-floating">
-      <input
-        type="text"
-        class="form-control"
-        id="floatingInput"
-        placeholder="Id"
-        v-model="user.userId"
-      />
-      <label for="floatingInput">아이디</label>
-    </div>
-    <div class="form-floating">
-      <input
-        type="password"
-        class="form-control"
-        id="floatingPassword"
-        placeholder="Password"
-        v-model="user.userPassword"
-      />
-      <label for="floatingPassword">비밀번호</label>
-    </div>
+                        <div class="col-12">
+                          <div class="d-grid">
+                            <input
+                              class="btn btn-dark btn-lg"
+                              type="button"
+                              @click="signIn()"
+                              value="로그인"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                    <div class="row">
+                      <div class="col-12">
+                        <div
+                          class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-center mt-5"
+                        >
+                          <label class="link-secondary text-decoration-none" @click="register()"
+                            >회원가입</label
+                          >
 
-    <div class="row g-3 outer-div">
-      <div class="inner-div">
-        <label
-          class="form-check-label text-decoration-underline"
-          for="flexCheckDefault"
-          data-bs-toggle="modal"
-          data-bs-target="#findPasswordModal"
-        >
-          비밀번호 찾기</label
-        >&nbsp; | &nbsp;
-
-        <label
-          class="form-check-label text-decoration-underline"
-          for="flexCheckDefault"
-          @click="register()"
-        >
-          회원가입</label
-        >
-      </div>
-    </div>
-
-    <div class="row g-3">
-      <div class="col-sm-12">
-        <button class="btn btn-primary w-100 py-2" type="submit" @click="signIn()">로그인</button>
-      </div>
-    </div>
-  </form>
-  <div
-    class="modal fade"
-    id="findPasswordModal"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">비밀번호 찾기</h1>
-
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-
-        <div class="modal-body">
-          <div class="form-floating">
-            <input
-              type="text"
-              class="form-control"
-              id="floatingInput"
-              placeholder="Id"
-              v-model="findUserId"
-            />
-            <label for="floatingInput">아이디</label>
+                          <label
+                            class="link-secondary text-decoration-none"
+                            data-bs-toggle="modal"
+                            data-bs-target="#findPasswordModal"
+                          >
+                            비밀번호 찾기
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니요</button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            @click="findPassword()"
-            data-bs-dismiss="modal"
-          >
-            네
-          </button>
-        </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <style>
