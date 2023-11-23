@@ -60,13 +60,7 @@ const register = async () => {
             <div class="row g-3">
               <div class="col-sm-12 mb-3">
                 <label for="firstName" class="form-label">아이디</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="id"
-                  placeholder=""
-                  v-model="userInfo.userId"
-                />
+                <input type="text" class="form-control" id="id" v-model="userInfo.userId" />
                 <p v-show="idVerification" class="error-message mb-2 mt-2">아이디는 필수입니다.</p>
               </div>
             </div>

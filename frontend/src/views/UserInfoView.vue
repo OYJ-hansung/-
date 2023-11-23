@@ -118,7 +118,7 @@ const changePassword = () => {
                     <input type="text" class="form-control" placeholder="******" disabled />
 
                     <input
-                      class="btn btn-outline-dark align-items-center p-2"
+                      class="btn btn-outline-dark align-items-center p-2 mx-1"
                       type="button"
                       @click="changePassword()"
                       value="변경하기"
@@ -246,7 +246,7 @@ const changePassword = () => {
           <div class="modal-body p-4 px-5">
             <div class="main-content text-center">
               <form action="#">
-                <h2 class="my-5">회원정보수정이 완료되었습니다!</h2>
+                <h3 class="my-5">회원정보수정이 완료되었습니다!</h3>
 
                 <!-- @click="register()" -->
                 <div class="col-12">
@@ -271,31 +271,45 @@ const changePassword = () => {
       class="modal fade"
       id="deleteModal"
       tabindex="-1"
-      aria-labelledby="exampleModalLabel"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
       aria-hidden="true"
     >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">회원 탈퇴</h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">정말 탈퇴하시겠습니까?</div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니요</button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="deleteAccount()"
-              data-bs-dismiss="modal"
-            >
-              네
-            </button>
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content rounded-0">
+          <div class="modal-body p-4 px-5">
+            <div class="main-content text-center">
+              <a href="#" class="close-btn" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true"><span class="icon-close2"></span></span>
+              </a>
+
+              <div class="warp-icon mb-4">
+                <span class="icon-lock2"></span>
+              </div>
+              <form action="#">
+                <h4 class="mb-4">정말 탈퇴하시겠습니까?</h4>
+
+                <div class="row mt-4">
+                  <div class="d-grid col">
+                    <input
+                      class="btn btn-outline-danger align-items-center p-2 mx-1"
+                      type="button"
+                      @click="deleteAccount()"
+                      data-bs-dismiss="modal"
+                      value="확인"
+                    />
+                  </div>
+                  <div class="d-grid col">
+                    <input
+                      class="btn btn-outline-dark align-items-center p-2 mx-1"
+                      type="button"
+                      data-bs-dismiss="modal"
+                      value="취소"
+                    />
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
