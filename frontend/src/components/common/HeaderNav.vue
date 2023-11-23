@@ -23,12 +23,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <nav
-    class="navbar navbar-expand-lg navbar-light fixed-top"
-    style="background-color: white"
-  >
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color: white">
     <div class="container">
-      <a class="navbar-brand" href="#">EnjoyTrips</a>
+      <a class="navbar-brand" href="/">EnjoyTrips</a>
       <button
         class="navbar-toggler"
         type="button"
