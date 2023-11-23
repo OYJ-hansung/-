@@ -132,7 +132,7 @@ const attrlist = async () => {
       type="button"
       id="btn-search"
       @click="attrlist()"
-      class="btn btn-outline-success"
+      class="btn btn-outline-dark"
       value="검색"
     />
   </div>

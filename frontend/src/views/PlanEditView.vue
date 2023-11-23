@@ -35,14 +35,8 @@ const inputDate = ref({
 
 const getFormatDate = (date) => {
   const YYYY = String(date.getFullYear());
-  const MM = String(
-    date.getMonth() + 1 >= 10
-      ? date.getMonth() + 1
-      : "0" + (date.getMonth() + 1)
-  );
-  const dd = String(
-    date.getDate() >= 10 ? date.getDate() : "0" + date.getDate()
-  );
+  const MM = String(date.getMonth() + 1 >= 10 ? date.getMonth() + 1 : "0" + (date.getMonth() + 1));
+  const dd = String(date.getDate() >= 10 ? date.getDate() : "0" + date.getDate());
   return YYYY + "-" + MM + "-" + dd;
 };
 
@@ -62,13 +56,9 @@ const deletePlace = function (index) {
 
 const searchAttraction = async () => {
   await api
-    .post(
-      `${import.meta.env.VITE_VUE_API_URL}/attraction/search`,
-      searchWord.value,
-      {
-        headers: { "Content-Type": "application/text" },
-      }
-    )
+    .post(`${import.meta.env.VITE_VUE_API_URL}/attraction/search`, searchWord.value, {
+      headers: { "Content-Type": "application/text" },
+    })
     .then(({ data }) => {
       searchResult.value = data;
       console.log(searchResult.value);
@@ -221,11 +211,7 @@ onMounted(() => {
                   /> -->
 
                   <div class="input-group mb-3">
-                    <VDatePicker
-                      v-model.range="inputDate"
-                      mode="date"
-                      style="width: 50%"
-                    />
+                    <VDatePicker v-model.range="inputDate" mode="date" style="width: 50%" />
                   </div>
 
                   <h5>세부내용</h5>
@@ -270,22 +256,15 @@ onMounted(() => {
                     <div>
                       <ul
                         v-if="
-                          (tagSearchResult.length === 0 &&
-                            tagContent.length != 0) ||
+                          (tagSearchResult.length === 0 && tagContent.length != 0) ||
                           (!sameTag && tagContent.length != 0)
                         "
                         class="list-group"
                       >
-                        <li class="list-group-item" @click="addTag()">
-                          직접 태그 추가하기
-                        </li>
+                        <li class="list-group-item" @click="addTag()">직접 태그 추가하기</li>
                       </ul>
 
-                      <ul
-                        class="list-group"
-                        v-for="(tag, index) in tagSearchResult"
-                        :key="index"
-                      >
+                      <ul class="list-group" v-for="(tag, index) in tagSearchResult" :key="index">
                         <li class="list-group-item" @click="addTagLike(tag)">
                           {{ tag.tagName }}
                         </li>
@@ -295,21 +274,13 @@ onMounted(() => {
 
                   <div
                     class="mb-4 row"
-                    style="
-                      float: left;
-                      justify-content: space-between;
-                      display: flex;
-                    "
+                    style="float: left; justify-content: space-between; display: flex"
                     v-for="(tag, index) in tagList"
                     :key="index"
                   >
                     <div class="col-md-12">
-                      <button
-                        type="button"
-                        class="btn btn-primary rounded-pill m-1"
-                        @click="deleteTag(tag)"
-                      >
-                        {{ tag.tagName }} <span class="badge">X</span>
+                      <button type="button" class="w-btn w-btn-tag m-1" @click="deleteTag(tag)">
+                        {{ tag.tagName }} <span class="badge">x</span>
                       </button>
                     </div>
                   </div>
@@ -347,11 +318,7 @@ onMounted(() => {
                       class="overflow-y-scroll h-100 bg-body-tertiary p-2 rounded-2"
                       style="max-height: 800px"
                     >
-                      <ul
-                        class="list-group"
-                        v-for="(place, index) in searchResult"
-                        :key="index"
-                      >
+                      <ul class="list-group" v-for="(place, index) in searchResult" :key="index">
                         <a
                           @click="markPlaceOnMap(place)"
                           class="list-group-item list-group-item-action"
@@ -366,9 +333,7 @@ onMounted(() => {
                             <!-- </div> -->
                             <!-- <div class="col-md-4 align-items-center"> -->
                             <div @click="addPlace(place)" aria-current="true">
-                              <div class="align-middle blue">
-                                여행계획에 추가
-                              </div>
+                              <div class="align-middle blue">여행계획에 추가</div>
                             </div>
                             <!-- </div> -->
                           </div>
@@ -399,7 +364,7 @@ onMounted(() => {
               <div class="m-2 p-1 row justify-content-end">
                 <button
                   type="button"
-                  class="btn btn-primary float-right m-2 col-1"
+                  class="w-btn w-btn-aqua float-right m-2 col-1"
                   data-bs-toggle="modal"
                   data-bs-target="#editModal"
                 >
@@ -418,9 +383,7 @@ onMounted(() => {
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">
-                        수정하기
-                      </h1>
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">수정하기</h1>
                       <button
                         type="button"
                         class="btn-close"
@@ -430,11 +393,7 @@ onMounted(() => {
                     </div>
                     <div class="modal-body">정말 수정하시겠습니까?</div>
                     <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         아니요
                       </button>
                       <a
@@ -464,25 +423,42 @@ body {
   color: #bcd0f7;
   background: #1a233a;
 }
+
+.badge {
+  color: darkgray;
+  font-size: large;
+}
 .blue {
   color: blue;
   text-decoration: underline;
 }
 .w-btn {
   position: relative;
-  border: none;
   display: inline-block;
-  padding: 15px 30px;
-  border-radius: 15px;
-  font-family: "paybooc-Light", sans-serif;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  padding: 7px 22px;
+  margin: 7px;
+  border-radius: 25px;
+  /* box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); */
   text-decoration: none;
   font-weight: 600;
-  transition: 0.25s;
+  /* transition: 0.25s; */
 }
-.w-btn-blue {
-  background-color: #6aafe6;
-  color: #d4dfe6;
+.w-btn-aqua {
+  background-color: white;
+  border-color: rgb(67, 67, 232);
+  color: rgb(67, 67, 232);
+}
+.w-btn-red {
+  background-color: white;
+  border-color: crimson;
+  color: crimson;
+}
+
+.w-btn-tag {
+  background-color: white;
+  border-width: 2px;
+  border-color: #f4bd19;
+  color: #f4bd19;
 }
 
 .timeline {

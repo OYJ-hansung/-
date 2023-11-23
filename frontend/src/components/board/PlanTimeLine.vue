@@ -12,23 +12,19 @@ const deletePlace = function (index) {
 </script>
 
 <template>
-  <div
-    id="timescroll"
-    class="overflow-y-scroll h-100 rounded-2 timeline"
-    style="max-height: 800px"
-  >
+  <div id="timescroll" class="overflow-y-scroll h-100 rounded-2 timeline" style="max-height: 800px">
     <div class="timeline-row" v-for="(attr, index) in attractions" :key="index">
       <div class="timeline-content">
         <div class="time-title">{{ attr.title }}</div>
         <!-- 사진 -->
         <div class="thumbs">
-          <img
-            class="img-fluid rounded"
-            :src="attr.firstImage"
-            alt="Maxwell Admin"
-          />
+          <img class="img-fluid rounded" :src="attr.firstImage" alt="Maxwell Admin" />
         </div>
-        <div v-if="isDetail == 'false'" @click="deletePlace(index)">삭제</div>
+        <div class="del-btn">
+          <button v-if="isDetail == 'false'" @click="deletePlace(index)" class="w-btn w-btn-red">
+            x
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -40,7 +36,30 @@ body {
   color: #bcd0f7;
   background: #1a233a;
 }
-
+.w-btn {
+  position: relative;
+  display: inline-block;
+  padding: 1px 6px 3px 6px;
+  margin: 7px;
+  border-radius: 50%;
+  /* box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); */
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 12px;
+  /* transition: 0.25s; */
+}
+.w-btn-red {
+  background-color: black;
+  color: white;
+  border: none;
+}
+.timeline-row .timeline-content .del-btn {
+  display: flex;
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  text-align: center;
+}
 .time-title {
   font-weight: bold;
 }
@@ -93,7 +112,7 @@ body {
   position: relative;
   left: 20%;
   width: 70%;
-  padding: 10px 20px;
+  padding: 30px 20px 30px;
   margin-top: 20px;
   margin-bottom: 20px;
   background: #ffffff;
@@ -101,7 +120,7 @@ body {
   -moz-border-radius: 4px;
   border-radius: 4px;
   display: flex;
-  /* align-items: center; */
+  align-items: center;
   /* justify-content: center; */
   flex-direction: column;
   /* text-align: center; */

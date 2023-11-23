@@ -79,7 +79,8 @@ onMounted(() => {
             <div class="card-body">
               <div v-if="isMyPlan">
                 <button
-                  class="w-btn w-btn-blue"
+                  class="btn btn-success rounded-pill m-1"
+                  style="float: right"
                   type="button"
                   @click="shareMyPlan()"
                 >
@@ -101,9 +102,7 @@ onMounted(() => {
                     {{ plan.planName }}
                   </h2>
 
-                  <h6 class="card-subtitle mx-auto d-block mb-3">
-                    [{{ plan.userId }}]님
-                  </h6>
+                  <h6 class="card-subtitle mx-auto d-block mb-3">[{{ plan.userId }}]님</h6>
 
                   <span class="bold-text">- 여행 시작 날짜</span>
                   {{ new Date(plan.startDate).toLocaleDateString() }}
@@ -119,21 +118,12 @@ onMounted(() => {
                   <h4>[ 태그 ]</h4>
                   <div
                     class="mb-4 row"
-                    style="
-                      float: left;
-                      justify-content: space-between;
-                      display: flex;
-                    "
+                    style="float: left; justify-content: space-between; display: flex"
                     v-for="(tag, index) in plan.tagList"
                     :key="index"
                   >
                     <div class="col-md-12">
-                      <button
-                        type="button"
-                        class="btn btn-primary rounded-pill m-1"
-                      >
-                        # {{ tag.tagName }}
-                      </button>
+                      <button type="button" class="btn w-btn w-btn-tag"># {{ tag.tagName }}</button>
                     </div>
                   </div>
                 </div>
@@ -151,20 +141,15 @@ onMounted(() => {
                 </div>
               </div>
 
-              <div class="m-2 p-1 row justify-content-end">
+              <div class="m-2 p-1 row justify-content-end" style="float: right">
                 <div v-if="isMyPlan">
-                  <button
-                    href="#"
-                    @click="editPlan()"
-                    type="button"
-                    class="btn btn-primary float-right m-2 col-1"
-                  >
+                  <button href="#" @click="editPlan()" type="button" class="w-btn w-btn-aqua">
                     수정
                   </button>
 
                   <button
                     type="button"
-                    class="btn btn-danger float-right m-2 col-1"
+                    class="w-btn w-btn-red"
                     data-bs-toggle="modal"
                     data-bs-target="#deleteModal"
                   >
@@ -184,9 +169,7 @@ onMounted(() => {
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">
-                        삭제하기
-                      </h1>
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">삭제하기</h1>
                       <button
                         type="button"
                         class="btn-close"
@@ -196,11 +179,7 @@ onMounted(() => {
                     </div>
                     <div class="modal-body">정말 삭제하시겠습니까?</div>
                     <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         아니요
                       </button>
                       <button
@@ -235,18 +214,31 @@ body {
 }
 .w-btn {
   position: relative;
-  border: none;
   display: inline-block;
-  padding: 15px 30px;
-  border-radius: 15px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  padding: 7px 22px;
+  margin: 7px;
+  border-radius: 25px;
+  /* box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); */
   text-decoration: none;
   font-weight: 600;
-  transition: 0.25s;
+  /* transition: 0.25s; */
 }
-.w-btn-blue {
-  background-color: #6aafe6;
-  color: #d4dfe6;
+.w-btn-aqua {
+  background-color: white;
+  border-color: rgb(67, 67, 232);
+  color: rgb(67, 67, 232);
+}
+.w-btn-red {
+  background-color: white;
+  border-color: crimson;
+  color: crimson;
+}
+
+.w-btn-tag {
+  background-color: white;
+  border-width: 2px;
+  border-color: #f4bd19;
+  color: #f4bd19;
 }
 
 .timeline {

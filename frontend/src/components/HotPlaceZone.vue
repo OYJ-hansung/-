@@ -28,10 +28,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <span># 인기 여행코스</span>
-    <img src="../assets/image/cuute.png" alt="" style="width: 160px" />
-  </div>
+  <h2># 인기 여행코스</h2>
 
   <div class="hot-course">
     <div class="hot">
@@ -49,7 +46,9 @@ onMounted(() => {
             <p class="detail">
               {{ plan.planDetail }}
             </p>
-            <div class="btn btn-secondary" @click="moveToDetail(plan.planId)">자세히 보기</div>
+            <div class="btn btn-outline-dark rounded-pill m-1" @click="moveToDetail(plan.planId)">
+              자세히 보기
+            </div>
           </div>
         </div>
       </div>

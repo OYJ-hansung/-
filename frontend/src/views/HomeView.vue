@@ -67,8 +67,16 @@ onMounted(() => {
       <link href="/src/assets/carousel.css" rel="stylesheet" />
     </head>
     <body>
-      <main class="mt-4">
-        <div id="carouselExampleCaptions" class="carousel slide mb-2" data-bs-ride="carousel">
+<<<<<<< frontend/src/views/HomeView.vue
+      <main
+        style="display: flex; flex-direction: column; align-items: center; justify-content: center"
+      >
+        <div
+          id="carouselExampleCaptions"
+          class="carousel slide mb-2"
+          data-bs-ride="carousel"
+          style="width: fit-content"
+        >
           <div class="carousel-indicators">
             <button
               type="button"
@@ -94,23 +102,37 @@ onMounted(() => {
           <div class="carousel-inner">
             <div class="carousel-item active">
               <img src="../assets/image/fall.png" alt="..." style="height: 100%" />
-              <div class="carousel-caption d-none d-md-block">
+              <!-- <div class="carousel-caption d-none d-md-block">
                 <h5>단풍으로 물든 에버랜드</h5>
                 <p>놀이기구 뿐 아니라 경치도 예쁜 에버랜드!</p>
+              </div> -->
+              <div class="container">
+                <div class="carousel-caption text-start">
+                  <h2 class="featurette-heading fw-normal lh-1">
+                    자연을 즐기는
+                    <br />
+                    산청 힐링 여행 코스
+                  </h2>
+                </div>
               </div>
             </div>
             <div class="carousel-item">
               <img src="../assets/image/city.png" alt="..." style="height: 100%" />
-              <div class="carousel-caption d-none d-md-block">
-                <h5>밤이 더 아름다운 대한민국!</h5>
-                <p>반짝이는 야경명소</p>
+
+              <div class="container">
+                <div class="carousel-caption">
+                  <!-- carousel-caption text-end -->
+                  <h1>반짝이는 야경명소</h1>
+                  <p>밤이 더 아름다운 대한민국!</p>
+                </div>
               </div>
             </div>
             <div class="carousel-item">
               <img src="../assets/image/snow.png" alt="..." style="height: 100%" />
-              <div class="carousel-caption d-none d-md-block">
-                <h5>눈 내린 경복궁</h5>
-                <p></p>
+              <div class="container">
+                <div class="carousel-caption">
+                  <h1>눈으로 뒤덮인 대한민국</h1>
+                </div>
               </div>
             </div>
           </div>

@@ -160,7 +160,7 @@
 		where p.shared = 1
 		group by p.plan_id
 		order by total_favorite desc
-		limit 4
+		limit 3
     </select>
 
     <insert id="writePlan" parameterType="planDto">

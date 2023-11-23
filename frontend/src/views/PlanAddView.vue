@@ -34,14 +34,8 @@ const inputDate = ref({
 
 const getFormatDate = (date) => {
   const YYYY = String(date.getFullYear());
-  const MM = String(
-    date.getMonth() + 1 >= 10
-      ? date.getMonth() + 1
-      : "0" + (date.getMonth() + 1)
-  );
-  const dd = String(
-    date.getDate() >= 10 ? date.getDate() : "0" + date.getDate()
-  );
+  const MM = String(date.getMonth() + 1 >= 10 ? date.getMonth() + 1 : "0" + (date.getMonth() + 1));
+  const dd = String(date.getDate() >= 10 ? date.getDate() : "0" + date.getDate());
   return YYYY + "-" + MM + "-" + dd;
 };
 
@@ -137,13 +131,9 @@ const addPlan = async () => {
 
 const searchAttraction = async () => {
   await api
-    .post(
-      `${import.meta.env.VITE_VUE_API_URL}/attraction/search`,
-      searchWord.value,
-      {
-        headers: { "Content-Type": "application/text" },
-      }
-    )
+    .post(`${import.meta.env.VITE_VUE_API_URL}/attraction/search`, searchWord.value, {
+      headers: { "Content-Type": "application/text" },
+    })
     .then(({ data }) => {
       searchResult.value = data;
       console.log(searchResult.value);
@@ -186,9 +176,7 @@ async function searchTag() {
 <template>
   <div class="row g-5">
     <div class="col-md-12">
-      <h3 class="pb-4 mb-4 fst-italic border-bottom">
-        내 마음대로 여행코스!!!
-      </h3>
+      <h3 class="pb-4 mb-4 fst-italic border-bottom">내 마음대로 여행코스!!!</h3>
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <button
@@ -242,17 +230,11 @@ async function searchTag() {
                 제목은 필수입니다.
               </p>
 
-              <p v-show="titleContent.length != 0" class="error-message mb-4">
-                &nbsp;
-              </p>
+              <p v-show="titleContent.length != 0" class="error-message mb-4">&nbsp;</p>
 
               <h4 class="box-title">[ 날짜 ]</h4>
               <div class="input-group mb-3">
-                <VDatePicker
-                  v-model.range="inputDate"
-                  mode="date"
-                  style="width: 50%"
-                />
+                <VDatePicker v-model.range="inputDate" mode="date" style="width: 50%" />
               </div>
 
               <h4 class="box-title mt-5 mb-0">[ 세부 내용 ]</h4>
@@ -278,22 +260,15 @@ async function searchTag() {
                 <div>
                   <ul
                     v-if="
-                      (tagSearchResult.length === 0 &&
-                        tagContent.length != 0) ||
+                      (tagSearchResult.length === 0 && tagContent.length != 0) ||
                       (!sameTag && tagContent.length != 0)
                     "
                     class="list-group"
                   >
-                    <li class="list-group-item" @click="addTag()">
-                      직접 태그 추가하기
-                    </li>
+                    <li class="list-group-item" @click="addTag()">직접 태그 추가하기</li>
                   </ul>
 
-                  <ul
-                    class="list-group"
-                    v-for="(tag, index) in tagSearchResult"
-                    :key="index"
-                  >
+                  <ul class="list-group" v-for="(tag, index) in tagSearchResult" :key="index">
                     <li class="list-group-item" @click="addTagLike(tag)">
                       {{ tag.tagName }}
                     </li>
@@ -303,18 +278,14 @@ async function searchTag() {
 
               <div
                 class="mb-4 row"
-                style="
-                  float: left;
-                  justify-content: space-between;
-                  display: flex;
-                "
+                style="float: left; justify-content: space-between; display: flex"
                 v-for="(tag, index) in plan.tagList"
                 :key="index"
               >
                 <div class="col-md-12">
                   <button
                     type="button"
-                    class="btn btn-primary rounded-pill m-1"
+                    class="btn btn-dark rounded-pill m-1"
                     @click="deleteTag(tag)"
                   >
                     {{ tag.tagName }} <span class="badge">X</span>
@@ -366,11 +337,7 @@ async function searchTag() {
                       class="overflow-y-scroll h-100 bg-body-tertiary p-2 rounded-2"
                       style="max-height: 800px"
                     >
-                      <ul
-                        class="list-group"
-                        v-for="(place, index) in searchResult"
-                        :key="index"
-                      >
+                      <ul class="list-group" v-for="(place, index) in searchResult" :key="index">
                         <a
                           @click="markPlaceOnMap(place)"
                           class="list-group-item list-group-item-action"
@@ -385,9 +352,7 @@ async function searchTag() {
                             <!-- </div> -->
                             <!-- <div class="col-md-4 align-items-center"> -->
                             <div @click="addPlace(place)" aria-current="true">
-                              <div class="align-middle blue">
-                                여행계획에 추가
-                              </div>
+                              <div class="align-middle blue">여행계획에 추가</div>
                             </div>
                             <!-- </div> -->
                           </div>
@@ -415,11 +380,7 @@ async function searchTag() {
                     class="overflow-y-scroll h-100 rounded-2 timeline"
                     style="max-height: 800px"
                   >
-                    <div
-                      class="timeline-row"
-                      v-for="(attr, index) in plan.attrInfo"
-                      :key="index"
-                    >
+                    <div class="timeline-row" v-for="(attr, index) in plan.attrInfo" :key="index">
                       <!-- <div class="timeline-time">7:45PM<small>Dec 21</small></div> -->
                       <div class="timeline-content">
                         <!-- <i class="icon-attachment"></i> -->
@@ -465,9 +426,7 @@ async function searchTag() {
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="exampleModalLabel">
-                    추가하기
-                  </h1>
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">추가하기</h1>
                   <button
                     type="button"
                     class="btn-close"
@@ -477,11 +436,7 @@ async function searchTag() {
                 </div>
                 <div class="modal-body">정말 추가하시겠습니까?</div>
                 <div class="modal-footer">
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                  >
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     아니요
                   </button>
                   <button
@@ -639,8 +594,8 @@ body {
 }
 
 .timeline-row .timeline-content .badge {
-  color: #ffffff;
-  background: linear-gradient(120deg, #00b5fd 0%, #0047b1 100%);
+  color: black;
+  /* background: linear-gradient(120deg, #00b5fd 0%, #0047b1 100%); */
 }
 
 .timeline-row:nth-child() {
