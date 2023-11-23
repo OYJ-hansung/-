@@ -67,8 +67,8 @@ onMounted(() => {
       <link href="/src/assets/carousel.css" rel="stylesheet" />
     </head>
     <body>
-<<<<<<< frontend/src/views/HomeView.vue
       <main
+        class="mt-4"
         style="display: flex; flex-direction: column; align-items: center; justify-content: center"
       >
         <div
