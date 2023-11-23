@@ -1,4 +1,4 @@
-<script setup></script>
+<!-- <script setup></script>
 
 <template>
   <!DOCTYPE html>
@@ -26,7 +26,6 @@
 
       <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-      <!-- Custom styles for this template -->
       <link href="carousel.css" rel="stylesheet" />
     </head>
     <body>
@@ -321,12 +320,7 @@
           </button>
         </div>
 
-        <!-- Marketing messaging and featurettes
-  ================================================== -->
-        <!-- Wrap the rest of the page in another container to center all the content. -->
-
         <div class="container marketing">
-          <!-- Three columns of text below the carousel -->
           <div class="row">
             <div class="col-lg-4">
               <svg
@@ -355,7 +349,6 @@
                 <a class="btn btn-secondary" href="#">View details &raquo;</a>
               </p>
             </div>
-            <!-- /.col-lg-4 -->
             <div class="col-lg-4">
               <svg
                 class="bd-placeholder-img rounded-circle"
@@ -383,7 +376,6 @@
                 <a class="btn btn-secondary" href="#">View details &raquo;</a>
               </p>
             </div>
-            <!-- /.col-lg-4 -->
             <div class="col-lg-4">
               <svg
                 class="bd-placeholder-img rounded-circle"
@@ -411,12 +403,7 @@
                 <a class="btn btn-secondary" href="#">View details &raquo;</a>
               </p>
             </div>
-            <!-- /.col-lg-4 -->
           </div>
-          <!-- /.row -->
-
-          <!-- START THE FEATURETTES -->
-
           <hr class="featurette-divider" />
 
           <div class="row featurette">
@@ -548,11 +535,7 @@
 
           <hr class="featurette-divider" />
 
-          <!-- /END THE FEATURETTES -->
         </div>
-        <!-- /.container -->
-
-        <!-- FOOTER -->
         <footer class="container">
           <p class="float-end"><a href="#">Back to top</a></p>
           <p>
@@ -643,9 +626,9 @@
 .bd-mode-toggle .dropdown-menu .active .bi {
   display: block !important;
 }
-</style>
+</style> -->
 
-<!-- <script setup>
+<script setup>
 import BoardTable from "@/components/BoardTable.vue";
 import HotPlaceZone from "@/components/HotPlaceZone.vue";
 import { ref, onMounted } from "vue";
@@ -728,7 +711,6 @@ onMounted(() => {
       <p @click="searchTag(tag.tagName)"># {{ tag.tagName }}</p>
     </div>
   </div>
-
 
   <div class="mb-4 text-white rounded bg-dark pics">
     <div
@@ -1354,4 +1336,4 @@ input {
   width: 640px;
   height: 400px;
 }
-</style> -->
+</style>
