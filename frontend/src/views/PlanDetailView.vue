@@ -78,12 +78,8 @@ onMounted(() => {
           <div class="card shadow-sm">
             <div class="card-body">
               <div v-if="isMyPlan">
-                <button
-                  class="btn btn-success rounded-pill m-1"
-                  style="float: right"
-                  type="button"
-                  @click="shareMyPlan()"
-                >
+                <button class="btn btn-success rounded-pill m-1" style="float: right" type="button"
+                  @click="shareMyPlan()">
                   <div v-if="shared == 0">공유하기</div>
                   <div v-if="shared == 1">공유 취소하기</div>
                 </button>
@@ -91,11 +87,7 @@ onMounted(() => {
 
               <div class="row g-5">
                 <div class="col-md-4">
-                  <img
-                    :src="plan.img"
-                    class="mt-3 img-fluid mx-auto d-block"
-                    alt="Responsive image"
-                  />
+                  <img :src="plan.img" class="mt-3 img-fluid mx-auto d-block" alt="Responsive image" />
                 </div>
                 <div class="col-md-8">
                   <h2 class="card-title mx-auto d-block mt-1 mb-2">
@@ -116,12 +108,8 @@ onMounted(() => {
                   </p>
 
                   <h4>[ 태그 ]</h4>
-                  <div
-                    class="mb-4 row"
-                    style="float: left; justify-content: space-between; display: flex"
-                    v-for="(tag, index) in plan.tagList"
-                    :key="index"
-                  >
+                  <div class="mb-4 row" style="float: left; justify-content: space-between; display: flex"
+                    v-for="(tag, index) in plan.tagList" :key="index">
                     <div class="col-md-12">
                       <button type="button" class="btn w-btn w-btn-tag"># {{ tag.tagName }}</button>
                     </div>
@@ -141,59 +129,69 @@ onMounted(() => {
                 </div>
               </div>
 
-              <div class="m-2 p-1 row justify-content-end" style="float: right">
-                <div v-if="isMyPlan">
-                  <button href="#" @click="editPlan()" type="button" class="w-btn w-btn-aqua">
-                    수정
-                  </button>
 
-                  <button
-                    type="button"
-                    class="w-btn w-btn-red"
-                    data-bs-toggle="modal"
-                    data-bs-target="#deleteModal"
-                  >
-                    삭제
-                  </button>
+
+              <div class="row mt-5 justify-content-end" v-if="isMyPlan">
+                <div class="col-3">
+                  <div class="d-grid">
+                    <input class="btn btn-outline-primary align-items-center p-2 mx-5" type="button" @click="editPlan()"
+                      value="수정" />
+                  </div>
+                </div>
+
+                <div class="col-3">
+                  <div class="d-grid">
+                    <input class="btn btn-outline-danger align-items-center p-2 mx-5 mb-3" type="button"
+                      data-bs-toggle="modal" data-bs-target="#deleteModal" value="삭제" />
+                  </div>
                 </div>
               </div>
 
-              <!-- Delete Modal -->
-              <div
-                class="modal fade"
-                id="deleteModal"
-                tabindex="-1"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">삭제하기</h1>
-                      <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    <div class="modal-body">정말 삭제하시겠습니까?</div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        아니요
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-primary"
-                        @click="deletePlan()"
-                        data-bs-dismiss="modal"
-                      >
-                        네
-                      </button>
+
+
+
+
+
+
+
+
+              <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content rounded-0">
+                    <div class="modal-body p-4 px-5">
+                      <div class="main-content text-center">
+                        <a href="#" class="close-btn" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true"><span class="icon-close2"></span></span>
+                        </a>
+
+                        <div class="warp-icon mb-4">
+                          <span class="icon-lock2"></span>
+                        </div>
+                        <form action="#">
+                          <h4 class="mb-4">정말 삭제하시겠습니까?</h4>
+
+                          <div class="row mt-4">
+                            <div class="d-grid col">
+                              <input class="btn btn-outline-danger align-items-center p-2 mx-1" type="button"
+                                @click="deletePlan()" data-bs-dismiss="modal" value="확인" />
+                            </div>
+                            <div class="d-grid col">
+                              <input class="btn btn-outline-dark align-items-center p-2 mx-1" type="button"
+                                data-bs-dismiss="modal" value="취소" />
+                            </div>
+                          </div>
+                        </form>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+
+
+
+
+
             </div>
           </div>
         </div>
@@ -212,6 +210,7 @@ body {
 .bold-text {
   font-weight: bold;
 }
+
 .w-btn {
   position: relative;
   display: inline-block;
@@ -223,11 +222,13 @@ body {
   font-weight: 600;
   /* transition: 0.25s; */
 }
+
 .w-btn-aqua {
   background-color: white;
   border-color: rgb(67, 67, 232);
   color: rgb(67, 67, 232);
 }
+
 .w-btn-red {
   background-color: white;
   border-color: crimson;
