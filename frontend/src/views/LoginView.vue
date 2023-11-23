@@ -196,6 +196,44 @@ async function signIn() {
         </div>
       </div>
     </div>
+
+    <div
+      class="modal fade"
+      id="findPasswordModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content rounded-0">
+          <div class="modal-body p-4 px-5">
+            <div class="main-content text-center">
+              <form action="#">
+                <h2 class="mb-3">비밀번호 찾기</h2>
+                <p>비밀번호를 찾을 아이디를 입력하세요</p>
+
+                <div class="form-group mb-4">
+                  <input type="text" class="form-control text-center" v-model="findUserId" />
+                </div>
+                <!-- @click="register()" -->
+                <div class="col-12">
+                  <div class="d-grid">
+                    <input
+                      class="btn btn-outline-dark align-items-center p-2 mx-4"
+                      type="button"
+                      @click="findPassword()"
+                      data-bs-dismiss="modal"
+                      value="확인"
+                    />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 </template>
 

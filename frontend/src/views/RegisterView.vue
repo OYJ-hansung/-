@@ -3,6 +3,15 @@ import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import api from "axios";
 
+const allSatisfied = computed(() => {
+  if (
+    userInfo.value.userId != "" &&
+    userInfo.value.userPassword != "" &&
+    userInfo.value.userName != ""
+  )
+    return true;
+  else return false;
+});
 const router = useRouter();
 const idVerification = computed(() => {
   return userInfo.value.userId.length > 0 ? false : true;
@@ -22,30 +31,20 @@ const userInfo = ref({
 });
 
 const register = async () => {
-  if (
-    userInfo.value.userId != "" &&
-    userInfo.value.userPassword != "" &&
-    userInfo.value.userName != "" &&
-    userInfo.value.emailId != "" &&
-    userInfo.value.emailDomain != ""
-  ) {
-    await api
-      .post(`${import.meta.env.VITE_VUE_API_URL}/members/`, {
-        userId: userInfo.value.userId,
-        userName: userInfo.value.userName,
-        userPassword: userInfo.value.userPassword,
-        emailId: userInfo.value.emailId,
-        emailDomain: userInfo.value.emailDomain,
-      })
-      .then(() => {
-        router.push({ path: "/login" });
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  } else {
-    alert("오류");
-  }
+  await api
+    .post(`${import.meta.env.VITE_VUE_API_URL}/members/`, {
+      userId: userInfo.value.userId,
+      userName: userInfo.value.userName,
+      userPassword: userInfo.value.userPassword,
+      emailId: userInfo.value.emailId,
+      emailDomain: userInfo.value.emailDomain,
+    })
+    .then(() => {
+      router.push({ path: "/login" });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
 };
 </script>
 
@@ -121,10 +120,64 @@ const register = async () => {
                 </div>
               </div>
             </div>
-            <button class="w-100 btn btn-primary btn-lg" @click="register">회원가입</button>
+            <div class="col-12">
+              <div class="d-grid">
+                <input
+                  v-if="!allSatisfied"
+                  class="btn btn-outline-dark align-items-center p-2"
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#registerModal"
+                  value="회원가입"
+                  disabled
+                />
+                <input
+                  v-if="allSatisfied"
+                  class="btn btn-outline-primary align-items-center p-2"
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#registerModal"
+                  value="회원가입"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </main>
+    </div>
+
+    <div
+      class="modal fade"
+      id="registerModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content rounded-0">
+          <div class="modal-body p-4 px-5">
+            <div class="main-content text-center">
+              <form action="#">
+                <h2 class="my-5">회원가입이 완료되었습니다!</h2>
+
+                <!-- @click="register()" -->
+                <div class="col-12">
+                  <div class="d-grid">
+                    <input
+                      class="btn btn-outline-dark align-items-center p-2 mx-4"
+                      type="button"
+                      @click="register()"
+                      data-bs-dismiss="modal"
+                      value="확인"
+                    />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </template>
