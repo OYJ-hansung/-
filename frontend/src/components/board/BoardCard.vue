@@ -22,8 +22,6 @@ const addFavorite = async () => {
 };
 
 const deleteFavorite = async () => {
-  console.log(ustore.userInfo.userId);
-  console.log(p.plan.planId);
   await api
     .post(`${import.meta.env.VITE_VUE_API_URL}/plan/delfavorite`, {
       userId: ustore.userInfo.userId,
@@ -64,7 +62,9 @@ const clickFavorite = () => {
       <div class="table">
         <h6 class="category text-info">{{ plan.userId }}</h6>
         <h4 class="card-caption">
-          <router-link :to="{ name: 'plandetail', params: { id: plan.planId } }">
+          <router-link
+            :to="{ name: 'plandetail', params: { id: plan.planId } }"
+          >
             {{ plan.planName }}</router-link
           >
         </h4>
@@ -122,8 +122,8 @@ CARDS
   margin-right: 20px;
   margin-top: -30px;
   border-radius: 6px;
-  box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12),
-    0 8px 10px -5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56),
+    0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
 }
 
 .card .card-image img {
@@ -148,8 +148,8 @@ CARDS
 }
 
 .img-raised {
-  box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12),
-    0 8px 10px -5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56),
+    0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
 }
 
 .card .ftr {
@@ -258,8 +258,8 @@ CARDS
 }
 
 .card-raised {
-  box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12),
-    0 8px 10px -5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56),
+    0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
 }
 
 /* ============ Card Background ============ */
@@ -411,8 +411,8 @@ CARDS
   margin: -50px auto 0;
   border-radius: 50%;
   overflow: hidden;
-  box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12),
-    0 8px 10px -5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56),
+    0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
 }
 
 .card-profile.card-plain .card-avatar,
@@ -555,8 +555,8 @@ BUTTONS
 .btn.btn-info:focus,
 .btn.btn-info:active,
 .btn.btn-info:hover {
-  box-shadow: 0 14px 26px -12px rgba(0, 188, 212, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12),
-    0 8px 10px -5px rgba(0, 188, 212, 0.2);
+  box-shadow: 0 14px 26px -12px rgba(0, 188, 212, 0.42),
+    0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 188, 212, 0.2);
 }
 
 /* Button Danger */
@@ -569,8 +569,8 @@ BUTTONS
 .btn.btn-danger:focus,
 .btn.btn-danger:active,
 .btn.btn-danger:hover {
-  box-shadow: 0 14px 26px -12px rgba(244, 67, 54, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12),
-    0 8px 10px -5px rgba(244, 67, 54, 0.2);
+  box-shadow: 0 14px 26px -12px rgba(244, 67, 54, 0.42),
+    0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(244, 67, 54, 0.2);
 }
 
 /* Button Warning */
@@ -591,8 +591,8 @@ BUTTONS
 
 .btn.btn-warning,
 .navbar .navbar-nav > li > a.btn.btn-warning {
-  box-shadow: 0 2px 2px 0 rgba(255, 152, 0, 0.14), 0 3px 1px -2px rgba(255, 152, 0, 0.2),
-    0 1px 5px 0 rgba(255, 152, 0, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(255, 152, 0, 0.14),
+    0 3px 1px -2px rgba(255, 152, 0, 0.2), 0 1px 5px 0 rgba(255, 152, 0, 0.12);
 }
 
 /* Button Rose */
@@ -637,8 +637,8 @@ SOCIAL MEDIA BUTTONS
 .navbar .navbar-nav > li > a.btn.btn-facebook {
   background-color: #3b5998;
   color: #fff;
-  box-shadow: 0 2px 2px 0 rgba(59, 89, 152, 0.14), 0 3px 1px -2px rgba(59, 89, 152, 0.2),
-    0 1px 5px 0 rgba(59, 89, 152, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(59, 89, 152, 0.14),
+    0 3px 1px -2px rgba(59, 89, 152, 0.2), 0 1px 5px 0 rgba(59, 89, 152, 0.12);
 }
 
 .btn.btn-facebook:focus,
@@ -646,8 +646,8 @@ SOCIAL MEDIA BUTTONS
 .btn.btn-facebook:hover {
   background-color: #3b5998;
   color: #fff;
-  box-shadow: 0 14px 26px -12px rgba(59, 89, 152, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12),
-    0 8px 10px -5px rgba(59, 89, 152, 0.2);
+  box-shadow: 0 14px 26px -12px rgba(59, 89, 152, 0.42),
+    0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(59, 89, 152, 0.2);
 }
 
 .btn.btn-facebook.btn-simple,
@@ -663,8 +663,8 @@ SOCIAL MEDIA BUTTONS
 .navbar .navbar-nav > li > a.btn.btn-twitter {
   background-color: #55acee;
   color: #fff;
-  box-shadow: 0 2px 2px 0 rgba(85, 172, 238, 0.14), 0 3px 1px -2px rgba(85, 172, 238, 0.2),
-    0 1px 5px 0 rgba(85, 172, 238, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(85, 172, 238, 0.14),
+    0 3px 1px -2px rgba(85, 172, 238, 0.2), 0 1px 5px 0 rgba(85, 172, 238, 0.12);
 }
 
 .btn.btn-twitter:focus,
@@ -672,8 +672,8 @@ SOCIAL MEDIA BUTTONS
 .btn.btn-twitter:hover {
   background-color: #55acee;
   color: #fff;
-  box-shadow: 0 14px 26px -12px rgba(85, 172, 238, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12),
-    0 8px 10px -5px rgba(85, 172, 238, 0.2);
+  box-shadow: 0 14px 26px -12px rgba(85, 172, 238, 0.42),
+    0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(85, 172, 238, 0.2);
 }
 
 .btn.btn-twitter.btn-simple,
@@ -689,8 +689,8 @@ SOCIAL MEDIA BUTTONS
 .navbar .navbar-nav > li > a.btn.btn-pinterest {
   background-color: #cc2127;
   color: #fff;
-  box-shadow: 0 2px 2px 0 rgba(204, 33, 39, 0.14), 0 3px 1px -2px rgba(204, 33, 39, 0.2),
-    0 1px 5px 0 rgba(204, 33, 39, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(204, 33, 39, 0.14),
+    0 3px 1px -2px rgba(204, 33, 39, 0.2), 0 1px 5px 0 rgba(204, 33, 39, 0.12);
 }
 
 .btn.btn-pinterest:focus,
@@ -698,8 +698,8 @@ SOCIAL MEDIA BUTTONS
 .btn.btn-pinterest:hover {
   background-color: #cc2127;
   color: #fff;
-  box-shadow: 0 14px 26px -12px rgba(204, 33, 39, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12),
-    0 8px 10px -5px rgba(204, 33, 39, 0.2);
+  box-shadow: 0 14px 26px -12px rgba(204, 33, 39, 0.42),
+    0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(204, 33, 39, 0.2);
 }
 
 .btn.btn-pinterest.btn-simple,
@@ -715,8 +715,8 @@ SOCIAL MEDIA BUTTONS
 .navbar .navbar-nav > li > a.btn.btn-google {
   background-color: #dd4b39;
   color: #fff;
-  box-shadow: 0 2px 2px 0 rgba(221, 75, 57, 0.14), 0 3px 1px -2px rgba(221, 75, 57, 0.2),
-    0 1px 5px 0 rgba(221, 75, 57, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(221, 75, 57, 0.14),
+    0 3px 1px -2px rgba(221, 75, 57, 0.2), 0 1px 5px 0 rgba(221, 75, 57, 0.12);
 }
 
 .btn.btn-google:focus,
@@ -724,8 +724,8 @@ SOCIAL MEDIA BUTTONS
 .btn.btn-google:hover {
   background-color: #dd4b39;
   color: #fff;
-  box-shadow: 0 14px 26px -12px rgba(221, 75, 57, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12),
-    0 8px 10px -5px rgba(221, 75, 57, 0.2);
+  box-shadow: 0 14px 26px -12px rgba(221, 75, 57, 0.42),
+    0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(221, 75, 57, 0.2);
 }
 
 .btn.btn-google.btn-simple,
@@ -741,8 +741,8 @@ SOCIAL MEDIA BUTTONS
 .navbar .navbar-nav > li > a.btn.btn-dribbble {
   background-color: #ea4c89;
   color: #fff;
-  box-shadow: 0 2px 2px 0 rgba(234, 76, 137, 0.14), 0 3px 1px -2px rgba(234, 76, 137, 0.2),
-    0 1px 5px 0 rgba(234, 76, 137, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(234, 76, 137, 0.14),
+    0 3px 1px -2px rgba(234, 76, 137, 0.2), 0 1px 5px 0 rgba(234, 76, 137, 0.12);
 }
 
 .btn.btn-dribbble:focus,
@@ -750,8 +750,8 @@ SOCIAL MEDIA BUTTONS
 .btn.btn-dribbble:hover {
   background-color: #ea4c89;
   color: #fff;
-  box-shadow: 0 14px 26px -12px rgba(234, 76, 137, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12),
-    0 8px 10px -5px rgba(234, 76, 137, 0.2);
+  box-shadow: 0 14px 26px -12px rgba(234, 76, 137, 0.42),
+    0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(234, 76, 137, 0.2);
 }
 
 .btn.btn-dribbble.btn-simple,
@@ -767,8 +767,8 @@ SOCIAL MEDIA BUTTONS
 .navbar .navbar-nav > li > a.btn.btn-instagram {
   background-color: #125688;
   color: #fff;
-  box-shadow: 0 2px 2px 0 rgba(18, 86, 136, 0.14), 0 3px 1px -2px rgba(18, 86, 136, 0.2),
-    0 1px 5px 0 rgba(18, 86, 136, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(18, 86, 136, 0.14),
+    0 3px 1px -2px rgba(18, 86, 136, 0.2), 0 1px 5px 0 rgba(18, 86, 136, 0.12);
 }
 
 .btn.btn-instagram:focus,
@@ -776,8 +776,8 @@ SOCIAL MEDIA BUTTONS
 .btn.btn-instagram:hover {
   background-color: #125688;
   color: #fff;
-  box-shadow: 0 14px 26px -12px rgba(18, 86, 136, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12),
-    0 8px 10px -5px rgba(18, 86, 136, 0.2);
+  box-shadow: 0 14px 26px -12px rgba(18, 86, 136, 0.42),
+    0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(18, 86, 136, 0.2);
 }
 
 .btn.btn-instagram.btn-simple,

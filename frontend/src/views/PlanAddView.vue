@@ -8,7 +8,6 @@ import VKakaoMapAdd from "@/components/common/VKakaoMapAdd.vue";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 
-// import Datepicker from 'vue3-datepicker';
 import { userStore } from "@/stores/userStore";
 import { searchStore } from "@/stores/planListStore";
 
@@ -34,8 +33,14 @@ const inputDate = ref({
 
 const getFormatDate = (date) => {
   const YYYY = String(date.getFullYear());
-  const MM = String(date.getMonth() + 1 >= 10 ? date.getMonth() + 1 : "0" + (date.getMonth() + 1));
-  const dd = String(date.getDate() >= 10 ? date.getDate() : "0" + date.getDate());
+  const MM = String(
+    date.getMonth() + 1 >= 10
+      ? date.getMonth() + 1
+      : "0" + (date.getMonth() + 1)
+  );
+  const dd = String(
+    date.getDate() >= 10 ? date.getDate() : "0" + date.getDate()
+  );
   return YYYY + "-" + MM + "-" + dd;
 };
 
@@ -57,18 +62,13 @@ const deleteTag = (tag) => {
 };
 
 const deletePlace = (index) => {
-  console.log("삭제 전: ", addedPlaces.value);
-
   plan.value.attrInfo.splice(index, 1);
   addedPlaces.value.splice(index, 1);
-
-  console.log("삭제 후: ", addedPlaces.value);
 };
 
 const addPlace = (place) => {
   plan.value.attrInfo.push(place);
   searchResult.value = [];
-  console.log(plan.value.attrInfo);
 
   //지도에 전달할 배열에 장소 추가
   addedPlaces.value.push(place);
@@ -131,12 +131,15 @@ const addPlan = async () => {
 
 const searchAttraction = async () => {
   await api
-    .post(`${import.meta.env.VITE_VUE_API_URL}/attraction/search`, searchWord.value, {
-      headers: { "Content-Type": "application/text" },
-    })
+    .post(
+      `${import.meta.env.VITE_VUE_API_URL}/attraction/search`,
+      searchWord.value,
+      {
+        headers: { "Content-Type": "application/text" },
+      }
+    )
     .then(({ data }) => {
       searchResult.value = data;
-      console.log(searchResult.value);
     })
     .catch((e) => {
       console.log(e);
@@ -150,7 +153,6 @@ const onTagInput = (event) => {
 
 const onTitleInput = (event) => {
   titleContent.value = event.target.value;
-  console.log("제목길이: ", titleContent.value.length);
 };
 
 async function searchTag() {
@@ -161,7 +163,6 @@ async function searchTag() {
       tagSearchResult.value = data;
       tagSearchResult.value.forEach((tag) => {
         if (tag.tagName === tagContent.value) {
-          console.log("완전 같은 태그");
           sameTag.value = true;
         }
       });
@@ -176,7 +177,9 @@ async function searchTag() {
 <template>
   <div class="row g-5">
     <div class="col-md-12">
-      <h3 class="pb-4 mb-4 fst-italic border-bottom">내 마음대로 여행코스!!!</h3>
+      <h3 class="pb-4 mb-4 fst-italic border-bottom">
+        내 마음대로 여행코스!!!
+      </h3>
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <button
@@ -230,11 +233,17 @@ async function searchTag() {
                 제목은 필수입니다.
               </p>
 
-              <p v-show="titleContent.length != 0" class="error-message mb-4">&nbsp;</p>
+              <p v-show="titleContent.length != 0" class="error-message mb-4">
+                &nbsp;
+              </p>
 
               <h4 class="box-title">[ 날짜 ]</h4>
               <div class="input-group mb-3">
-                <VDatePicker v-model.range="inputDate" mode="date" style="width: 50%" />
+                <VDatePicker
+                  v-model.range="inputDate"
+                  mode="date"
+                  style="width: 50%"
+                />
               </div>
 
               <h4 class="box-title mt-5 mb-0">[ 세부 내용 ]</h4>
@@ -247,7 +256,6 @@ async function searchTag() {
               ></textarea>
               <h5 class="box-title mt-3">[ 태그 ]</h5>
               <div class="justify-content-center mb-3">
-                <!-- <div class="overflow-scroll"> -->
                 <input
                   type="text"
                   class="form-control"
@@ -260,15 +268,22 @@ async function searchTag() {
                 <div>
                   <ul
                     v-if="
-                      (tagSearchResult.length === 0 && tagContent.length != 0) ||
+                      (tagSearchResult.length === 0 &&
+                        tagContent.length != 0) ||
                       (!sameTag && tagContent.length != 0)
                     "
                     class="list-group"
                   >
-                    <li class="list-group-item" @click="addTag()">직접 태그 추가하기</li>
+                    <li class="list-group-item" @click="addTag()">
+                      직접 태그 추가하기
+                    </li>
                   </ul>
 
-                  <ul class="list-group" v-for="(tag, index) in tagSearchResult" :key="index">
+                  <ul
+                    class="list-group"
+                    v-for="(tag, index) in tagSearchResult"
+                    :key="index"
+                  >
                     <li class="list-group-item" @click="addTagLike(tag)">
                       {{ tag.tagName }}
                     </li>
@@ -278,7 +293,11 @@ async function searchTag() {
 
               <div
                 class="mb-4 row"
-                style="float: left; justify-content: space-between; display: flex"
+                style="
+                  float: left;
+                  justify-content: space-between;
+                  display: flex;
+                "
                 v-for="(tag, index) in plan.tagList"
                 :key="index"
               >
@@ -310,7 +329,7 @@ async function searchTag() {
                 <div class="col-md-3">
                   <!--  여행지 검색 -->
                   <h5>여행지 검색</h5>
-                  <!-- class="m-2 mb-3 row justify-content-center" -->
+
                   <div class="input-group justify-content-center">
                     <input
                       type="text"
@@ -337,24 +356,27 @@ async function searchTag() {
                       class="overflow-y-scroll h-100 bg-body-tertiary p-2 rounded-2"
                       style="max-height: 800px"
                     >
-                      <ul class="list-group" v-for="(place, index) in searchResult" :key="index">
+                      <ul
+                        class="list-group"
+                        v-for="(place, index) in searchResult"
+                        :key="index"
+                      >
                         <a
                           @click="markPlaceOnMap(place)"
                           class="list-group-item list-group-item-action"
                           aria-current="true"
                         >
                           <div class="row g-2">
-                            <!-- <div class="col-md-8"> -->
                             <div>
                               <div class="time-title">{{ place.title }}</div>
                               <div>{{ place.addr1 }}</div>
                             </div>
-                            <!-- </div> -->
-                            <!-- <div class="col-md-4 align-items-center"> -->
+
                             <div @click="addPlace(place)" aria-current="true">
-                              <div class="align-middle blue">여행계획에 추가</div>
+                              <div class="align-middle blue">
+                                여행계획에 추가
+                              </div>
                             </div>
-                            <!-- </div> -->
                           </div>
                         </a>
                       </ul>
@@ -380,10 +402,12 @@ async function searchTag() {
                     class="overflow-y-scroll h-100 rounded-2 timeline"
                     style="max-height: 800px"
                   >
-                    <div class="timeline-row" v-for="(attr, index) in plan.attrInfo" :key="index">
-                      <!-- <div class="timeline-time">7:45PM<small>Dec 21</small></div> -->
+                    <div
+                      class="timeline-row"
+                      v-for="(attr, index) in plan.attrInfo"
+                      :key="index"
+                    >
                       <div class="timeline-content">
-                        <!-- <i class="icon-attachment"></i> -->
                         <div class="time-title">{{ attr.title }}</div>
                         <!-- 사진 -->
                         <div class="thumbs">
@@ -426,7 +450,9 @@ async function searchTag() {
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="exampleModalLabel">추가하기</h1>
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">
+                    추가하기
+                  </h1>
                   <button
                     type="button"
                     class="btn-close"
@@ -436,7 +462,11 @@ async function searchTag() {
                 </div>
                 <div class="modal-body">정말 추가하시겠습니까?</div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
                     아니요
                   </button>
                   <button
@@ -479,12 +509,7 @@ body {
 
 .timeline {
   position: relative;
-  /* background: #272e48; */
-  /* -webkit-border-radius: 4px; */
-  /* -moz-border-radius: 4px; */
   border-radius: 4px;
-  /* padding: 1rem; */
-  /* margin: 0 auto 1rem auto; */
   overflow: hidden;
 }
 
@@ -500,24 +525,7 @@ body {
 }
 
 .timeline-row {
-  /* padding-left: 50%; */
   position: relative;
-  /* margin-bottom: 30px; */
-}
-
-.timeline-row .timeline-time {
-  position: absolute;
-  right: 60%;
-  top: 15px;
-  text-align: right;
-  margin-right: 20px;
-  color: #272e48;
-  font-size: 1.5rem;
-}
-
-.timeline-row .timeline-time small {
-  display: block;
-  font-size: 0.8rem;
 }
 
 .timeline-row .timeline-content {
@@ -533,10 +541,7 @@ body {
   -moz-border-radius: 4px;
   border-radius: 4px;
   display: flex;
-  /* align-items: center; */
-  /* justify-content: center; */
   flex-direction: column;
-  /* text-align: center; */
 }
 
 .timeline-row .timeline-content:before {
@@ -580,35 +585,22 @@ body {
 }
 
 .timeline-row .timeline-content .thumbs {
-  /* margin-bottom: 20px; */
   display: flex;
 }
 
 .timeline-row .timeline-content .thumbs img {
   margin-top: 5px;
-  /* margin: 5px; */
-  /* max-width: px; */
-  /* width: 90%; */
   display: flex;
   align-content: center;
 }
 
 .timeline-row .timeline-content .badge {
   color: black;
-  /* background: linear-gradient(120deg, #00b5fd 0%, #0047b1 100%); */
 }
 
 .timeline-row:nth-child() {
   padding-left: 0;
   padding-right: 50%;
-}
-
-.timeline-row:nth-child() .timeline-time {
-  right: auto;
-  left: 50%;
-  text-align: left;
-  margin-right: 0;
-  margin-left: 20px;
 }
 
 .timeline-row:nth-child() .timeline-content {
@@ -635,13 +627,6 @@ body {
     padding: 0;
   }
 
-  .timeline .timeline-row:nth-child() .timeline-time {
-    position: relative;
-    top: 0;
-    left: 0;
-    margin: 0 0 10px 0;
-  }
-
   .timeline .timeline-row:nth-child() .timeline-content {
     margin: 0;
   }
@@ -655,26 +640,6 @@ body {
   }
 }
 
-.btn-circle.btn-xl {
-  width: 50px;
-  height: 50px;
-  padding: 8px 12px;
-  border-radius: 35px;
-  font-size: 24px;
-}
-
-.btn-circle {
-  width: 9px;
-  height: 9px;
-  /* padding: 4px 0px; */
-  border-radius: 15px;
-  text-align: center;
-  font-size: 12px;
-}
-
-div.date {
-  display: inline-flex;
-}
 .error-message {
   color: rgba(231, 78, 78, 0.829);
   font-size: 14px;

@@ -27,9 +27,6 @@ const initMap = () => {
     level: 3,
   };
   map = new kakao.maps.Map(container, options);
-  console.log("skdha/");
-
-  console.log("안녕");
   console.log(props.attractions);
   positions.value = [];
   props.attractions.forEach((attraction) => {

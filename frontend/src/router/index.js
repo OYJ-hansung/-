@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import BoardDetailView from "../views/BoardDetailView.vue";
 import PlanListView from "../views/PlanListView.vue";
 import PlanDetailView from "../views/PlanDetailView.vue";
 import PlanAddView from "../views/PlanAddView.vue";
@@ -10,11 +9,7 @@ import RegisterView from "../views/RegisterView.vue";
 import MyPlanView from "../views/MyPlanView.vue";
 import UserInfoView from "../views/UserInfoView.vue";
 import AttrListView from "../views/AttrListView.vue";
-import { toast } from "vue3-toastify";
 import { userStore } from "@/stores/userStore";
-import test from "../views/test.vue";
-import "vue3-toastify/dist/index.css";
-
 const onlyAuthUser = async (to, from, next) => {
   const store = userStore(); // 안에서 pinia를 부른다. Auth만 사용하고 나머지는 다 버린다.
   const checkUserInfo = store.checkUserInfo;
@@ -29,27 +24,6 @@ const onlyAuthUser = async (to, from, next) => {
   }
   if (!checkToken || checkUserInfo === null) {
     store.isLogin = false;
-
-    // 비동기는 해놨는데.. 뭔가 좀 허졉한것 같아서 주석처리해둠 - 영주
-    // function a() {
-    //   return new Promise((resolve) => {
-    //     toast.error("로그인이 필요합니다.", {
-    //       position: toast.POSITION.TOP_CENTER,
-    //       theme: "colored",
-    //       autoClose: 1000,
-    //     });
-    //     setTimeout(() => {
-    //       resolve();
-    //     }, 1500);
-    //   });
-    // }
-
-    // function test() {
-    //   a().then(() => {
-    //     router.push({ name: "login" });
-    //   });
-    // }
-    // test();
 
     alert("로그인이 필요합니다.");
     router.push({ name: "login" });
@@ -66,17 +40,6 @@ const router = createRouter({
       name: "home",
       component: HomeView,
     },
-    {
-      path: "/about",
-      name: "about",
-      component: () => import("../views/AboutView.vue"),
-    },
-    {
-      path: "/boarddetail/:no",
-      name: "boarddetail",
-      component: BoardDetailView,
-    },
-    // 여기부터 관통프로젝트
     {
       path: "/planlist",
       beforeEnter: onlyAuthUser,
@@ -123,11 +86,6 @@ const router = createRouter({
       path: "/attrlist",
       name: "attrlist",
       component: AttrListView,
-    },
-    {
-      path: "/test",
-      name: "test",
-      component: test,
     },
   ],
 });

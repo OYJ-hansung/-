@@ -23,7 +23,6 @@ const error = reactive({
 });
 
 const findPassword = async () => {
-  console.log(findUserId.value);
   await api
     .get(`${import.meta.env.VITE_VUE_API_URL}/members/login/${findUserId.value}`)
     .then(({ data }) => {
@@ -40,15 +39,12 @@ const register = () => {
 };
 
 function updateData(data, key) {
-  console.log(click);
   user[key] = data;
-  console.log(user);
 }
 //쿠키에서 저장된 아이디가 있으면 가져오는 함수
 async function getIDByCookie() {
   const cookies = document.cookie;
   const cookieArray = cookies.split("; ");
-  console.log(cookieArray);
   for (let i = 0; i < cookieArray.length; i++) {
     const cookie = cookieArray[i].split("=");
     const key = cookie[0];
@@ -68,23 +64,16 @@ async function storeIDByCookie(userId) {
 }
 
 async function signIn() {
-  console.log("로그인 정보: " + user.userPassword);
   await ustore.userConfirm(user);
   let token = sessionStorage.getItem("access-token");
-  console.log("1. confirm() token >> " + token);
   if (ustore.isLogin) {
     await ustore.getUserInfo(token);
-    console.log("4. confirm() userInfo :: ", ustore.userInfo);
     if (ustore.userInfo.isAdmin) {
       toast.success(ustore.userInfo.userId + "관리자 님 환영합니다!", {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 1000,
       });
     } else {
-      // toast.success(ustore.userInfo.userId + "님 환영합니다!", {
-      //   position: toast.POSITION.TOP_RIGHT,
-      //   autoClose: 1000,
-      // });
       router.push({ path: "/" });
     }
     if (click.rememeberId) {
@@ -92,8 +81,6 @@ async function signIn() {
       await storeIDByCookie(user.userId);
       await getIDByCookie();
     }
-    console.log("ustore userInfo: " + ustore.isLogin);
-    // router.push({ name: "home" }); // 메인 페이지로 이동
   } else {
     error.message = "아이디 또는 비밀번호가 잘못되었습니다.";
   }
@@ -121,9 +108,7 @@ async function signIn() {
                       <div class="col-12">
                         <div class="mb-5">
                           <div class="text-center mb-4">
-                            <a href="#!">
-                              <!-- <img src="./assets/img/bsb-logo.svg" alt="" width="175" height="57" /> -->
-                            </a>
+                            <a href="#!"> </a>
                           </div>
                           <h1 class="fw-light d-flex justify-content-center mt-5">로그인</h1>
                         </div>
@@ -235,6 +220,7 @@ async function signIn() {
                       class="btn btn-outline-dark align-items-center p-2 mx-1"
                       type="button"
                       @click="findPassword()"
+                      data-bs-dismiss="modal"
                       value="확인"
                     />
                   </div>
@@ -357,13 +343,11 @@ async function signIn() {
 .outer-div {
   width: 400px;
   height: 60px;
-  /* background: #3c40c6; */
 }
+
 .inner-div {
-  /* margin-left: 50%; */
   width: 200px;
   height: 60px;
-  /* background: #ff5e57; */
   display: inline-block;
 }
 </style>

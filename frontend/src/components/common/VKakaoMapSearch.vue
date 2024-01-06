@@ -26,10 +26,6 @@ const initMap = () => {
     level: 3,
   };
   map = new kakao.maps.Map(container, options);
-  console.log("skdha/");
-
-  console.log("안녕");
-  console.log(props.attractions);
   positions.value = [];
   props.attractions.forEach((attraction) => {
     let obj = {};
@@ -49,7 +45,6 @@ const initMap = () => {
 watch(
   () => props.attractions.value,
   () => {
-    console.log("2마커 어디감");
     positions.value = [];
     if (window.kakao && window.kakao.maps) {
       props.attractions.forEach((attraction) => {
@@ -140,7 +135,6 @@ const loadMarkers = () => {
       { class: "link" },
       { innerText: "네이버 검색" }
     );
-    // vtitle.append(vclose);
 
     vimg.append(iimg);
     vdiv.append(va);

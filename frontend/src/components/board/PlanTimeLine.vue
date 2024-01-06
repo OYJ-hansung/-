@@ -12,16 +12,28 @@ const deletePlace = function (index) {
 </script>
 
 <template>
-  <div id="timescroll" class="overflow-y-scroll h-100 rounded-2 timeline" style="max-height: 800px">
+  <div
+    id="timescroll"
+    class="overflow-y-scroll h-100 rounded-2 timeline"
+    style="max-height: 800px"
+  >
     <div class="timeline-row" v-for="(attr, index) in attractions" :key="index">
       <div class="timeline-content">
         <div class="time-title">{{ attr.title }}</div>
         <!-- 사진 -->
         <div class="thumbs">
-          <img class="img-fluid rounded" :src="attr.firstImage" alt="Maxwell Admin" />
+          <img
+            class="img-fluid rounded"
+            :src="attr.firstImage"
+            alt="Maxwell Admin"
+          />
         </div>
         <div class="del-btn">
-          <button v-if="isDetail == 'false'" @click="deletePlace(index)" class="w-btn w-btn-red">
+          <button
+            v-if="isDetail == 'false'"
+            @click="deletePlace(index)"
+            class="w-btn w-btn-red"
+          >
             x
           </button>
         </div>
@@ -42,11 +54,9 @@ body {
   padding: 1px 6px 3px 6px;
   margin: 7px;
   border-radius: 50%;
-  /* box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); */
   text-decoration: none;
   font-weight: 600;
   font-size: 12px;
-  /* transition: 0.25s; */
 }
 .w-btn-red {
   background-color: black;
@@ -66,12 +76,7 @@ body {
 
 .timeline {
   position: relative;
-  /* background: #272e48; */
-  /* -webkit-border-radius: 4px; */
-  /* -moz-border-radius: 4px; */
   border-radius: 4px;
-  /* padding: 1rem; */
-  /* margin: 0 auto 1rem auto; */
   overflow: hidden;
 }
 
@@ -87,9 +92,7 @@ body {
 }
 
 .timeline-row {
-  /* padding-left: 50%; */
   position: relative;
-  /* margin-bottom: 30px; */
 }
 
 .timeline-row .timeline-time {
@@ -121,9 +124,7 @@ body {
   border-radius: 4px;
   display: flex;
   align-items: center;
-  /* justify-content: center; */
   flex-direction: column;
-  /* text-align: center; */
 }
 
 .timeline-row .timeline-content:before {
@@ -173,9 +174,6 @@ body {
 
 .timeline-row .timeline-content .thumbs img {
   margin-top: 5px;
-  /* margin: 5px; */
-  /* max-width: px; */
-  /* width: 90%; */
   display: flex;
   align-content: center;
 }

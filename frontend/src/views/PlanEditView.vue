@@ -35,8 +35,14 @@ const inputDate = ref({
 
 const getFormatDate = (date) => {
   const YYYY = String(date.getFullYear());
-  const MM = String(date.getMonth() + 1 >= 10 ? date.getMonth() + 1 : "0" + (date.getMonth() + 1));
-  const dd = String(date.getDate() >= 10 ? date.getDate() : "0" + date.getDate());
+  const MM = String(
+    date.getMonth() + 1 >= 10
+      ? date.getMonth() + 1
+      : "0" + (date.getMonth() + 1)
+  );
+  const dd = String(
+    date.getDate() >= 10 ? date.getDate() : "0" + date.getDate()
+  );
   return YYYY + "-" + MM + "-" + dd;
 };
 
@@ -56,12 +62,15 @@ const deletePlace = function (index) {
 
 const searchAttraction = async () => {
   await api
-    .post(`${import.meta.env.VITE_VUE_API_URL}/attraction/search`, searchWord.value, {
-      headers: { "Content-Type": "application/text" },
-    })
+    .post(
+      `${import.meta.env.VITE_VUE_API_URL}/attraction/search`,
+      searchWord.value,
+      {
+        headers: { "Content-Type": "application/text" },
+      }
+    )
     .then(({ data }) => {
       searchResult.value = data;
-      console.log(searchResult.value);
     })
     .catch((e) => {
       console.log(e);
@@ -74,24 +83,18 @@ const deleteTag = (tag) => {
   var planFilter = [];
   planFilter = tagList.value.filter((t) => t != tag);
   tagList.value = planFilter;
-  console.log("태그 삭제됨");
-  console.log(tagList.value);
 };
 
 const addTag = () => {
   tagList.value.push({ tagId: -1, tagName: tagContent.value });
   tagContent.value = "";
   tagSearchResult.value = "";
-  console.log("addTag 호출");
-  console.log(tagList.value);
 };
 
 const addTagLike = (tag) => {
   tagList.value.push({ tagId: tag.tagId, tagName: tag.tagName });
   tagContent.value = "";
   tagSearchResult.value = "";
-  console.log("addTagLike 호출");
-  console.log(tagList.value);
 };
 
 const onTagInput = (event) => {
@@ -107,7 +110,6 @@ async function searchTag() {
       tagSearchResult.value = data;
       tagSearchResult.value.forEach((tag) => {
         if (tag.tagName === tagContent.value) {
-          console.log("완전 같은 태그");
           sameTag.value = true;
         }
       });
@@ -120,9 +122,6 @@ async function searchTag() {
 
 // 수정
 const editPlan = async () => {
-  console.log("전달된 태그 리스트");
-  console.log(tagList.value);
-
   await api
     .put(`${import.meta.env.VITE_VUE_API_URL}/plan`, {
       planId: planId.value,
@@ -152,10 +151,6 @@ const initInfo = async () => {
       planDetail.value = plan.value.planDetail;
       tagList.value = plan.value.tagList;
       attrInfoList.value = plan.value.attrInfoList;
-      console.log("시작일");
-      console.log(inputDate.value.start);
-      console.log("마지막일");
-      console.log(inputDate.value.end);
     })
     .catch((e) => {
       console.log(e);
@@ -191,27 +186,13 @@ onMounted(() => {
                     :placeholder="planName"
                     v-model="planName"
                   />
-                  <!-- <h5>시작일</h5>
-                  <div>
-                    <input
-                      type="text"
-                      class="form-control mb-2"
-                      id="startDate"
-                      :placeholder="startDate"
-                      v-model="startDate"
-                    />
-                  </div>
-                  <h5>마지막일</h5>
-                  <input
-                    type="text"
-                    class="form-control mb-2"
-                    id="endDate"
-                    :placeholder="endDate"
-                    v-model="endDate"
-                  /> -->
 
                   <div class="input-group mb-3">
-                    <VDatePicker v-model.range="inputDate" mode="date" style="width: 50%" />
+                    <VDatePicker
+                      v-model.range="inputDate"
+                      mode="date"
+                      style="width: 50%"
+                    />
                   </div>
 
                   <h5>세부내용</h5>
@@ -221,7 +202,44 @@ onMounted(() => {
                     rows="3"
                     v-model="planDetail"
                   ></textarea>
-                  <!-- <h4>[ 태그 ]</h4>
+
+                  <h5>태그</h5>
+                  <div class="justify-content-center mb-3">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="태그를 검색하세요."
+                      aria-label="태그를 검색하세요."
+                      aria-describedby="button-addon2"
+                      @input="onTagInput($event)"
+                    />
+
+                    <div>
+                      <ul
+                        v-if="
+                          (tagSearchResult.length === 0 &&
+                            tagContent.length != 0) ||
+                          (!sameTag && tagContent.length != 0)
+                        "
+                        class="list-group"
+                      >
+                        <li class="list-group-item" @click="addTag()">
+                          직접 태그 추가하기
+                        </li>
+                      </ul>
+
+                      <ul
+                        class="list-group"
+                        v-for="(tag, index) in tagSearchResult"
+                        :key="index"
+                      >
+                        <li class="list-group-item" @click="addTagLike(tag)">
+                          {{ tag.tagName }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
                   <div
                     class="mb-4 row"
                     style="
@@ -235,51 +253,9 @@ onMounted(() => {
                     <div class="col-md-12">
                       <button
                         type="button"
-                        class="btn btn-primary rounded-pill m-1"
+                        class="w-btn w-btn-tag m-1"
+                        @click="deleteTag(tag)"
                       >
-                        # {{ tag.tagName }}
-                      </button>
-                    </div>
-                  </div> -->
-                  <h5>태그</h5>
-                  <div class="justify-content-center mb-3">
-                    <!-- <div class="overflow-scroll"> -->
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="태그를 검색하세요."
-                      aria-label="태그를 검색하세요."
-                      aria-describedby="button-addon2"
-                      @input="onTagInput($event)"
-                    />
-
-                    <div>
-                      <ul
-                        v-if="
-                          (tagSearchResult.length === 0 && tagContent.length != 0) ||
-                          (!sameTag && tagContent.length != 0)
-                        "
-                        class="list-group"
-                      >
-                        <li class="list-group-item" @click="addTag()">직접 태그 추가하기</li>
-                      </ul>
-
-                      <ul class="list-group" v-for="(tag, index) in tagSearchResult" :key="index">
-                        <li class="list-group-item" @click="addTagLike(tag)">
-                          {{ tag.tagName }}
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div
-                    class="mb-4 row"
-                    style="float: left; justify-content: space-between; display: flex"
-                    v-for="(tag, index) in tagList"
-                    :key="index"
-                  >
-                    <div class="col-md-12">
-                      <button type="button" class="w-btn w-btn-tag m-1" @click="deleteTag(tag)">
                         {{ tag.tagName }} <span class="badge">x</span>
                       </button>
                     </div>
@@ -291,7 +267,6 @@ onMounted(() => {
                 <div class="col-md-3">
                   <!--  여행지 검색 -->
                   <h5>여행지 검색</h5>
-                  <!-- class="m-2 mb-3 row justify-content-center" -->
                   <div class="input-group justify-content-center">
                     <input
                       type="text"
@@ -318,24 +293,26 @@ onMounted(() => {
                       class="overflow-y-scroll h-100 bg-body-tertiary p-2 rounded-2"
                       style="max-height: 800px"
                     >
-                      <ul class="list-group" v-for="(place, index) in searchResult" :key="index">
+                      <ul
+                        class="list-group"
+                        v-for="(place, index) in searchResult"
+                        :key="index"
+                      >
                         <a
                           @click="markPlaceOnMap(place)"
                           class="list-group-item list-group-item-action"
                           aria-current="true"
                         >
                           <div class="row g-2">
-                            <!-- <div class="col-md-8"> -->
                             <div>
                               <div class="time-title">{{ place.title }}</div>
                               <div>{{ place.addr1 }}</div>
                             </div>
-                            <!-- </div> -->
-                            <!-- <div class="col-md-4 align-items-center"> -->
                             <div @click="addPlace(place)" aria-current="true">
-                              <div class="align-middle blue">여행계획에 추가</div>
+                              <div class="align-middle blue">
+                                여행계획에 추가
+                              </div>
                             </div>
-                            <!-- </div> -->
                           </div>
                         </a>
                       </ul>
@@ -362,49 +339,69 @@ onMounted(() => {
               </div>
 
               <div class="m-2 p-1 row justify-content-end">
-                <button
-                  type="button"
-                  class="w-btn w-btn-aqua float-right m-2 col-1"
-                  data-bs-toggle="modal"
-                  data-bs-target="#editModal"
-                >
-                  완료
-                </button>
+                <div class="col-3">
+                  <div class="d-grid">
+                    <input
+                      class="btn btn-outline-primary align-items-center p-2 mx-5"
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editModal"
+                      value="완료"
+                    />
+                  </div>
+                </div>
               </div>
 
-              <!-- Edit Modal -->
               <div
                 class="modal fade"
                 id="editModal"
                 tabindex="-1"
-                aria-labelledby="exampleModalLabel"
+                role="dialog"
+                aria-labelledby="exampleModalCenterTitle"
                 aria-hidden="true"
               >
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">수정하기</h1>
-                      <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    <div class="modal-body">정말 수정하시겠습니까?</div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        아니요
-                      </button>
-                      <a
-                        href="#"
-                        type="button"
-                        class="btn btn-primary"
-                        @click="editPlan()"
-                        data-bs-dismiss="modal"
-                      >
-                        네
-                      </a>
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content rounded-0">
+                    <div class="modal-body p-4 px-5">
+                      <div class="main-content text-center">
+                        <a
+                          href="#"
+                          class="close-btn"
+                          data-dismiss="modal"
+                          aria-label="Close"
+                        >
+                          <span aria-hidden="true"
+                            ><span class="icon-close2"></span
+                          ></span>
+                        </a>
+
+                        <div class="warp-icon mb-4">
+                          <span class="icon-lock2"></span>
+                        </div>
+                        <form action="#">
+                          <h4 class="mb-4">정말 수정하시겠습니까?</h4>
+
+                          <div class="row mt-4">
+                            <div class="d-grid col">
+                              <input
+                                class="btn btn-outline-danger align-items-center p-2 mx-1"
+                                type="button"
+                                @click="editPlan()"
+                                data-bs-dismiss="modal"
+                                value="확인"
+                              />
+                            </div>
+                            <div class="d-grid col">
+                              <input
+                                class="btn btn-outline-dark align-items-center p-2 mx-1"
+                                type="button"
+                                data-bs-dismiss="modal"
+                                value="취소"
+                              />
+                            </div>
+                          </div>
+                        </form>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -428,10 +425,12 @@ body {
   color: darkgray;
   font-size: large;
 }
+
 .blue {
   color: blue;
   text-decoration: underline;
 }
+
 .w-btn {
   position: relative;
   display: inline-block;
@@ -443,49 +442,11 @@ body {
   font-weight: 600;
   /* transition: 0.25s; */
 }
-.w-btn-aqua {
-  background-color: white;
-  border-color: rgb(67, 67, 232);
-  color: rgb(67, 67, 232);
-}
-.w-btn-red {
-  background-color: white;
-  border-color: crimson;
-  color: crimson;
-}
 
 .w-btn-tag {
   background-color: white;
   border-width: 2px;
   border-color: #f4bd19;
   color: #f4bd19;
-}
-
-.timeline {
-  position: relative;
-  /* background: #272e48; */
-  /* -webkit-border-radius: 4px; */
-  /* -moz-border-radius: 4px; */
-  border-radius: 4px;
-  /* padding: 1rem; */
-  /* margin: 0 auto 1rem auto; */
-  overflow: hidden;
-}
-
-.timeline-row:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 90%;
-  margin-right: -2px;
-  border-left: 2px dashed #4b546f;
-  height: 100%;
-  display: block;
-}
-
-.timeline-row {
-  /* padding-left: 50%; */
-  position: relative;
-  /* margin-bottom: 30px; */
 }
 </style>

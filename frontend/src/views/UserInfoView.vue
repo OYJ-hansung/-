@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { userStore } from "@/stores/userStore";
 import api from "axios";
@@ -9,10 +9,14 @@ const ustore = userStore();
 const isChangePass = ref(false);
 const rePass = ref("");
 const passwordVerifcationString = ref("");
+const user = reactive({
+  userId: "",
+  userPassword: "",
+});
 const passwordVerifcation = computed(() => {
   if (isChangePass.value === false) return true;
   if (userInfo.value.userPassword === "") {
-    // 비밀번호가 비어있다면
+    // 비밀번호가 비어있는 경우
     passwordVerifcationString.value = "비밀번호는 필수입니다.";
     return false;
   }
@@ -35,7 +39,9 @@ const userInfo = ref({
 const deleteAccount = async () => {
   // 회원삭제
   await api
-    .delete(`${import.meta.env.VITE_VUE_API_URL}/members/${ustore.userInfo.userId}`)
+    .delete(
+      `${import.meta.env.VITE_VUE_API_URL}/members/${ustore.userInfo.userId}`
+    )
     .then(async () => {
       await ustore.userLogout(ustore.userInfo.userId);
       router.push({ path: "/" });
@@ -45,9 +51,33 @@ const deleteAccount = async () => {
     });
 };
 
+async function signIn() {
+  await ustore.userConfirm(user);
+  let token = sessionStorage.getItem("access-token");
+  if (ustore.isLogin) {
+    await ustore.getUserInfo(token);
+    if (ustore.userInfo.isAdmin) {
+      toast.success(ustore.userInfo.userId + "관리자 님 환영합니다!", {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 1000,
+      });
+    }
+    if (click.rememeberId) {
+      // 아이디 저장 필요함
+      await storeIDByCookie(user.userId);
+      await getIDByCookie();
+    }
+  } else {
+    error.message = "아이디 또는 비밀번호가 잘못되었습니다.";
+  }
+}
+
 const modify = async () => {
-  if ((isChangePass.value && passwordVerifcation.value) || !isChangePass.value) {
-    // 비밀번호변경했고 조건을 만족했다면, 비밀번호를 변경하지 않았다면
+  if (
+    (isChangePass.value && passwordVerifcation.value) ||
+    !isChangePass.value
+  ) {
+    // 비밀번호 변경했고 조건을 만족했다면, 비밀번호를 변경하지 않았다면
     await api
       .put(`${import.meta.env.VITE_VUE_API_URL}/members/`, {
         userId: userInfo.value.userId,
@@ -56,14 +86,15 @@ const modify = async () => {
         emailDomain: userInfo.value.emailDomain,
       })
       .then(() => {
-        router.push({ path: "/" });
+        user.userId = userInfo.value.userId;
+        user.userPassword = userInfo.value.userPassword;
+        signIn();
+        router.push({ path: "/userinfo" });
       })
       .catch((e) => {
         console.log(e);
       });
   } else {
-    console.log("isChangePass", isChangePass);
-    console.log("passwordVerifcation.value", passwordVerifcation.value);
     alert(passwordVerifcationString.value);
   }
 };
@@ -115,7 +146,12 @@ const changePassword = () => {
                 <div class="col-sm-12 mb-3">
                   <label for="firstName" class="form-label">비밀번호</label>
                   <div class="input-group">
-                    <input type="text" class="form-control" placeholder="******" disabled />
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="******"
+                      disabled
+                    />
 
                     <input
                       class="btn btn-outline-dark align-items-center p-2 mx-1"
@@ -129,7 +165,9 @@ const changePassword = () => {
 
               <div v-if="isChangePass" class="row g-3">
                 <div class="col-sm-12 mb-3">
-                  <label for="firstName" class="form-label">새로운 비밀번호</label>
+                  <label for="firstName" class="form-label"
+                    >새로운 비밀번호</label
+                  >
                   <input
                     type="password"
                     class="form-control"
@@ -139,7 +177,8 @@ const changePassword = () => {
                   />
                   <p
                     v-show="
-                      !passwordVerifcation && passwordVerifcationString === '비밀번호는 필수입니다.'
+                      !passwordVerifcation &&
+                      passwordVerifcationString === '비밀번호는 필수입니다.'
                     "
                     class="error-message mb-2 mt-2"
                   >
@@ -150,7 +189,9 @@ const changePassword = () => {
 
               <div v-if="isChangePass" class="row g-3">
                 <div class="col-sm-12 mb-3">
-                  <label for="firstName" class="form-label">비밀번호 확인</label>
+                  <label for="firstName" class="form-label"
+                    >비밀번호 확인</label
+                  >
                   <input
                     type="password"
                     class="form-control"
@@ -161,7 +202,8 @@ const changePassword = () => {
                   <p
                     v-show="
                       !passwordVerifcation &&
-                      passwordVerifcationString === '비밀번호가 일치하지 않습니다.' &&
+                      passwordVerifcationString ===
+                        '비밀번호가 일치하지 않습니다.' &&
                       rePass.length != 0
                     "
                     class="error-message mb-2 mt-2"
@@ -247,8 +289,6 @@ const changePassword = () => {
             <div class="main-content text-center">
               <form action="#">
                 <h3 class="my-5">회원정보수정이 완료되었습니다!</h3>
-
-                <!-- @click="register()" -->
                 <div class="col-12">
                   <div class="d-grid">
                     <input
@@ -279,8 +319,15 @@ const changePassword = () => {
         <div class="modal-content rounded-0">
           <div class="modal-body p-4 px-5">
             <div class="main-content text-center">
-              <a href="#" class="close-btn" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true"><span class="icon-close2"></span></span>
+              <a
+                href="#"
+                class="close-btn"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true"
+                  ><span class="icon-close2"></span
+                ></span>
               </a>
 
               <div class="warp-icon mb-4">
@@ -318,83 +365,6 @@ const changePassword = () => {
 </template>
 
 <style scoped>
-.bd-placeholder-img {
-  font-size: 1.125rem;
-  text-anchor: middle;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-}
-
-@media (min-width: 768px) {
-  .bd-placeholder-img-lg {
-    font-size: 3.5rem;
-  }
-}
-
-.b-example-divider {
-  width: 100%;
-  height: 3rem;
-  background-color: rgba(0, 0, 0, 0.1);
-  border: solid rgba(0, 0, 0, 0.15);
-  border-width: 1px 0;
-  box-shadow: inset 0 0.5em 1.5em rgba(0, 0, 0, 0.1), inset 0 0.125em 0.5em rgba(0, 0, 0, 0.15);
-}
-
-.b-example-vr {
-  flex-shrink: 0;
-  width: 1.5rem;
-  height: 100vh;
-}
-
-.bi {
-  vertical-align: -0.125em;
-  fill: currentColor;
-}
-
-.nav-scroller {
-  position: relative;
-  z-index: 2;
-  height: 2.75rem;
-  overflow-y: hidden;
-}
-
-.nav-scroller .nav {
-  display: flex;
-  flex-wrap: nowrap;
-  padding-bottom: 1rem;
-  margin-top: -1px;
-  overflow-x: auto;
-  text-align: center;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
-}
-
-.btn-bd-primary {
-  --bd-violet-bg: #712cf9;
-  --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
-
-  --bs-btn-font-weight: 600;
-  --bs-btn-color: var(--bs-white);
-  --bs-btn-bg: var(--bd-violet-bg);
-  --bs-btn-border-color: var(--bd-violet-bg);
-  --bs-btn-hover-color: var(--bs-white);
-  --bs-btn-hover-bg: #6528e0;
-  --bs-btn-hover-border-color: #6528e0;
-  --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
-  --bs-btn-active-color: var(--bs-btn-hover-color);
-  --bs-btn-active-bg: #5a23c8;
-  --bs-btn-active-border-color: #5a23c8;
-}
-
-.bd-mode-toggle {
-  z-index: 1500;
-}
-
-.bd-mode-toggle .dropdown-menu .active .bi {
-  display: block !important;
-}
-
 .error-message {
   color: rgba(231, 78, 78, 0.829);
   font-size: 14px;

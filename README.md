@@ -1,34 +1,75 @@
-# EnjoyTrip - 4조
+# 11.24 관통(Final)
 
-### 📍 멤버: 전하영,오영주
+# 오! 전-국- 여행자랑
 
-### 📍 내용: 여행계획 화면 개발(목록, 상세, 추가, 수정, 삭제 화면)
+모두의 더 좋은 여행을 위한, 국내여행코스 공유 플랫폼
 
-### 📍 프레임워크
+<img width="800" alt="image" src="/img/README/Untitled.png">
 
-- Frontend: Vue
-- Backend: Spring Boot
+## 😀 멤버
 
----
+▪ **오영주 :** 회원, 좋아요, 태그, 검색 관련 기능 구현
 
-## 1. 여행 계획 목록
+▪ **전하영 :** 카카오앱, 여행계획 관련 기능 구현
 
-<img width="800" alt="image" src="/img/README/planList.png">
+## 👀 개발 배경
 
-## 2. 여행 계획 상세
+- 코로나19 방역 완화로 인한 여행 수요 증가
+- 개별 맞춤형 여행 경험 제공
+- 지역 경제 활성화 지원
 
-<img width="800" alt="image" src="/img/README/planDetail.png">
+## 🎈DB 스키마
 
-## 3. 여행 계획 추가
+<img width="800" alt="image" src="/img/README/Untitled 1.png">
 
-<img width="800" alt="image" src="/img/README/writePlan.png">
-<img width="500" alt="image" src="/img/README/writePlanModal.png">
+## 🎈클래스 다이어그램
 
-## 4. 여행 계획 수정
+<img width="800" alt="image" src="/img/README/Untitled 2.png">
 
-<img width="800" alt="image" src="/img/README/modifyPlan.png">
-<img width="500" alt="image" src="/img/README/modifyPlanModal.png">
+## 🎈사용기술, API
 
-## 5. 여행 계획 삭제
+<img width="800" alt="image" src="/img/README/Untitled 3.png">
 
-<img width="500" alt="image" src="/img/README/deletePlanModal.png">
+## 🎈아키텍처
+
+<img width="800" alt="image" src="/img/README/Untitled 4.png">
+
+# 💛화면 구성
+
+## 1. 메인 페이지
+
+<img width="800" alt="image" src="/img/README/Untitled 5.png">
+
+## 2. 지역별 여행지
+
+<img width="800" alt="image" src="/img/README/Untitled 6.png">
+
+## 3. 여행계획 게시판
+
+<img width="800" alt="image" src="/img/README/Untitled 7.png">
+
+## 4. 나의 여행 계획
+
+<img width="800" alt="image" src="/img/README/Untitled 8.png">
+
+## 5. 여행 계획 추가
+
+<img width="800" alt="image" src="/img/README/Untitled 9.png">
+
+<img width="800" alt="image" src="/img/README/Untitled 10.png">
+
+## 6. 여행 계획 상세
+
+<img width="800" alt="image" src="/img/README/Untitled 11.png">
+
+## 7. 회원 정보
+
+<img width="800" alt="image" src="/img/README/Untitled 12.png">
+
+## 8. 로그인
+
+<img width="800" alt="image" src="/img/README/Untitled 13.png">
+
+## 9. 회원가입
+
+<img width="800" alt="image" src="/img/README/Untitled 14.png">

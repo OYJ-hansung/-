@@ -10,11 +10,12 @@ import "bootstrap";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import VCalendar from "v-calendar";
 import "v-calendar/style.css";
+import VueWriter from "vue-writer";
 
 const app = createApp(App);
 const pinia = createPinia();
 
 pinia.use(piniaPluginPersistedstate);
-app.use(router).use(pinia).use(VCalendar, {});
+app.use(router).use(pinia).use(VueWriter).use(VCalendar, {});
 
 app.mount("#app");

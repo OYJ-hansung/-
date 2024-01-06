@@ -24,10 +24,11 @@ const boardlist = async () => {
       userId: ustore.userInfo.userId,
     })
     .then(({ data }) => {
-      console.log(data);
       if (ustore.isLogin && sstore.isMy) {
         // 내여행계획
-        planList.value = data.filter((d) => d.userId === ustore.userInfo.userId);
+        planList.value = data.filter(
+          (d) => d.userId === ustore.userInfo.userId
+        );
       } else {
         planList.value = data.filter((d) => d.shared === 1);
       }
@@ -39,7 +40,6 @@ const boardlist = async () => {
       onlySharedList.value = planList.value.filter((plan) => {
         return plan.shared === 1;
       });
-      console.log("onlySharedList", onlySharedList.value);
     })
     .catch((e) => {
       console.log(e);
@@ -86,7 +86,9 @@ onMounted(() => {
             v-model="sstore.onlyFavorite"
             @change="check($event)"
           />
-          <label class="form-check-label ms-3" for="inlineCheckbox1">좋아요한 여행계획만</label>
+          <label class="form-check-label ms-3" for="inlineCheckbox1"
+            >좋아요한 여행계획만</label
+          >
         </div>
       </div>
 
@@ -99,7 +101,9 @@ onMounted(() => {
             v-model="sstore.onlyShared"
             @change="check($event)"
           />
-          <label class="form-check-label ms-3" for="favoriteCheckBox">공유된 여행계획만</label>
+          <label class="form-check-label ms-3" for="favoriteCheckBox"
+            >공유된 여행계획만</label
+          >
         </div>
         <div class="form-check form-check-inline" @click="addPlan()">
           <button
@@ -121,18 +125,23 @@ onMounted(() => {
       </div>
 
       <div class="col-md-12">
-        <div v-if="onlyFavoriteToggle" class="row row-cols-sm-2 row-cols-md-3 g-3">
+        <div
+          v-if="onlyFavoriteToggle"
+          class="row row-cols-sm-2 row-cols-md-3 g-3"
+        >
           <div v-for="(plan, index) in onlyFavoriteList" :key="index">
             <board-card :plan="plan"></board-card>
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="col-md-12">
-      <div v-if="onlySharedToggle" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <div v-for="(plan, index) in onlySharedList" :key="index">
-          <board-card :plan="plan"></board-card>
+      <div class="col-md-12">
+        <div
+          v-if="onlySharedToggle"
+          class="row row-cols-sm-2 row-cols-md-3 g-3"
+        >
+          <div v-for="(plan, index) in onlySharedList" :key="index">
+            <board-card :plan="plan"></board-card>
+          </div>
         </div>
       </div>
     </div>

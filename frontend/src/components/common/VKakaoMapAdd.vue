@@ -37,13 +37,11 @@ const initMap = () => {
     level: 3,
   };
   map = new kakao.maps.Map(container, options);
-  console.log("아악", props.markPlace);
 };
 
 watch(
   () => props.reload,
   () => {
-    console.log("relayout하기@!");
     if (window.kakao && window.kakao.maps) {
       map.relayout();
     }
@@ -55,7 +53,6 @@ watch(
 watch(
   () => props.addedPlaces,
   () => {
-    console.log("2마커 어디감");
     positions.value = [];
     props.addedPlaces.forEach((place) => {
       let obj = {};
@@ -106,14 +103,11 @@ const loadMarkers = () => {
       clickable: true, // // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
       image: markerImage, // 마커의 이미지
     });
-    console.log("1마커 어디감");
     markers.value.push(marker);
 
     if (i != 0) {
       linePath = [positions.value[i - 1].latlng, positions.value[i].latlng];
     }
-    console.log("이름은 ", positions.value[i].title);
-    console.log("길이 ", positions.value.length);
 
     //lineLine.setPath(linePath); //선을 그릴 라인을 세팅합니다.
 
@@ -146,7 +140,6 @@ const showMarkers = () => {
   if (markers.value.length > 0) {
     markers.value.forEach((marker) => {
       marker.setMap(map);
-      console.log("마커 표시", marker);
     });
   }
 };
@@ -165,7 +158,6 @@ const deleteLines = () => {
 watch(
   () => props.markPlace.value,
   () => {
-    console.log("변경감지");
     if (window.kakao && window.kakao.maps) {
       mmarkPlace.value = {};
       mmarkPlace.latlng = new kakao.maps.LatLng(
@@ -281,7 +273,6 @@ const loadMarker = () => {
   if (mmarker.value.length > 0) {
     mmarker.value.forEach((marker) => {
       marker.setPosition(mmarkPlace.latlng);
-      console.log("하이", marker);
       marker.setMap(map);
       map.panTo(mmarkPlace.latlng);
       ooverlay.value.forEach((overlay) => overlay.setMap(map));

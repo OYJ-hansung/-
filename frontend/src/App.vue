@@ -1,11 +1,11 @@
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
+import { RouterView } from "vue-router";
 import HeaderNav from "./components/common/HeaderNav.vue";
 import FooterNav from "./components/common/FooterNav.vue";
 </script>
 
 <template>
-  <header class="blog-header py-1">
+  <header class="blog-header" style="position: sticky; top: 0; z-index: 2">
     <header-nav></header-nav>
   </header>
 
