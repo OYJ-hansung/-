@@ -13,10 +13,6 @@ import com.ssafy.member.model.mapper.MemberMapper;
 
 @Service
 public class MemberServiceImpl implements MemberService {
-	
-//	@Autowired
-//	private SqlSession sqlSession;
-	
 	private MemberMapper memberMapper;
 
 	@Autowired

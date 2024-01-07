@@ -9,4 +9,6 @@ public class AttractionSearchDto {
 	private int sidoCode;
 	private int gugunCode;
 	private String title;
+	private int pageSize;
+	private int startIndex;
 }

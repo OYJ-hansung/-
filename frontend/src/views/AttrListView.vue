@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, defineProps } from "vue";
+import { ref } from "vue";
 import VKakaoMapSearch from "@/components/common/VKakaoMapSearch.vue";
 import api from "axios";
 
@@ -35,12 +35,15 @@ const contentTypeList = ref([
 ]);
 
 const gugunList = ref([]);
-
 const sortType = ref(0);
 const contentTypeId = ref(0);
 const sidoCode = ref(0);
 const gugunCode = ref(0);
 const title = ref("");
+const page = ref(1);
+const block = ref(1);
+const endPage = ref(0);
+const startPage = ref(0);
 
 const getGugun = async (sido) => {
   if (sido == 0) {
@@ -57,11 +60,14 @@ const getGugun = async (sido) => {
   }
 };
 
+const changePage = (num) => {
+  page.value = num
+  attrlist();
+}
+
 const changeSido = () => {
   const sidoSelect = document.querySelector(".search-sido");
   sidoCode.value = sidoSelect.options[sidoSelect.selectedIndex].value;
-  console.log("시도코드는");
-  console.log(sidoCode.value);
   getGugun(sidoCode.value);
 };
 
@@ -75,9 +81,17 @@ const setType = () => {
   contentTypeId.value = typeSelect.options[typeSelect.selectedIndex].value;
 };
 
+const nextBlock = () => {
+  block.value += 1;
+  page.value = block.value * 5 + 1;
+  attrlist();
+  console.log(startPage.value);
+  console.log(endPage.value);
+}
+
 const attrlist = async () => {
   await api
-    .post(`${import.meta.env.VITE_VUE_API_URL}/attraction/list`, {
+    .post(`${import.meta.env.VITE_VUE_API_URL}/attraction/list/${page.value}`, {
       sortType: sortType.value,
       contentTypeId: contentTypeId.value,
       sidoCode: sidoCode.value,
@@ -86,7 +100,9 @@ const attrlist = async () => {
     })
     .then(({ data }) => {
       console.log(data);
-      attrList.value = data;
+      attrList.value = data.list;
+      endPage.value = data.endPage;
+      startPage.value = data.startPage;
     })
     .catch((e) => {
       console.log(e);
@@ -97,55 +113,27 @@ const attrlist = async () => {
 <template>
   <div id="form-search" class="d-flex my-3">
     <!-- <input type="hidden" id="ccommand" value="ssearch" /> -->
-    <select
-      id="search-area"
-      class="form-select me-2 search-sido"
-      @change="changeSido()"
-    >
+    <select id="search-area" class="form-select me-2 search-sido" @change="changeSido()">
       <option value="0" selected>시도선택</option>
       <option v-for="sido in sidoList" :value="sido.sidoCode">
         {{ sido.sidoName }}
       </option>
     </select>
-    <select
-      id="search-sub-area"
-      class="form-select me-2 search-gugun"
-      @change="setGugun()"
-    >
+    <select id="search-sub-area" class="form-select me-2 search-gugun" @change="setGugun()">
       <option value="0" selected>구군선택</option>
       <option v-for="gugun in gugunList" :value="gugun.gugunCode">
         {{ gugun.gugunName }}
       </option>
     </select>
-    <select
-      id="search-content-id"
-      name="search_content_id"
-      class="form-select me-2 search-type"
-      @change="setType()"
-    >
+    <select id="search-content-id" name="search_content_id" class="form-select me-2 search-type" @change="setType()">
       <option value="0" selected>관광지 유형</option>
-      <option
-        v-for="contentType in contentTypeList"
-        :value="contentType.contentTypeId"
-      >
+      <option v-for="contentType in contentTypeList" :value="contentType.contentTypeId">
         {{ contentType.contentTypeName }}
       </option>
     </select>
-    <input
-      id="search-keyword"
-      class="form-control me-2"
-      type="search"
-      placeholder="검색어"
-      aria-label="검색어"
-      v-model="title"
-    />
-    <input
-      type="button"
-      id="btn-search"
-      @click="attrlist()"
-      class="btn btn-outline-dark"
-      value="검색"
-    />
+    <input id="search-keyword" class="form-control me-2" type="search" placeholder="검색어" aria-label="검색어"
+      v-model="title" />
+    <input type="button" id="btn-search" @click="attrlist()" class="btn btn-outline-dark" value="검색" />
   </div>
   <!-- kakao map start -->
   <!-- <div id="map" class="row col-12 my-3 rounded ms-1" style="height: 500px"></div> -->
@@ -167,8 +155,20 @@ const attrlist = async () => {
         <td style="width: 40%">{{ attraction.title }}</td>
         <td style="width: 30%">{{ attraction.addr1 }}</td>
       </tr>
+
     </tbody>
   </table>
+  <div class="container row" style="float: none; margin: auto;">
+    <div class="col d-flex justify-content-center">
+      <ul class="pagination">
+        <li class="page-item page-link text-dark">이전</li>
+        <template v-for="(num, index) in (endPage-startPage+1)" :key="index">
+          <li class="page-item page-link text-dark" @click="changePage(num)">{{ num }}</li>
+        </template>
+        <li class="page-item page-link text-dark" @click="nextBlock()">다음</li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <style scoped></style>

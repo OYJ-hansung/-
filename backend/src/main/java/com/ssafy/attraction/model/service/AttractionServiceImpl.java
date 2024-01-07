@@ -26,7 +26,22 @@ public class AttractionServiceImpl implements AttractionService {
 	}
 
 	@Override
+	public List<AttractionInfoDto> attractionListPaging(AttractionSearchDto attractionSearchDto) throws Exception {
+		return attractionMapper.attractionListPaging(attractionSearchDto);
+	}
+
+	@Override
+	public int attractionListSize(AttractionSearchDto attractionSearchDto) throws Exception {
+		return attractionMapper.attractionListSize(attractionSearchDto);
+	}
+
+	@Override
 	public List<AttractionInfoDto> attractionSearch(String word) throws Exception {
+		return attractionMapper.attractionSearch(word);
+	}
+
+	@Override
+	public List<AttractionInfoDto> attractionSearchPaging(String word) throws Exception {
 		return attractionMapper.attractionSearch(word);
 	}
 

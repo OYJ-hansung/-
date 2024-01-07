@@ -292,8 +292,7 @@
 
     <delete id="deletePlan" parameterType="int">
         delete from plan
-        where
-            plan_id = #{planId}
+        where plan_id = #{planId}
     </delete>
 </mapper>
 

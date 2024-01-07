@@ -30,7 +30,6 @@ import com.ssafy.plan.model.PlanDto;
 import com.ssafy.plan.model.PlanParamDto;
 import com.ssafy.plan.model.TagDto;
 import com.ssafy.plan.model.service.PlanService;
-import com.ssafy.util.PageNavigation;
 import com.ssafy.util.ResultDto;
 
 import io.swagger.annotations.Api;
@@ -232,8 +231,11 @@ public class PlanController {
 		logger.debug("deletePlan planId : {}", planId);
 		try {
 			planService.deletePlan(planId);
+			System.out.println("success");
 			return new ResponseEntity<ResultDto>(new ResultDto("success", "삭제 성공"), HttpStatus.OK);
 		} catch (Exception e) {
+			System.out.println("fail");
+			System.out.println(e);
 			return new ResponseEntity<ResultDto>(new ResultDto("fail", "삭제 실패"), HttpStatus.OK);
 		}
 	}

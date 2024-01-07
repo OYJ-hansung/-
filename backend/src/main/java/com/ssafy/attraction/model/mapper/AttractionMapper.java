@@ -13,8 +13,12 @@ import com.ssafy.attraction.model.GugunDto;
 public interface AttractionMapper {
 
 	List<AttractionInfoDto> attractionList(AttractionSearchDto attractionSearchDto) throws SQLException;
+	List<AttractionInfoDto> attractionListPaging(AttractionSearchDto attractionSearchDto) throws SQLException;
+
+	int attractionListSize(AttractionSearchDto attractionSearchDto) throws SQLException;
 
     List<AttractionInfoDto> attractionSearch(String word) throws SQLException;
+	List<AttractionInfoDto> attractionSearchPaging(String word) throws SQLException;
 
 	List<GugunDto> getGugunList(int sidoCode) throws SQLException;
 }

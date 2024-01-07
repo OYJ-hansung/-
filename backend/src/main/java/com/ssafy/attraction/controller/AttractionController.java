@@ -2,6 +2,8 @@ package com.ssafy.attraction.controller;
 
 import java.util.List;
 
+import com.ssafy.attraction.model.PaginationList;
+import com.ssafy.util.Pagination;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -44,17 +46,36 @@ public class AttractionController {
 	@ApiOperation(value = "관광지 리스트", notes = "관광지의 <big> 목록</big>을 반환해 줍니다.")
 	@ApiResponses({ @ApiResponse(code = 200, message = "관광지 목록 OK!!"), @ApiResponse(code = 404, message = "페이지 없어!!"),
 			@ApiResponse(code = 500, message = "서버에러!!") })
-	@PostMapping(value = "/list")
-	public ResponseEntity<?> attractionlist(@RequestBody AttractionSearchDto attractionSearchDto) {
+	@PostMapping(value = "/list/{page}")
+	public ResponseEntity<?> attractionlist(@RequestBody AttractionSearchDto attractionSearchDto,@PathVariable int page) {
 		logger.debug("list call");
 		try {
-			List<AttractionInfoDto> list = attractionService.attractionList(attractionSearchDto);
-			list = attractionSort(list, attractionSearchDto.getSortType());
-			// System.out.println("list: "+list);
-			if (list != null && !list.isEmpty()) {
-				return new ResponseEntity<List<AttractionInfoDto>>(list, HttpStatus.OK);
-			} else {
+			int totalListCnt = attractionService.attractionListSize(attractionSearchDto);
+			logger.debug("총 "+totalListCnt+"개 검색결과");
 
+			// 생성인자로  총 게시물 수, 현재 페이지를 전달
+			Pagination pagination = new Pagination(totalListCnt, page);
+			// DB select start index
+			int startIndex = pagination.getStartIndex();
+			// 페이지 당 보여지는 게시글의 최대 개수
+			int pageSize = pagination.getPageSize();
+
+			logger.debug("startIndex: "+startIndex);
+			logger.debug("pageSize: "+pageSize);
+			logger.debug("startPage: "+pagination.getStartPage());
+			logger.debug("endPage: "+pagination.getEndPage());
+			logger.debug("blockSize: "+pagination.getBlockSize());
+			logger.debug("block: "+pagination.getBlock());
+
+			attractionSearchDto.setStartIndex(startIndex);
+			attractionSearchDto.setPageSize(pageSize);
+			List<AttractionInfoDto> list = attractionService.attractionListPaging(attractionSearchDto);
+			list = attractionSort(list, attractionSearchDto.getSortType());
+			PaginationList paginationList = new PaginationList(list, pagination.getStartPage(), pagination.getEndPage());
+
+			if (list != null && !list.isEmpty()) {
+				return new ResponseEntity<PaginationList>(paginationList, HttpStatus.OK);
+			} else {
 				return new ResponseEntity<ResultDto>(new ResultDto("fail", "NO RESULT"), HttpStatus.OK);
 			}
 		} catch (Exception e) {

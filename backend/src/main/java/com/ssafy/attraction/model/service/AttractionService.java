@@ -9,8 +9,13 @@ import com.ssafy.attraction.model.GugunDto;
 public interface AttractionService {
 	
 	List<AttractionInfoDto> attractionList(AttractionSearchDto attractionSearchDto) throws Exception;
+	List<AttractionInfoDto> attractionListPaging(AttractionSearchDto attractionSearchDto) throws Exception;
+
+	int attractionListSize(AttractionSearchDto attractionSearchDto) throws Exception;
 
 	List<AttractionInfoDto> attractionSearch(String word) throws Exception;
+	List<AttractionInfoDto> attractionSearchPaging(String word) throws Exception;
+
 
 	List<GugunDto> getGugunList(int sidoCode) throws Exception;
 }

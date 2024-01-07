@@ -11,7 +11,6 @@ import com.ssafy.plan.model.FavoriteDto;
 import com.ssafy.plan.model.PlanDto;
 import com.ssafy.plan.model.PlanParamDto;
 import com.ssafy.plan.model.TagDto;
-import com.ssafy.util.PageNavigation;
 
 public interface PlanService {
 	

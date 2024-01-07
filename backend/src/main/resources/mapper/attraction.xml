@@ -45,7 +45,6 @@
 	from gugun
 	where sido_code=#{sidoCode}
 	</select>
-	
 
 	<select id="attractionList" parameterType="AttractionSearchDto"
 		resultMap="attractionInfo">
@@ -72,6 +71,80 @@
 		</if>
 		<if
 			test=' sidoCode != 0 and contentTypeId != 0 and gugunCode == 0 '>
+			WHERE sido_code = #{sidoCode} and content_type_id =
+			#{contentTypeId}
+		</if>
+		<if test=' sidoCode == 0 and contentTypeId == 0 '>
+			<if test=' title != null'>
+				WHERE title like CONCAT('%',#{title},'%')
+			</if>
+		</if>
+		<if test=' sidoCode != 0 or contentTypeId != 0 '>
+			<if test=' title != null'>
+				AND title like CONCAT('%',#{title},'%')
+			</if>
+		</if>
+	</select>
+
+	<select id="attractionListPaging" parameterType="AttractionSearchDto"
+			resultMap="attractionInfo">
+		select content_id, content_type_id, title, addr1, addr2,zipcode, tel,
+		first_image, first_image2, readcount,
+		sido_code, gugun_code, latitude,
+		longitude, mlevel
+		from attraction_info
+		<if test=' sidoCode != 0 and contentTypeId != 0 and gugunCode != 0 '>
+			WHERE sido_code = #{sidoCode} and gugun_code = #{gugunCode} and
+			content_type_id = #{contentTypeId}
+		</if>
+		<if test=' sidoCode != 0 and contentTypeId == 0 and gugunCode == 0 '>
+			WHERE sido_code = #{sidoCode}
+		</if>
+		<if test=' sidoCode == 0 and contentTypeId != 0 '>
+			WHERE content_type_id = #{contentTypeId}
+		</if>
+		<if test=' sidoCode != 0 and contentTypeId == 0 and gugunCode != 0 '>
+			WHERE sido_code = #{sidoCode} and gugun_code = #{gugunCode}
+		</if>
+		<if test=' sidoCode != 0 and contentTypeId != 0 and gugunCode == 0 '>
+			WHERE sido_code = #{sidoCode} and content_type_id =
+			#{contentTypeId}
+		</if>
+		<if test=' sidoCode == 0 and contentTypeId == 0 '>
+			<if test=' title != null'>
+				WHERE title like CONCAT('%',#{title},'%')
+			</if>
+		</if>
+		<if test=' sidoCode != 0 or contentTypeId != 0 '>
+			<if test=' title != null'>
+				AND title like CONCAT('%',#{title},'%')
+			</if>
+		</if>
+		limit #{pageSize} offset #{startIndex}
+	</select>
+
+	<select id="attractionListSize" parameterType="AttractionSearchDto"
+			resultType="int">
+		select count(*) as count
+		from attraction_info
+		<if
+				test=' sidoCode != 0 and contentTypeId != 0 and gugunCode != 0 '>
+			WHERE sido_code = #{sidoCode} and gugun_code = #{gugunCode} and
+			content_type_id = #{contentTypeId}
+		</if>
+		<if
+				test=' sidoCode != 0 and contentTypeId == 0 and gugunCode == 0 '>
+			WHERE sido_code = #{sidoCode}
+		</if>
+		<if test=' sidoCode == 0 and contentTypeId != 0 '>
+			WHERE content_type_id = #{contentTypeId}
+		</if>
+		<if
+				test=' sidoCode != 0 and contentTypeId == 0 and gugunCode != 0 '>
+			WHERE sido_code = #{sidoCode} and gugun_code = #{gugunCode}
+		</if>
+		<if
+				test=' sidoCode != 0 and contentTypeId != 0 and gugunCode == 0 '>
 			WHERE sido_code = #{sidoCode} and content_type_id =
 			#{contentTypeId}
 		</if>

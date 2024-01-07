@@ -74,8 +74,10 @@ public class AdminUserController {
 		log.debug("userRegister memberDto : {}", memberDto);
 		try {
 			memberService.joinMember(memberDto);
+			log.debug("is success");
 			return new ResponseEntity<ResultDto>(new ResultDto("success", "회원등록 성공"), HttpStatus.OK);
 		} catch (Exception e) {
+			log.debug("is fail");
 			return new ResponseEntity<ResultDto>(new ResultDto("fail", "회원등록 실패"), HttpStatus.OK);
 		}
 		
@@ -111,6 +113,7 @@ public class AdminUserController {
 	@ApiOperation(value = "로그인", notes = "입력된 정보로 로그인을 시도합니다.") //조건문 추가하기 (빈칸, 중복 등)
 	@PostMapping(value = "/login")
 	public ResponseEntity<?> userIogin(@RequestBody MemberDto memberDto) {
+		System.out.println("userLogin Call");
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
